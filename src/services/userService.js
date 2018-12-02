@@ -79,7 +79,7 @@ export async function markAttendance(reqData, token){
 }
 
 export async function getUserByEmail(email) {
-    let userDetails =await Users.getUserByEmail(email);
+    let userDetails =await Users.getUserByEmail(email,"");
     return userDetails[0];
 }
 
@@ -121,30 +121,46 @@ export async function getCounts(token,req)
 
 }
 
-export async function createUser(user, created_by,res) {
-    let userData = await Users.getUserByEmail(user.emailid);
+export async function createUser(user, created_by, token, res) {
+    let email1 = '', token1 = '';
+    if(user.emailid===undefined)
+        token1 = token;
+    else
+        email1 = user.emailid;
+    let userr, createdBy;
+    if(created_by===undefined) {
+        userr = await Users.fetchUserByToken(token);
+        createdBy = userr[0][0].emailid;
+    }
+    else
+        createdBy = created_by;
+    let userData = await Users.getUserByEmail(email1, token1);
     console.log("userdata length "+ userData[0]);
     if (userData[0].length > 0) {
         return {errorCode: HttpStatus.CONFLICT, message : 'Email already exist'};
     }
+    let gender = "";
+    if(user.sex===undefined)
+        gender = "";
+    else
+        gender = user.sex;
     let newUserId = await bookshelf.transaction(async(t) => {
         let newUsers = await UsersDao.createRow({
             name : user.name,
             emailid : user.emailid,
-            gender : user.sex,
-            dob : user.age,
+            gender : gender,
             user_type: user.user_type,
             mobile_no: user.mobile_number,
             password : user.password,
-            address: user.address,
+            city: user.city,
             created_on: new Date(),
-            created_by :created_by
+            created_by :createdBy
         }, t);
 
-        return newUsers.userid;
+        return newUsers.id;
     });
     return ({
-        message : 'User Created Successfully.'
+        message : newUserId+ ' is Created Successfully.'
     });
 }
 export async function updateUser(token, reqData, userid){
