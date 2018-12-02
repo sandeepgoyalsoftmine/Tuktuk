@@ -20,6 +20,7 @@ $(document).ready(function() {
                 error: function (error) {
                     console.log("in errrorrrr")
                     console.log(error);
+                    alert(error.responseJSON.message);
                 }
             });
     });

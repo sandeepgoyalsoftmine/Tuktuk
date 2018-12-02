@@ -32,9 +32,9 @@ router.post('/login', (req, res, next) =>
         .then(result =>
         {
             if('errorCode' in result){
-                return res.status(HttpStatus.OK).json({
+                return res.status(result.errorCode).json({
                     status : 'Success',
-                    statusCode :400,
+                    statusCode :result.errorCode,
                     message: result.message
                 });
                 (result.errorCode).json(result);
@@ -108,7 +108,7 @@ router.post('/create', (req, res, next)=>
     user.createUser(req.body, req.session.userID)
         .then(result => {
             if('errorCode' in result){
-                return res.status(HttpStatus.OK).json({
+                return res.status(result.errorCode).json({
                     status : 'Success',
                     statusCode : result.errorCode,
                     message: result.message
@@ -117,7 +117,7 @@ router.post('/create', (req, res, next)=>
             }
             let contextPath = req.protocol + '://' + req.get('host');
             return res.status(HttpStatus.OK).json({
-                statusCode : result,
+                statusCode : 200,
                 message : '',
                 data : result
             });

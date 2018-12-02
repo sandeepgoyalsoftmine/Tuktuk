@@ -10,10 +10,10 @@ export async function  login(reqData, res) {
     let userData = await Users.checkLogin(reqData.userID);
     console.log("userDatsa "+JSON.stringify(userData[0]))
     if (userData[0].length < 1) {
-        return {errorCode: HttpStatus.BAD_REQUEST, message : 'User not exists'};
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'User not exists'};
     }
     if (userData[0][0].password != reqData.password) {
-        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Incorrect password'};
+        return {errorCode: HttpStatus.UNAUTHORIZED, message: 'Incorrect password'};
     }
     if(userData[0].length == 1 ) {
         const token = generateToken(reqData.userid);
@@ -33,11 +33,11 @@ export async function getAttendance(token,req)
     if(userData[0] < 1){
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
     }
-    let att = userData1[0][0].status == 1? userData1[0][0].in_time :userData1[0][0].out_time
+    let att = userData[0][0].status == 1? userData[0][0].in_time :userData[0][0].out_time
 
     let obj = {
-        emialid: userData1[0][0].emailid,
-        attendance: userData1[0][0].status,
+        emialid: userData[0][0].emailid,
+        attendance: userData[0][0].status,
         time:att
     }
     return obj;
@@ -144,6 +144,30 @@ export async function createUser(user, created_by, token, res) {
         gender = "";
     else
         gender = user.sex;
+    if(user.name==='' || user.name===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Name cannot be blank.'};
+    }
+    if(user.user_type==='' || user.user_type===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Please send valid user type.'};
+    }
+    if(user.emailid==='' || user.emailid===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Email id cannot be blank.'};
+    }
+    if(user.mobile_number==='' || user.mobile_number===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Mobile number cannot be blank.'};
+    }
+    if(user.password==='' || user.password===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'password cannot be blank.'};
+    }
+    if(user.city==='' || user.city===undefined )
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'City can not be blank.'};
+    }
     let newUserId = await bookshelf.transaction(async(t) => {
         let newUsers = await UsersDao.createRow({
             name : user.name,
