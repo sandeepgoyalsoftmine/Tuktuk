@@ -58,8 +58,6 @@ export async function markAttendance(reqData, token){
         await bookshelf.transaction(async (t) => {
             await UsersDao.updateRow(userData[0][0].userid, {in_time: new Date(), status : 1}, t);
         });
-
-
     }else{
         await bookshelf.transaction(async (t) => {
             await UsersDao.updateRow(userData[0][0].userid, {out_time: new Date(), status: 0}, t);
