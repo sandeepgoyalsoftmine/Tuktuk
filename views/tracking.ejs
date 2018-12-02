@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <%data%>
+    <script type="text/javascript" src="../public/javascripts/jquery-1.12.0.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="../public/javascripts/user.js"></script>
+
+    <% include partials/head.ejs%>
+</head>
+<style>
+    /* Always set the map height explicitly to define the size of the div
+     * element that contains the map. */
+    #map {
+        height: 100%;
+        align: right;
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+        height: 100%;
+        width: 90%;
+
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<body>
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="<%=path%>/signup">Home</a>
+    </div>
+    <!-- /.navbar-header -->
+
+
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+            <ul class="nav" id="side-menu">
+                <li>
+                    <div class="dataTable_wrapper">
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Contact No.</th>
+
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                console.log(data.UserDetails.length);
+                            for(var i=0; i < data.UserDetails.length; i++) {
+                            if(i%2==0){%>
+                            <tr style="cursor: pointer;" onclick="getTrackData(<%= data.UserDetails[i].userid %>)" id="<%= data.UserDetails[i].userid %>" class="even gradeC">
+                                <td><%= data.UserDetails[i].userid %></td>
+                                <td ><%= data.UserDetails[i].name%></td>
+                                <td><%= data.UserDetails[i].mobile_no %></td>
+                            </tr>
+                            <%}else{%>
+                            <tr style="cursor: pointer;" onclick="getTrackData(<%= data.UserDetails[i].userid %>)" id="<%= data.UserDetails[i].userid %>" class="odd gradeX">
+                                <td><%= data.UserDetails[i].userid %></td>
+                                <td ><%= data.UserDetails[i].name%></td>
+                                <td><%= data.UserDetails[i].mobile_no %></td>
+                            </tr>
+
+                            <% }
+                            }%>
+
+                    </table>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- /.sidebar-collapse -->
+    </div>
+    <!-- /.navbar-static-side -->
+</nav>
+
+<div id="page-wrapper">
+    <br/>
+    <!-- InstanceBeginEditable name="ContentRegion" -->
+    <div class="row">
+
+            <div class="panel panel-default" style="height: 525px;">
+
+
+                    <div id="map">
+
+
+            </div>
+
+
+    </div>
+</div>
+
+
+
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <script>
+    var map;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 30.210994 , lng: 74.9454745},
+            zoom: 8
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOvi7psBuEybbYkKqDf1cd9BfA93V6cXI&callback=initMap"
+        async defer></script>
+</body>
+</html>
