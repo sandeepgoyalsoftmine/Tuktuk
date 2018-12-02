@@ -25,6 +25,8 @@ dist
 # Dotenv configuration
 .env
 
+.idea
+
 # Visual Studio Code
 .vscode
 

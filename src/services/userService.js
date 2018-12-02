@@ -184,12 +184,32 @@ export async function createUser(user, created_by, token, res) {
         return newUsers.id;
     });
     return ({
-        message : newUserId+ ' is Created Successfully.'
+        message : newUserId+ ' is Created Successfully.',
+        userID : newUserId
     });
 }
-export async function updateUser(token, reqData, userid){
+export async function updateUser(reqData,token, reqfile, imagePath){
+    let image = '';
+    if(reqfile == undefined){
+        return {errorCode: HttpStatus.NOT_FOUND, errors: 'Image Not Found'};
+    }
+    if (reqfile !== undefined) {
+        image = reqfile.filename;
+    }
+    if(reqData.type==='' || user.type===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'type cannot be blank.'};
+    }
+    if(reqData.driver_id==='' || user.driver_id===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'driver_id cannot be blank.'};
+    }
+    let imagefieldName = reqData.type;
     await bookshelf.transaction(async(t) => {
-        await UsersDao.updateRow(userid, {photourl:reqData.photourl, name:reqData.name, emailid: reqData.emailid, dob:reqData.dob, gender:reqData.gender, mobile_no: reqData.mobile_no}, t);
+       var obj = { updated_on: new Date()};
+        obj[imagefieldName]= imagePath + '/' + image;
+
+       await UsersDao.updateRow(parseInt(reqData.driver_id), obj, t);
     });
     let usersDetails = await Users.fetchUserByUserID(userid);
     return ({

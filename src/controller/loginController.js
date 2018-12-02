@@ -4,7 +4,48 @@ import * as user from '../services/userService'
 
 let router = Router();
 
+import multer from 'multer';
+import path from 'path';
+var myfileName =[];
+var imgPath = '../../../../apache8//Gis_Images';
+// var imgPath = '../../public/assets/upload';
+var dbImagePath = '/Gis_Images';
+var myfileName2 = [];
+let randomString = function () {
+    let text = "";
+    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (let i = 0; i < 10; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+};
 
+let storage = multer.diskStorage(
+    {
+        destination: function (req, file, cb) {
+            cb(null, path.join(__dirname, imgPath));
+        },
+        filename: function (req, file, cb) {
+            console.log("file    "+file);
+            let ext = path.extname(file.originalname);
+            cb(null, randomString() + ext);
+        }
+    });
+let isFileValid = true;
+let upload = multer(
+    {
+        storage: storage,
+        fileFilter: function (req, file, callback) {
+            console.log("real name "+ file);
+            let ext = path.extname(file.originalname);
+            if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+                console.log("extension   "+ ext);
+                isFileValid = false;
+                return callback(false, null);
+            }
+            callback(null, true);
+        }
+    });
 /* GET home page. */
 router.get('/', function(req, res, next) {
     let contextPath = req.protocol + '://' + req.get('host');
@@ -105,7 +146,7 @@ router.get('/loginHistory', function(req, res, next) {
 router.post('/create', (req, res, next)=>
 {
     console.log(req.session.userID+ "   test   ", req.body);
-    user.createUser(req.body, req.session.userID)
+    user.createUser(req.body, req.session.userID, req.get('TUKTUK_TOKEN') )
         .then(result => {
             if('errorCode' in result){
                 return res.status(result.errorCode).json({
@@ -122,10 +163,24 @@ router.post('/create', (req, res, next)=>
                 data : result
             });
         })
-
-
 });
-
+router.put('/edit',upload.single('image'), (req, res, next)=>
+{
+    console.log("request "+ JSON.stringify(req.body)+"  "+req.file);
+    user.updateUser(req.body, req.get('TUKTUK_TOKEN'), req.file, imgPath )
+        .then(result => {
+            console.log("Reponse "+ JSON.stringify(result));
+            if ('errorCode' in result) {
+                return res.status(result.errorCode).json(result);
+            }
+            let contextPath = req.protocol + '://' + req.get('host');
+            return res.status(HttpStatus.OK).json({
+                statusCode : '200',
+                message : '',
+                data : result
+            });
+        })
+});
 router.post('/attendance', (req, res, next)=>
 {
     user.markAttendance(req.body,  req.get('TUKTUK_TOKEN'))
