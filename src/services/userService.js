@@ -4,7 +4,7 @@ import microtime from 'microtime';
 import crypto from 'crypto';
 import bookshelf from '../db';
 import * as HttpStatus from "http-status-codes/index";
-import AttendenceSchema from '../schema/domain/response/AttendenceSchema'
+import  * as LoginHistoryDao from '../dao/LoginHistoryDao';
 
 export async function  login(reqData, res) {
     let userData = await Users.checkLogin(reqData.userID);
@@ -19,6 +19,15 @@ export async function  login(reqData, res) {
         const token = generateToken(reqData.userid);
         await bookshelf.transaction(async (t) => {
             await UsersDao.updateRow(userData[0][0].userid, {token: token, last_login: new Date()}, t);
+        });
+        let newUserId = await bookshelf.transaction(async(t) => {
+            let newUsers = await LoginHistoryDao.createRow({
+                emailid : user.emailid,
+                in_time: new Date(),
+                userid: userData[0][0].userid
+            }, t);
+
+            return newUsers.id;
         });
         res.setHeader('TUKTUK_TOKEN', token);
         return {message: 'Login Successfully'};
