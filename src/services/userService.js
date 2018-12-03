@@ -22,7 +22,7 @@ export async function  login(reqData, res) {
         });
         let newUserId = await bookshelf.transaction(async(t) => {
             let newUsers = await LoginHistoryDao.createRow({
-                emailid : user.emailid,
+                emailid : reqData.userID,
                 in_time: new Date(),
                 userid: userData[0][0].userid
             }, t);
@@ -230,8 +230,10 @@ export async function updateUser(reqData,token, reqfile, imagePath){
 export async function getUsers() {
     let users = await Users.fetchAllUsers();
     console.log("userLists "+ JSON.stringify(users));
+    let loginDetails =  await Users.fetchLoginDetails();
     return ({
         UserDetails : users[0],
+        LoginDetails : loginDetails[0],
         message : ''
     });
 }

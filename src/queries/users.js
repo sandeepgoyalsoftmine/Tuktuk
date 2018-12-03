@@ -19,3 +19,8 @@ export const FETCH_ALL_USER = ` Select userid, name, emailid, gender, dob, mobil
 `;
 
 export const FETCH_USER_BY_EMAIL = 'Select emailid, password, user_type from tbusers where emailid = :email';
+
+export const FETCH_LOGIN_DETAILS = `
+SELECT emailid, DATE_FORMAT(current_date, '%Y-%m-%d') AS date, in_time, out_time  FROM tuktuk.tbloginhistory where Date(in_time) = current_date() OR Date(out_time) = curdate()
+order by emailid, loginhistory_id ;
+`;

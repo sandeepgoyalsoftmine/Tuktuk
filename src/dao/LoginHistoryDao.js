@@ -1,4 +1,4 @@
-import Users from '../models/LoginHistory';
+import LoginHistory from '../models/LoginHistory';
 /**
  * Add new users.
  *
@@ -6,5 +6,5 @@ import Users from '../models/LoginHistory';
  * @returns {Promise.<*>}
  */
 export async function createRow(newUser, transaction) {
-    return await new Users(newUser).save(null, {transacting: transaction});
+    return await new LoginHistory(newUser).save(null, {transacting: transaction});
 }

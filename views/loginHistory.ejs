@@ -72,6 +72,26 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <%
+
+                                for(var i=0; i < data.LoginDetails.length; i++) {
+                                if(i%2==0){%>
+                                <tr class="even gradeC">
+                                    <td><%= data.LoginDetails[i].emailid %></td>
+                                    <td><%= data.LoginDetails[i].date %></td>
+                                    <td><%= data.LoginDetails[i].in_time %></td>
+                                    <td><%= data.LoginDetails[i].out_time %></td>
+
+
+                                </tr>
+                                <%}else{%>
+                                <td><%= data.LoginDetails[i].emailid %></td>
+                                <td><%= data.LoginDetails[i].date %></td>
+                                <td><%= data.LoginDetails[i].in_time %></td>
+                                <td><%= data.LoginDetails[i].out_time %></td>
+
+                                <% }
+                                }%>
 
 
                                 </tbody>
