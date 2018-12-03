@@ -1,10 +1,12 @@
 import Users from '../models/Users';
+import TrackingTemp from '../models/TrackingTemp';
 import * as UsersDao from '../dao/users';
 import microtime from 'microtime';
 import crypto from 'crypto';
 import bookshelf from '../db';
 import * as HttpStatus from "http-status-codes/index";
 import  * as LoginHistoryDao from '../dao/LoginHistoryDao';
+import * as TrackingTempDao from "../dao/TrackingTempDao";
 
 export async function  login(reqData, res) {
     let userData = await Users.checkLogin(reqData.userID);
@@ -67,23 +69,32 @@ export async function markAttendance(reqData, token){
         await bookshelf.transaction(async (t) => {
             await UsersDao.updateRow(userData[0][0].userid, {in_time: new Date(), status : 1}, t);
         });
+        await bookshelf.transaction(async (t) => {
+            let newTrackingTempID = await TrackingTempDao.updateRow(userData1[0][0].emailid,
+                {
+                    login_status : 'Present'
+                }, t);
+        });
     }else{
         await bookshelf.transaction(async (t) => {
             await UsersDao.updateRow(userData[0][0].userid, {out_time: new Date(), status: 0}, t);
         });
 
     }
+
     let userData1 = await Users.fetchUserByToken(token);
     if(userData1[0] < 1){
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
     }
-    let att = userData1[0][0].status == 1? userData1[0][0].in_time :userData1[0][0].out_time
+
+    let att = userData1[0][0].status == 1? userData1[0][0].in_time :userData1[0][0].out_time;
 
     let obj = {
         emialid: userData1[0][0].emailid,
         attendance: userData1[0][0].status,
         time:att
-    }
+    };
+
     return obj;
 }
 
@@ -230,7 +241,7 @@ export async function updateUser(reqData,token, reqfile, imagePath){
 export async function getUsers() {
     let users = await Users.fetchAllUsers();
     console.log("userLists "+ JSON.stringify(users));
-    let loginDetails =  await Users.fetchLoginDetails();
+    let loginDetails =  await TrackingTemp.fetchAttendance();
     return ({
         UserDetails : users[0],
         LoginDetails : loginDetails[0],

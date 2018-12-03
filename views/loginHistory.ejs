@@ -19,32 +19,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <br ><form action = "/property/userWiseProperty/date" method="post">
-                    <div class="form-group">
-                        <div class="col-lg-5">
-
-                            <label>Date</label>
-                            <input type="date"   name="date" type="text" id="date" class="form-control" />
-
-                        </div>
-                        <div class="col-lg-5">
-                            <label>User</label>
-                            <select id="userList" name="userList"  class="form-control">
-                                <option value = 900>Select</option>
-                                <%
-                                for(var i=0; i < data.UserDetails.length; i++) {
-                                %>
-                                <option value = '<%= data.UserDetails[i].userid %>'><%= data.UserDetails[i].name %></option>
-                                <%}%>
-                             </select>
-                            </br>
-                        </div>
-
-                        <div class="col-lg-2">
-                            <label></label>
-                            <button type="submit" class="form-control" >Submit</button>
-                        </div>
-                     </br>
-                    </div>
+                    <!---->
                 </form>
 
             </div>
@@ -67,8 +42,8 @@
                                     <!--<th>Floor</th>-->
                                     <!--<th>Owner</th>-->
                                     <th>Date</th>
-                                    <th>Login At</th>
-                                    <th>Logout at</th>
+                                    <th>Attendance</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -79,16 +54,15 @@
                                 <tr class="even gradeC">
                                     <td><%= data.LoginDetails[i].emailid %></td>
                                     <td><%= data.LoginDetails[i].date %></td>
-                                    <td><%= data.LoginDetails[i].in_time %></td>
-                                    <td><%= data.LoginDetails[i].out_time %></td>
+                                    <td><%= data.LoginDetails[i].login_status %></td>
+
 
 
                                 </tr>
                                 <%}else{%>
                                 <td><%= data.LoginDetails[i].emailid %></td>
                                 <td><%= data.LoginDetails[i].date %></td>
-                                <td><%= data.LoginDetails[i].in_time %></td>
-                                <td><%= data.LoginDetails[i].out_time %></td>
+                                <td><%= data.LoginDetails[i].login_status %></td>
 
                                 <% }
                                 }%>
