@@ -61,10 +61,29 @@ $(document).ready(function() {
 var flag=false;
 var marker;
 var interval
+var lastTracks =0;
 function getTrackData(userid){
-    // document.getElementById(userid).style.background="red";
+    if(lastTracks !=0)
+        document.getElementById(lastTracks).style.background='rgb(248, 248, 248)';
+    lastTracks = userid;
+    document.getElementById(userid).style.background='rgb(167, 197, 247)';
     clearInterval(interval);
-    interval = window.setInterval(function(){$.ajax(
+    {$.ajax(
+        {
+            type: "GET",
+            url: "/tracking/track/"+userid,
+            success: function(response)
+            {
+                if(flag) {
+                    removeMarker();
+                    flag = false;
+                }
+                console.log("data  "+JSON.stringify(response.data.locations));
+                var myLatLng = {lat: parseFloat(response.data.locations.lat) , lng: parseFloat(response.data.locations.lng)};
+                addMArker(myLatLng, response.data.locations.created_on);
+            }
+        })}
+    interval = window.setTimeout(function(){$.ajax(
         {
             type: "GET",
             url: "/tracking/track/"+userid,
@@ -76,20 +95,20 @@ function getTrackData(userid){
                 }
                 console.log("data  "+response.data.locations.emailid);
                 var myLatLng = {lat: parseFloat(response.data.locations.lat) , lng: parseFloat(response.data.locations.lng)};
-                addMArker(myLatLng);
+                addMArker(myLatLng, response.data.locations.created_on);
             }
         })}, 10000);
 
 
 }
-function addMArker(myLatLng){
+function addMArker(myLatLng, created_on){
     flag = true;
     marker = new google.maps.Marker({
         center: myLatLng,
         position: myLatLng,
-        map: map,
-        title: 'Hello World!',
-        zoom: 4
+        map: map,zoom: 14,
+        title: 'Last updated on : '+created_on
+
     });
     map.setCenter(myLatLng);
 }

@@ -12,8 +12,8 @@ class TrackingTemp extends bookshelf.Model {
         return false;
     }
     static fetchLocations(email){
-        return bookshelf.knex('tbtemp').where('emailid',email)
-            .select('lat', 'lng', 'created_on', 'emailid');
+        console.log("emialssss   "+email);
+        return bookshelf.knex.raw(queries.FETCH_LOCATION, {'email': email});
     }
     static fetchAttendance(){
         return bookshelf.knex.raw(queries.FETCH_ATTENDANCE);

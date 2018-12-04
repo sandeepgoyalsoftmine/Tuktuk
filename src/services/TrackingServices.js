@@ -43,9 +43,8 @@ export async function getTrackingData(userid, req){
     let locations = await TrackingTemp.fetchLocations(userID[0][0].emailid);
     return ({
         message : '',
-        locations : locations[0]
+        locations : locations[0][0]
     });
-
 }
 export async function getAreaType(req){
 
