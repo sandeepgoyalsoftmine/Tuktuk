@@ -7,9 +7,9 @@ let router = Router();
 import multer from 'multer';
 import path from 'path';
 var myfileName =[];
-var imgPath = '../../../../apache8//Gis_Images';
+var imgPath = '../../../../apache8//Tuktuk_images';
 // var imgPath = '../../public/assets/upload';
-var dbImagePath = '/Gis_Images';
+var dbImagePath = '/Tuktuk_images';
 var myfileName2 = [];
 let randomString = function () {
     let text = "";
@@ -167,7 +167,7 @@ router.post('/create', (req, res, next)=>
 router.put('/edit',upload.single('image'), (req, res, next)=>
 {
     console.log("request "+ JSON.stringify(req.body)+"  "+req.file);
-    user.updateUser(req.body, req.get('TUKTUK_TOKEN'), req.file, imgPath )
+    user.updateUser(req.body, req.get('TUKTUK_TOKEN'), req.file, dbImagePath )
         .then(result => {
             console.log("Reponse "+ JSON.stringify(result));
             if ('errorCode' in result) {

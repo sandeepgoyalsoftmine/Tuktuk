@@ -149,12 +149,12 @@ export async function createUser(user, created_by, token, res) {
         email1 = user.emailid;
     let userr, createdBy;
     if(created_by===undefined) {
-        userr = await Users.fetchUserByToken(token);
-        createdBy = userr[0][0].emailid;
+        // userr = await Users.fetchUserByToken(token);
+        // createdBy = userr[0][0].emailid;
     }
     else
         createdBy = created_by;
-    let userData = await Users.getUserByEmail(email1, token1);
+    let userData = await Users.getUserByEmail(email1);
     console.log("userdata length "+ userData[0]);
     if (userData[0].length > 0) {
         return {errorCode: HttpStatus.CONFLICT, message : 'Email already exist'};
@@ -216,11 +216,11 @@ export async function updateUser(reqData,token, reqfile, imagePath){
     if (reqfile !== undefined) {
         image = reqfile.filename;
     }
-    if(reqData.type==='' || user.type===undefined)
+    if(reqData.type==='' || reqData.type===undefined)
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'type cannot be blank.'};
     }
-    if(reqData.driver_id==='' || user.driver_id===undefined)
+    if(reqData.driver_id==='' || reqData.driver_id===undefined)
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'driver_id cannot be blank.'};
     }
@@ -231,7 +231,7 @@ export async function updateUser(reqData,token, reqfile, imagePath){
 
        await UsersDao.updateRow(parseInt(reqData.driver_id), obj, t);
     });
-    let usersDetails = await Users.fetchUserByUserID(userid);
+    let usersDetails = await Users.fetchUserByUserID(reqData.driver_id);
     return ({
         UserDetails : usersDetails[0],
         message : 'Updated Successfully'
