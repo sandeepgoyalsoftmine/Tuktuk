@@ -15,7 +15,7 @@ export const FETCH_USER_BY_TOKEN = `
 export const CHECK_LOGIN = `    Select userid, emailid, password, user_type from tbusers where emailid =:userid and user_type = :usertype
 `;
 
-export const FETCH_ALL_USER = ` Select userid, name, emailid, gender, dob, mobile_no from tbusers
+export const FETCH_ALL_USER = ` Select userid, name, emailid, gender, dob, mobile_no from tbusers where user_type = 3
 `;
 
 export const FETCH_USER_BY_EMAIL = 'Select emailid, password, user_type from tbusers where emailid = :email';

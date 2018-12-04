@@ -22,15 +22,6 @@ export async function  login(reqData, usertype1, res) {
         await bookshelf.transaction(async (t) => {
             await UsersDao.updateRow(userData[0][0].userid, {token: token, last_login: new Date()}, t);
         });
-        let newUserId = await bookshelf.transaction(async(t) => {
-            let newUsers = await LoginHistoryDao.createRow({
-                emailid : reqData.userID,
-                in_time: new Date(),
-                userid: userData[0][0].userid
-            }, t);
-
-            return newUsers.id;
-        });
         res.setHeader('TUKTUK_TOKEN', token);
         return {message: 'Login Successfully'};
     }else{
@@ -75,9 +66,27 @@ export async function markAttendance(reqData, token){
                     login_status : 'Present'
                 }, t);
         });
+        let newUserId = await bookshelf.transaction(async(t) => {
+            let newUsers = await LoginHistoryDao.createRow({
+                emailid : userData[0][0].emailid,
+                in_time: new Date(),
+                userid: userData[0][0].userid
+            }, t);
+
+            return newUsers.id;
+        });
     }else{
         await bookshelf.transaction(async (t) => {
             await UsersDao.updateRow(userData[0][0].userid, {out_time: new Date(), status: 0}, t);
+        });
+        let newUserId = await bookshelf.transaction(async(t) => {
+            let newUsers = await LoginHistoryDao.createRow({
+                emailid : userData[0][0].emailid,
+                out_time: new Date(),
+                userid: userData[0][0].userid
+            }, t);
+
+            return newUsers.id;
         });
 
     }

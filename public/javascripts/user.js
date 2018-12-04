@@ -1,37 +1,3 @@
-function getData()
-{
-    var combo = document.getElementById("writers");
-    while (combo.firstChild) {
-        combo.removeChild(combo.firstChild);
-    }
-    var option = document.createElement("option");
-    option.text = "Loading...";
-    combo.add(option, null);
-    $.ajax(
-        {
-            type: "GET",
-            url: "/user/unauthorizedAuthor",
-            headers: {
-                "userID":localStorage.getItem("userID")
-            },
-            success: function(response)
-            {
-                while (combo.firstChild) {
-                    combo.removeChild(combo.firstChild);
-                }
-                var option = document.createElement("option");
-                option.text = "Select";
-                combo.add(option, null);
-                for (var j = 0; j < response.length; j++) {
-                    var option = document.createElement("option");
-                    option.text = response[j].author;
-                    option.value = response[j].author;
-                    combo.add(option, null);
-                }
-            }
-        });
-}
-
 $(document).ready(function() {
     $("#form1").submit(function (e) {
         e.preventDefault();
@@ -47,8 +13,6 @@ $(document).ready(function() {
                         alert(data.data.message);
                         document.getElementById("form1").reset();
                     }
-
-
                 },
                 error: function (error) {
                     console.log(error);
@@ -95,14 +59,17 @@ function getTrackData(userid){
                 }
                 console.log("data  "+response.data.locations.emailid);
                 var myLatLng = {lat: parseFloat(response.data.locations.lat) , lng: parseFloat(response.data.locations.lng)};
+
                 addMArker(myLatLng, response.data.locations.created_on);
             }
         })}, 10000);
 
 
 }
+
 function addMArker(myLatLng, created_on){
     flag = true;
+
     marker = new google.maps.Marker({
         center: myLatLng,
         position: myLatLng,
@@ -111,6 +78,21 @@ function addMArker(myLatLng, created_on){
 
     });
     map.setCenter(myLatLng);
+    geocoder.geocode({'latLng': myLatLng}, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            if (results[0]) {
+                var address = results[0].formatted_address;
+                infowindow = new google.maps.InfoWindow({
+                    content: address
+                });
+            }
+        }
+
+    });
+    infowindow.open(map,marker);
+    marker.addListener('click', function() {
+        infowindow.open(map, marker);
+    });
 }
 
 function removeMarker(){

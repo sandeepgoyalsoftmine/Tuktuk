@@ -46,6 +46,3 @@ export async function getTrackingData(userid, req){
         locations : locations[0][0]
     });
 }
-export async function getAreaType(req){
-
-}
