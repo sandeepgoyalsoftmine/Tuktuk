@@ -69,7 +69,34 @@ router.get('/getAttendance', (req, res, next) =>
 router.post('/login', (req, res, next) =>
 {
     console.log("User request:",req.body);
-    user.login(req.body, res)
+    let userType = 3;
+    user.login(req.body, userType, res)
+        .then(result =>
+        {
+            if('errorCode' in result){
+                return res.status(result.errorCode).json({
+                    status : 'Success',
+                    statusCode :result.errorCode,
+                    message: result.message
+                });
+                (result.errorCode).json(result);
+            }
+            console.log("result   ", result)
+            req.session.userID=req.body.userID;
+            req.session.role=result.role;
+            req.session.save();
+            res.status(HttpStatus.OK).json({
+                status : 'Success',
+                statusCode : 200,
+                data : result
+            });
+        }).catch(err => next(err));
+});
+router.post('/loginPortal', (req, res, next) =>
+{
+    console.log("User request:",req.body);
+    let usertype = 1;
+    user.login(req.body, usertype, res)
         .then(result =>
         {
             if('errorCode' in result){

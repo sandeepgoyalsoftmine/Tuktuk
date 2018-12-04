@@ -15,9 +15,9 @@ class Users extends bookshelf.Model {
         return false;
     }
 
-    static checkLogin(userid){
+    static checkLogin(userid, usertype1){
         console.log("email ID    "+userid);
-        return bookshelf.knex.raw(queries.CHECK_LOGIN, {'userid': userid });
+        return bookshelf.knex.raw(queries.CHECK_LOGIN, {'userid': userid, 'usertype': usertype1 });
     }
     static fetchAllUsers() {
         return bookshelf.knex.raw(queries.FETCH_ALL_USER
