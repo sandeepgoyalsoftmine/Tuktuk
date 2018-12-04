@@ -8,8 +8,8 @@ import * as HttpStatus from "http-status-codes/index";
 import  * as LoginHistoryDao from '../dao/LoginHistoryDao';
 import * as TrackingTempDao from "../dao/TrackingTempDao";
 
-export async function  login(reqData, res) {
-    let userData = await Users.checkLogin(reqData.userID);
+export async function  login(reqData, usertype1, res) {
+    let userData = await Users.checkLogin(reqData.userID, usertype1);
     console.log("userDatsa "+JSON.stringify(userData[0]))
     if (userData[0].length < 1) {
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'User not exists'};
