@@ -215,7 +215,7 @@ export async function createUser(user, created_by, token, res) {
     if(parseInt(user.user_type)==3) {
         let newUserTempId = await bookshelf.transaction(async (t) => {
             let newUsersTemp = await TrackingTempDao.createRow({
-                emailid: user.email1,
+                emailid: user.emailid,
                 lat: 0,
                 lng: 0,
                 created_on: new Date()
@@ -224,12 +224,6 @@ export async function createUser(user, created_by, token, res) {
             return newUsersTemp.id;
         });
     }
-    await bookshelf.transaction(async (t) => {
-        let newTrackingTempID = await TrackingTempDao.updateRow(userData[0][0].emailid,
-            {
-                login_status : 'Present'
-            }, t);
-    });
     return ({
         message : newUserId+ ' is Created Successfully.',
         userID : newUserId
