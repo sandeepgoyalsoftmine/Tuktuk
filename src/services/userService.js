@@ -61,7 +61,7 @@ export async function markAttendance(reqData, token){
             await UsersDao.updateRow(userData[0][0].userid, {in_time: new Date(), status : 1}, t);
         });
         await bookshelf.transaction(async (t) => {
-            let newTrackingTempID = await TrackingTempDao.updateRow(userData1[0][0].emailid,
+            let newTrackingTempID = await TrackingTempDao.updateRow(userData[0][0].emailid,
                 {
                     login_status : 'Present'
                 }, t);
@@ -225,7 +225,7 @@ export async function createUser(user, created_by, token, res) {
         });
     }
     await bookshelf.transaction(async (t) => {
-        let newTrackingTempID = await TrackingTempDao.updateRow(userData1[0][0].emailid,
+        let newTrackingTempID = await TrackingTempDao.updateRow(userData[0][0].emailid,
             {
                 login_status : 'Present'
             }, t);
