@@ -83,15 +83,18 @@ function addMArker(myLatLng, created_on){
             if (results[0]) {
                 var address = results[0].formatted_address;
                 infowindow = new google.maps.InfoWindow({
-                    content: address
+                    content: address+
+                    '<br>Last Updated : ' + created_on
                 });
             }
+        }else{
+            infowindow = new google.maps.InfoWindow({
+                content: ''
+            });
         }
-
     });
-    infowindow.open(map,marker);
-    marker.addListener('click', function() {
-        infowindow.open(map, marker);
+    google.maps.event.addListener(marker, 'mouseover', function () {
+        infowindow.open(map, this);
     });
 }
 
