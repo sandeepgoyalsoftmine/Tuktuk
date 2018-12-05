@@ -212,6 +212,22 @@ export async function createUser(user, created_by, token, res) {
 
         return newUsers.id;
     });
+    let newUserTempId = await bookshelf.transaction(async(t) => {
+        let newUsersTemp = await TrackingTempDao.createRow({
+            name : user.name,
+            lat : 0,
+            lng : 0,
+            created_on: new Date()
+        }, t);
+
+        return newUsersTemp.id;
+    });
+    await bookshelf.transaction(async (t) => {
+        let newTrackingTempID = await TrackingTempDao.updateRow(userData1[0][0].emailid,
+            {
+                login_status : 'Present'
+            }, t);
+    });
     return ({
         message : newUserId+ ' is Created Successfully.',
         userID : newUserId
