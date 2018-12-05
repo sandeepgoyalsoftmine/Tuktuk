@@ -18,6 +18,12 @@ export const CHECK_LOGIN = `    Select userid, emailid, password, user_type from
 export const FETCH_ALL_USER = ` Select userid, name, emailid, gender, dob, mobile_no from tbusers where user_type = 3
 `;
 
+export const FETCH_COMPLETE_USER = `Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.gender, 
+ tbusers.dob, tbusers.mobile_no, tbuser_type.user_type, DATE_FORMAT(tbusers.created_on, '%Y-%m-%d %H:%i:%s') AS created_on
+FROM tbusers
+LEFT OUTER JOIN tbuser_type on tbusers.user_type = tbuser_type.type_id
+`;
+
 export const FETCH_USER_BY_EMAIL = 'Select emailid, password, user_type from tbusers where emailid = :email';
 
 export const FETCH_LOGIN_DETAILS = `

@@ -269,6 +269,14 @@ export async function getUsers() {
         message : ''
     });
 }
+export async function getAllUsers() {
+    let users = await Users.fetchCompleteUsers();
+    console.log("userLists "+ JSON.stringify(users));
+    return ({
+        UserDetails : users[0],
+        message : ''
+    });
+}
 
 export async function loginEmail(user, res) {
     const token = generateToken(user.userid);
