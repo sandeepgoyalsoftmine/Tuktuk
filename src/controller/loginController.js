@@ -65,6 +65,36 @@ router.get('/getAttendance', (req, res, next) =>
             });
         })
 });
+router.get('/view/:id', function(req, res, next) {
+    let contextPath = req.protocol + '://' + req.get('host');
+    if(req.session.userID!=undefined) {
+        user.getUserByEmail(req.session.userID).then(result => {
+            console.log("result 0 ",result)
+            if (result.length == 1) {
+                var usertype = parseInt(result[0].user_type);
+                if (parseInt(result[0].user_type) == 1) {
+                    user.getUserByUserID(req.params.id)
+                        .then(result1 => {
+
+                            return res.status(HttpStatus.OK).json({
+                                statusCode : 200,
+                                message : '',
+                                data : result1
+                            });
+                        })
+                }
+                else {
+                    res.render('users', {path: contextPath, header: 'Employee List', operation: '', access1: 'false'});
+                }
+            } else {
+                res.render('index', {path: contextPath, header: 'Login', operation: '', access1: 'false'});
+            }
+        })
+    }else{
+        res.render('index', {path: contextPath, header: 'Login', operation: '', access1:'false'});
+    }
+});
+
 
 router.post('/login', (req, res, next) =>
 {
@@ -209,7 +239,6 @@ router.post('/create', (req, res, next)=>
                     statusCode : result.errorCode,
                     message: result.message
                 });
-                (result.errorCode).json(result);
             }
             let contextPath = req.protocol + '://' + req.get('host');
             return res.status(HttpStatus.OK).json({
@@ -227,6 +256,27 @@ router.put('/edit',upload.single('image'), (req, res, next)=>
             console.log("Reponse "+ JSON.stringify(result));
             if ('errorCode' in result) {
                 return res.status(result.errorCode).json(result);
+            }
+            let contextPath = req.protocol + '://' + req.get('host');
+            return res.status(HttpStatus.OK).json({
+                statusCode : '200',
+                message : '',
+                data : result
+            });
+        })
+});
+router.put('/userEdit/:id', (req, res, next)=>
+{
+    console.log("request "+ JSON.stringify(req.body));
+    user.updateUserData(req.body, req.session.userID,req.params.id )
+        .then(result => {
+            console.log("Reponse "+ JSON.stringify(result));
+            if ('errorCode' in result) {
+                return res.status(result.errorCode).json({
+                    status : 'Success',
+                    statusCode : result.errorCode,
+                    message: result.message
+                });
             }
             let contextPath = req.protocol + '://' + req.get('host');
             return res.status(HttpStatus.OK).json({

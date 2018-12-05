@@ -206,6 +206,7 @@ export async function createUser(user, created_by, token, res) {
             mobile_no: user.mobile_number,
             password : user.password,
             city: user.city,
+            dob: user.age,
             created_on: new Date(),
             created_by :createdBy
         }, t);
@@ -228,6 +229,60 @@ export async function createUser(user, created_by, token, res) {
         message : newUserId+ ' is Created Successfully.',
         userID : newUserId
     });
+}
+export async function updateUserData(reqData, created_by, userID){
+    let usersDetails = await Users.fetchUserByUserID(userID);
+    if(usersDetails[0].length < 0){
+        return {errorCode: HttpStatus.NOT_FOUND, errors: 'Employee not exist'};
+    }
+    let email1 = '', token1 = '';
+    let userData = await Users.getUserByEmail(reqData.emailid);
+    console.log("userdata length "+ userData[0]);
+    if (userData[0].length > 0) {
+        console.log(parseInt(userData[0][0].userid)+"    useridddddd "+ parseInt(userID));
+        if (parseInt(userData[0][0].userid) != parseInt(userID)) {
+            return {errorCode: HttpStatus.CONFLICT, message: 'Email is mapped with another user'};
+        }
+    }
+    let gender = "";
+    if(reqData.sex===undefined)
+        gender = "";
+    else
+        gender = reqData.sex;
+    if(reqData.name==='' || reqData.name===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Name cannot be blank.'};
+    }
+    if(reqData.user_type==='' || reqData.user_type===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Please send valid user type.'};
+    }
+    if(reqData.emailid==='' || reqData.emailid===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Email id cannot be blank.'};
+    }
+    if(reqData.mobile_number==='' || reqData.mobile_number===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Mobile number cannot be blank.'};
+    }
+
+    if(reqData.city==='' || reqData.city===undefined )
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'City can not be blank.'};
+    }
+    await bookshelf.transaction(async (t) => {
+        await UsersDao.updateRow(userID, {
+            name : reqData.name,
+            emailid : reqData.emailid,
+            gender : gender,
+            user_type: reqData.user_type,
+            mobile_no: reqData.mobile_number,
+            city: reqData.city,
+            dob: reqData.age,
+            updated_on: new Date()
+        }, t);
+    });
+    return {message: 'Updated Successfully'};
 }
 export async function updateUser(reqData,token, reqfile, imagePath){
     let image = '';
@@ -271,6 +326,14 @@ export async function getUsers() {
 }
 export async function getAllUsers() {
     let users = await Users.fetchCompleteUsers();
+    console.log("userLists "+ JSON.stringify(users));
+    return ({
+        UserDetails : users[0],
+        message : ''
+    });
+}
+export  async function getUserByUserID(userid){
+    let users = await Users.fetchUserByUserID(userid);
     console.log("userLists "+ JSON.stringify(users));
     return ({
         UserDetails : users[0],

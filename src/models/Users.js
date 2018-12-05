@@ -45,6 +45,12 @@ class Users extends bookshelf.Model {
     static getUserByEmail(email){
         return bookshelf.knex.raw(queries.FETCH_USER_BY_EMAIL, {'email': email});
     }
+    static getUserByEmailAndUserID(email, userid){
+        return bookshelf.knex.raw(queries.FETCH_USER_BY_EMAIL_AND_USERID, {
+            'userID' : userid,
+            'emailid': email
+        })
+    }
 
 }
 
