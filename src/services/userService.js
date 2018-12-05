@@ -215,7 +215,7 @@ export async function createUser(user, created_by, token, res) {
     if(parseInt(user.user_type)==3) {
         let newUserTempId = await bookshelf.transaction(async (t) => {
             let newUsersTemp = await TrackingTempDao.createRow({
-                name: user.name,
+                emailid: user.email1,
                 lat: 0,
                 lng: 0,
                 created_on: new Date()
