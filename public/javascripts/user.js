@@ -169,10 +169,10 @@ function UpdateEmployee(){
             },
             error: function (error) {
                 console.log(error.responseJSON)
-                if(error.responseJSON.statusCode==409 || error.responseJSON.statusCode==500){
+
                     alert(error.responseJSON.message);
                     document.getElementById('update').disabled = false;
-                }
+
 
             }
         });
