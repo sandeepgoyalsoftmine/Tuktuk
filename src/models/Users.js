@@ -36,6 +36,11 @@ class Users extends bookshelf.Model {
             'token': token
         })
     };
+    static fetchAttendanceDetails(token) {
+        return bookshelf.knex.raw(queries.FETCH_ATTENDANCE_DETAILS_BY_TOKEN, {
+            'token': token
+        })
+    };
     static fetchCountsByUSerID(userid) {
         return bookshelf.knex.raw(queries.FETCH_COUNT_BY_USER, {
             'userID' : userid

@@ -19,9 +19,11 @@ WHERE tbusers.userid =:userID
 `;
 
 export const FETCH_USER_BY_TOKEN = `
-    Select u.userid, u.emailid, u.in_time, u.out_time, u.status from tbusers As u
+    Select u.userid, u.emailid, u.in_time, u.out_time, u.login_status from tbusers As u
     WHERE u.token =:token
 `;
+
+
 
 export const CHECK_LOGIN = `    Select userid, emailid, password, user_type from tbusers where emailid =:userid and user_type = :usertype
 `;
@@ -37,7 +39,7 @@ LEFT OUTER JOIN tbuser_type on tbusers.user_type = tbuser_type.type_id
  Where tbusers.user_type = 3
 `;
 
-export const FETCH_DRIVERS = `Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.gender, 
+export const FETCH_DRIVERS = `Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.gender, tbusers.status,
  tbusers.dob, tbusers.mobile_no, tbuser_type.user_type, DATE_FORMAT(tbusers.created_on, '%Y-%m-%d %H:%i:%s') AS created_on
 FROM tbusers
 LEFT OUTER JOIN tbuser_type on tbusers.user_type = tbuser_type.type_id
