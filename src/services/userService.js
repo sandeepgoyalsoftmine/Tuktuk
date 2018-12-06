@@ -9,7 +9,12 @@ import  * as LoginHistoryDao from '../dao/LoginHistoryDao';
 import * as TrackingTempDao from "../dao/TrackingTempDao";
 
 export async function  login(reqData, usertype1, res) {
-    let userData = await Users.checkLogin(reqData.userID, usertype1);
+    let typeOfUser;
+    if(reqData.userType !=undefined)
+        typeOfUser = reqData.userType;
+    else
+        typeOfUser = usertype1;
+    let userData = await Users.checkLogin(reqData.userID, typeOfUser);
     console.log("userDatsa "+JSON.stringify(userData[0]))
     if (userData[0].length < 1) {
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'User not exists'};
