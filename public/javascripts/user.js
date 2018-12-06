@@ -189,7 +189,7 @@ function setEmployeeDocuments(userid){
             {
                 if(response.data.UserDocuments[0].user_type == 1){
                     alert("Can not edit Admin");
-                    closeModal();
+                    closeEditModal();();
                 }else {
 
                     console.log(response);
@@ -238,4 +238,7 @@ function setFieldsEdit(){
 
 function closeModal(){
     $('#userEditModal').modal('hide');
+}
+function closeEditModal(){
+    $('#documentEditModal').modal('hide');
 }
