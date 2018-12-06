@@ -23,8 +23,12 @@ class Users extends bookshelf.Model {
         return bookshelf.knex.raw(queries.FETCH_ALL_USER
         )
     };
-    static fetchCompleteUsers(){
-        return bookshelf.knex.raw(queries.FETCH_COMPLETE_USER
+    static fetchAllEmployees() {
+        return bookshelf.knex.raw(queries.FETCH_ALL_EMPLOYEES
+        )
+    };
+    static fetchDrivers(){
+        return bookshelf.knex.raw(queries.FETCH_DRIVERS
         )
     }
     static fetchUserByToken(token) {

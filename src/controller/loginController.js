@@ -199,7 +199,7 @@ router.get('/signup', function(req, res, next) {
         res.render('index', {path: contextPath, header: 'Login', operation: '', access1:'false'});
     }
 });
-router.get('/getUsers', function(req, res, next) {
+router.get('/getEmployee', function(req, res, next) {
     let contextPath = req.protocol + '://' + req.get('host');
     if(req.session.userID!=undefined) {
         user.getUserByEmail(req.session.userID).then(result => {
@@ -207,7 +207,7 @@ router.get('/getUsers', function(req, res, next) {
             if (result.length == 1) {
                 var usertype = parseInt(result[0].user_type);
                 if (parseInt(result[0].user_type) == 1) {
-                    user.getAllUsers()
+                    user.getEmployees()
                         .then(result1 => {
                             res.render('users', {
                                 path: contextPath, header: 'Employee List', operation: '',
@@ -227,8 +227,7 @@ router.get('/getUsers', function(req, res, next) {
         res.render('index', {path: contextPath, header: 'Login', operation: '', access1:'false'});
     }
 });
-
-router.get('/loginHistory', function(req, res, next) {
+router.get('/getDrivers', function(req, res, next) {
     let contextPath = req.protocol + '://' + req.get('host');
     if(req.session.userID!=undefined) {
         user.getUserByEmail(req.session.userID).then(result => {
@@ -236,9 +235,39 @@ router.get('/loginHistory', function(req, res, next) {
             if (result.length == 1) {
                 var usertype = parseInt(result[0].user_type);
                 if (parseInt(result[0].user_type) == 1) {
-                    user.getUsers()
+                    user.getAllDrivers()
                         .then(result1 => {
-                            res.render('loginHistory', {
+                            res.render('driversList', {
+                                path: contextPath, header: 'Driver List', operation: '',
+                                data: result1,
+                                access1: 'true'
+                            });
+                        })
+                }
+                else {
+                    res.render('driversList', {path: contextPath, header: 'Driver List', operation: '', access1: 'false'});
+                }
+            } else {
+                res.render('index', {path: contextPath, header: 'Login', operation: '', access1: 'false'});
+            }
+        })
+    }else{
+        res.render('index', {path: contextPath, header: 'Login', operation: '', access1:'false'});
+    }
+});
+
+router.get('/getEmployeeAttendance', function(req, res, next) {
+    let contextPath = req.protocol + '://' + req.get('host');
+    console.log("request "+req.session.userID);
+    if(req.session.userID!=undefined) {
+        user.getUserByEmail(req.session.userID).then(result => {
+            console.log("result 0 ",result)
+            if (result.length == 1) {
+                var usertype = parseInt(result[0].user_type);
+                if (parseInt(result[0].user_type) == 1) {
+                    user.getEmployees()
+                        .then(result1 => {
+                            res.render('attendance', {
                                 path: contextPath, header: 'Attendence Sheet', operation: '',
                                 data: result1,
                                 access1: 'true'
@@ -246,7 +275,7 @@ router.get('/loginHistory', function(req, res, next) {
                         })
                 }
                 else {
-                    res.render('loginHistory', {path: contextPath, header: 'Attendence Sheet', operation: '', access1: 'false'});
+                    res.render('attendance', {path: contextPath, header: 'Attendence Sheet', operation: '', access1: 'false'});
                 }
             } else {
                 res.render('index', {path: contextPath, header: 'Login', operation: '', access1: 'false'});

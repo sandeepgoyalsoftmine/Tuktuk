@@ -36,7 +36,7 @@ router.get('/', function(req, res, next) {
             console.log("result 0 ",result)
             if (result.length == 1) {
                 if (parseInt(result[0].user_type) ==1) {
-                    userServices.getUsers()
+                    userServices.getEmployees()
                         .then(result1 => {
 
                             console.log(result);

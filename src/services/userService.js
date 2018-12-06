@@ -385,7 +385,7 @@ export async function updateUser(reqData,token, reqfile, imagePath){
 }
 
 export async function getUsers() {
-    let users = await Users.fetchAllUsers();
+    let users = await Users.fetchAllEmployees();
     console.log("userLists "+ JSON.stringify(users));
     let loginDetails =  await TrackingTemp.fetchAttendance();
     return ({
@@ -394,8 +394,19 @@ export async function getUsers() {
         message : ''
     });
 }
-export async function getAllUsers() {
-    let users = await Users.fetchCompleteUsers();
+export async function getEmployees() {
+    let users = await Users.fetchAllEmployees();
+    console.log("userLists "+ JSON.stringify(users));
+    let loginDetails =  await TrackingTemp.fetchAttendance();
+    return ({
+        UserDetails : users[0],
+        LoginDetails : loginDetails[0],
+        message : ''
+    });
+}
+
+export async function getAllDrivers() {
+    let users = await Users.fetchDrivers();
     console.log("userLists "+ JSON.stringify(users));
     return ({
         UserDetails : users[0],

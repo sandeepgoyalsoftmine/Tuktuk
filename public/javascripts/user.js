@@ -165,7 +165,7 @@ function UpdateEmployee(){
                     alert(response.data.message);
                     closeModal();
                 }
-                window.location.href = "/getUsers";
+                window.location.href = "/getEmployee";
             },
             error: function (error) {
                 console.log(error.responseJSON)
@@ -189,7 +189,7 @@ function setEmployeeDocuments(userid){
             {
                 if(response.data.UserDocuments[0].user_type == 1){
                     alert("Can not edit Admin");
-                    closeEditModal();();
+                    closeEditModal();
                 }else {
 
                     console.log(response);
