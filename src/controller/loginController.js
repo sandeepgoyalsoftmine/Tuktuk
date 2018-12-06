@@ -7,9 +7,9 @@ let router = Router();
 import multer from 'multer';
 import path from 'path';
 var myfileName =[];
-var imgPath = '../../../../apache8//Tuktuk_images';
-// var imgPath = '../../public/assets/upload';
-var dbImagePath = '/Tuktuk_images';
+// var imgPath = '../../../../apache8//Tuktuk_images';
+var imgPath = '../../public/assets/upload';
+var dbImagePath = '../../public/assets/upload';
 var myfileName2 = [];
 let randomString = function () {
     let text = "";
