@@ -26,6 +26,7 @@ var flag=false;
 var marker;
 var interval
 var lastTracks =0;
+
 function getTrackData(userid){
     if(lastTracks !=0)
         document.getElementById(lastTracks).style.background='rgb(248, 248, 248)';
@@ -116,6 +117,19 @@ function setEditEmployee(userid){
                     alert("Can not edit Admin");
                     closeModal();
                 }else {
+                    if(response.data.UserDetails[0].user_type == 2){
+                        document.getElementById("driverValues").style.display = 'block';
+
+                        document.getElementById('vehicle_type').value = response.data.UserDetails[0].vehicle_type;
+                        document.getElementById('driving_licence_number').value = response.data.UserDetails[0].driving_licence_number;
+                        document.getElementById('pan_card_number').value = response.data.UserDetails[0].pan_card_number;
+                        document.getElementById('certificate_of_registration_number').value = response.data.UserDetails[0].certificate_of_registration_number;
+                        document.getElementById('motor_insurence_number').value = response.data.UserDetails[0].motor_insurence_number;
+                        document.getElementById('police_verification_number').value = response.data.UserDetails[0].police_verification_number;
+                        document.getElementById('aadhar_card_number').value = response.data.UserDetails[0].aadhar_card_number;
+                    }else{
+                        document.getElementById("driverValues").style.display = 'none';
+                    }
                     if(response.data.UserDetails[0].gender===null){
                         document.getElementById('sex').value = 'Select';
                     }else{
@@ -129,6 +143,7 @@ function setEditEmployee(userid){
                     document.getElementById('user_type').value = response.data.UserDetails[0].user_type;
                     document.getElementById('city').value = response.data.UserDetails[0].city;
                     document.getElementById('email').value = response.data.UserDetails[0].emailid;
+
                 }
 
             }
@@ -136,6 +151,7 @@ function setEditEmployee(userid){
 }
 
 function UpdateEmployee(){
+
     document.getElementById('update').disabled = true;
     var id = document.getElementById('user_id').value;
     var ajaxCall = $.ajax(
@@ -160,6 +176,64 @@ function UpdateEmployee(){
 
             }
         });
+}
+function setEmployeeDocuments(userid){
+    $.ajax(
+        {
+            type: "GET",
+            url: "/viewDoc/"+userid,
+            headers: {
+                "userID":localStorage.getItem("TUKTUK_TOKEN")
+            },
+            success: function(response)
+            {
+                if(response.data.UserDocuments[0].user_type == 1){
+                    alert("Can not edit Admin");
+                    closeModal();
+                }else {
+
+                    console.log(response);
+                    document.getElementById("profilePic").src = response.data.UserDocuments[0].driver_pic;
+                    if (response.data.UserDocuments[0].user_type == 2){
+                        document.getElementById("driverDetails").style.display='block'
+                        document.getElementById("driverDetails2").style.display='block'
+                        document.getElementById("drivingLicense").src = response.data.UserDocuments[0].driving_licence_front;
+                    document.getElementById("pancard").src = response.data.UserDocuments[0].pancard;
+                    document.getElementById("registrationCertificate").src = response.data.UserDocuments[0].registration_certificate;
+                    document.getElementById("mototInsurence").src = response.data.UserDocuments[0].motor_insurence;
+                    document.getElementById("policeVerification").src = response.data.UserDocuments[0].police_verification;
+                    document.getElementById("adharCard").src = response.data.UserDocuments[0].adhar_card;
+                }else{
+                        document.getElementById("driverDetails").style.display='none'
+                        document.getElementById("driverDetails2").style.display='none'
+                    }
+
+                }
+
+            }
+        });
+
+}
+function setFields(){
+    var userTypes = document.getElementById('user_type').value;
+    if(userTypes == 2) {
+        document.getElementById("driverValues").style.display = 'block';
+        document.getElementById("vehicleValue").style.display = 'block';
+
+    }
+    else {
+        document.getElementById("driverValues").style.display = 'none';
+        document.getElementById("vehicleValue").style.display = 'none';
+    }
+}
+function setFieldsEdit(){
+    var userTypes = document.getElementById('user_type').value;
+    if(userTypes == 2) {
+        document.getElementById("driverValues").style.display = 'block';
+    }
+    else {
+        document.getElementById("driverValues").style.display = 'none';
+    }
 }
 
 function closeModal(){

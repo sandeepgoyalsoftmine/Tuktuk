@@ -33,7 +33,7 @@ dist
 coverage
 
 # images folder
-public/assets/upload
+public/images
 
 # Package JSON
 package-lock.json

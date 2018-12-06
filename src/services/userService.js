@@ -177,9 +177,9 @@ export async function createUser(user, created_by, token, res) {
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'Name cannot be blank.'};
     }
-    if(user.user_type==='' || user.user_type===undefined)
+    if(user.user_type==='' || user.user_type===undefined || user.user_type==='Select')
     {
-        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Please send valid user type.'};
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Please select valid user type.'};
     }
     if(user.emailid==='' || user.emailid===undefined)
     {
@@ -197,7 +197,37 @@ export async function createUser(user, created_by, token, res) {
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'City can not be blank.'};
     }
-    let newUserId = await bookshelf.transaction(async(t) => {
+    let newUserId;
+    if(user.user_type == 2 && created_by !=undefined){
+        if(user.vehicle_type==='' || user.vehicle_type===undefined ||user.vehicle_type==='Select')
+        {
+            return {errorCode: HttpStatus.BAD_REQUEST, message: 'Please Select valid Vehicle type.'};
+        }
+        newUserId = await bookshelf.transaction(async(t) => {
+            let newUsers = await UsersDao.createRow({
+                name : user.name,
+                emailid : user.emailid,
+                gender : gender,
+                user_type: user.user_type,
+                mobile_no: user.mobile_number,
+                password : user.password,
+                city: user.city,
+                dob: user.age,
+                vehicle_type: user.vehicle_type,
+                driving_licence_number: user.driving_licence_number,
+                pan_card_number : user.pan_card_number,
+                certificate_of_registration_number : user.certificate_of_registration_number,
+                motor_insurence_number: user.motor_insurence_number,
+                police_verification_number: user.police_verification_number,
+                aadhar_card_number : user.aadhar_card_number,
+                created_on: new Date(),
+                created_by :createdBy
+            }, t);
+
+            return newUsers.id;
+        });
+    }else{
+        newUserId = await bookshelf.transaction(async(t) => {
         let newUsers = await UsersDao.createRow({
             name : user.name,
             emailid : user.emailid,
@@ -213,6 +243,7 @@ export async function createUser(user, created_by, token, res) {
 
         return newUsers.id;
     });
+    }
     if(parseInt(user.user_type)==3) {
         let newUserTempId = await bookshelf.transaction(async (t) => {
             let newUsersTemp = await TrackingTempDao.createRow({
@@ -270,18 +301,52 @@ export async function updateUserData(reqData, created_by, userID){
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'City can not be blank.'};
     }
-    await bookshelf.transaction(async (t) => {
-        await UsersDao.updateRow(userID, {
-            name : reqData.name,
-            emailid : reqData.emailid,
-            gender : gender,
-            user_type: reqData.user_type,
-            mobile_no: reqData.mobile_number,
-            city: reqData.city,
-            dob: reqData.age,
-            updated_on: new Date()
-        }, t);
-    });
+    let newUserId;
+    if(reqData.user_type == 2 && created_by !=undefined) {
+        if (reqData.vehicle_type === '' || reqData.vehicle_type === undefined || reqData.vehicle_type === 'Select') {
+            return {errorCode: HttpStatus.BAD_REQUEST, message: 'Please Select valid Vehicle type.'};
+        }
+
+        await bookshelf.transaction(async (t) => {
+            await UsersDao.updateRow(userID, {
+                name: reqData.name,
+                emailid: reqData.emailid,
+                gender: gender,
+                user_type: reqData.user_type,
+                mobile_no: reqData.mobile_number,
+                city: reqData.city,
+                dob: reqData.age,
+                vehicle_type: reqData.vehicle_type,
+                driving_licence_number: reqData.driving_licence_number,
+                pan_card_number: reqData.pan_card_number,
+                certificate_of_registration_number: reqData.certificate_of_registration_number,
+                motor_insurence_number: reqData.motor_insurence_number,
+                police_verification_number: reqData.police_verification_number,
+                aadhar_card_number: reqData.aadhar_card_number,
+                updated_on: new Date()
+            }, t);
+        });
+    }else{
+        await bookshelf.transaction(async (t) => {
+            await UsersDao.updateRow(userID, {
+                name: reqData.name,
+                emailid: reqData.emailid,
+                gender: gender,
+                user_type: reqData.user_type,
+                mobile_no: reqData.mobile_number,
+                city: reqData.city,
+                dob: reqData.age,
+                driving_licence_number: '',
+                pan_card_number: '',
+                certificate_of_registration_number: '',
+                motor_insurence_number: '',
+                police_verification_number: '',
+                aadhar_card_number: '',
+                vehicle_type:'',
+                updated_on: new Date()
+            }, t);
+        });
+    }
     return {message: 'Updated Successfully'};
 }
 export async function updateUser(reqData,token, reqfile, imagePath){
@@ -337,6 +402,14 @@ export  async function getUserByUserID(userid){
     console.log("userLists "+ JSON.stringify(users));
     return ({
         UserDetails : users[0],
+        message : ''
+    });
+}
+export  async function getUserDocByUserID(userid){
+    let users = await Users.fetchUserDocumentsByUserID(userid);
+    console.log("userLists "+ JSON.stringify(users));
+    return ({
+        UserDocuments : users[0],
         message : ''
     });
 }

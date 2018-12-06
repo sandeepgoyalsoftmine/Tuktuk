@@ -3,11 +3,19 @@ export const FETCH_USER_DETAIL = `
   WHERE u.userid =:userID
 `;
 
-export const FETCH_USER_BY_USERID = ` Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.gender, 
- tbusers.dob, tbusers.mobile_no, user_type, city, DATE_FORMAT(tbusers.created_on, '%Y-%m-%d %H:%i:%s') AS created_on
+export const FETCH_USER_BY_USERID = ` Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.gender,driving_licence_number, pan_card_number,
+certificate_of_registration_number, motor_insurence_number, police_verification_number, aadhar_card_number,  
+ tbusers.dob, tbusers.mobile_no, user_type, city, DATE_FORMAT(tbusers.created_on, '%Y-%m-%d %H:%i:%s') AS created_on,
+ tbusers.vehicle_type
 FROM tbusers
+WHERE tbusers.userid =:userID
+`;
 
-    WHERE tbusers.userid =:userID
+export const FETCH_USER_DOCUMENT_BY_USERID = `
+Select userid,user_type, driver_pic, driving_licence_front, pancard, registration_certificate, motor_insurence,
+police_verification, adhar_card
+FROM tbusers
+WHERE tbusers.userid =:userID
 `;
 
 export const FETCH_USER_BY_TOKEN = `

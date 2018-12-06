@@ -94,6 +94,35 @@ router.get('/view/:id', function(req, res, next) {
         res.render('index', {path: contextPath, header: 'Login', operation: '', access1:'false'});
     }
 });
+router.get('/viewDoc/:id', function(req, res, next) {
+    let contextPath = req.protocol + '://' + req.get('host');
+    if(req.session.userID!=undefined) {
+        user.getUserByEmail(req.session.userID).then(result => {
+            console.log("result 0 ",result)
+            if (result.length == 1) {
+                var usertype = parseInt(result[0].user_type);
+                if (parseInt(result[0].user_type) == 1) {
+                    user.getUserDocByUserID(req.params.id)
+                        .then(result1 => {
+
+                            return res.status(HttpStatus.OK).json({
+                                statusCode : 200,
+                                message : '',
+                                data : result1
+                            });
+                        })
+                }
+                else {
+                    res.render('users', {path: contextPath, header: 'Employee List', operation: '', access1: 'false'});
+                }
+            } else {
+                res.render('index', {path: contextPath, header: 'Login', operation: '', access1: 'false'});
+            }
+        })
+    }else{
+        res.render('index', {path: contextPath, header: 'Login', operation: '', access1:'false'});
+    }
+});
 
 
 router.post('/login', (req, res, next) =>
