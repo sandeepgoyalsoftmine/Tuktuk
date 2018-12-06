@@ -11,6 +11,24 @@
 
     <% include partials/head.ejs%>
     <style>
+
+        }
+        .led-green {
+            margin: 0 auto;
+            width: 24px;
+            height: 24px;
+            background-color: #ABFF00;
+            border-radius: 50%;
+            box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 9px, #89FF00 0 2px 12px;
+        }
+        .led-red {
+            margin: 0 auto;
+            width: 24px;
+            height: 24px;
+            background-color: #F00;
+            border-radius: 50%;
+            box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 9px, #89FF00 0 2px 12px;
+        }
         .container {
             position: relative;
             width: 100%;
@@ -94,7 +112,12 @@
                                     <td><%= data.UserDetails[i].name %></td>
                                     <td><%= data.UserDetails[i].emailid %></td>
                                     <td><%= data.UserDetails[i].user_type %></td>
-                                    <td><%= data.UserDetails[i].status %></td>
+
+                                    <%if(data.UserDetails[i].status==='Deactivate'){%>
+                                    <td><div class="led-red"></div></td>
+                                    <%}else{%>
+                                    <td><div class="led-green"></div></td>
+                                    <%}%>
                                     <td ><%= data.UserDetails[i].created_on %></td>
                                     <td><button onclick="setEditEmployee(<%= data.UserDetails[i].userid %>)" class="btn btn-warning btn-circle" data-toggle="modal" data-target=".bs-example-modal-md"> <i class="fa fa-pencil"></i></button>
                                     <td><button onclick="setEmployeeDocuments(<%= data.UserDetails[i].userid %>)" class="btn btn-group-justified btn-circle" data-toggle="modal" data-target=".bs-example-modal-lg"> <i class="fa fa-eye"></i></button>
@@ -107,7 +130,11 @@
                                 <td><%= data.UserDetails[i].name %></td>
                                 <td><%= data.UserDetails[i].emailid %></td>
                                 <td><%= data.UserDetails[i].user_type %></td>
-                                <td><%= data.UserDetails[i].status %></td>
+                                <%if(data.UserDetails[i].status==='Deactivate'){%>
+                                <td><div class="led-red"></div></td>
+                                <%}else{%>
+                                <td><div class="led-green"></div></td>
+                                <%}%>
                                 <td><%= data.UserDetails[i].created_on %></td>
                                 <td><button onclick="setEditEmployee(<%= data.UserDetails[i].userid %>)"  class="btn btn-warning btn-circle" data-toggle="modal" data-target=".bs-example-modal-md"> <i class="fa fa-pencil"></i></button>
                                 <td><button onclick="setEmployeeDocuments(<%= data.UserDetails[i].userid %>)" class="btn btn-justified btn-circle" data-toggle="modal" data-target=".bs-example-modal-lg"> <i class="fa fa-eye"></i></button>
