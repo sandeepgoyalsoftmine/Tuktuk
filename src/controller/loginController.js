@@ -6,6 +6,7 @@ let router = Router();
 
 import multer from 'multer';
 import path from 'path';
+import {checkToken} from "../middlewares/HeaderValidators";
 var myfileName =[];
 // var imgPath = '../../../../apache8//Tuktuk_images';
 var imgPath = '../../public/assets/upload';
@@ -52,7 +53,7 @@ router.get('/', function(req, res, next) {
     res.render('index', {path: contextPath, header: 'Login', operation: ''});
 });
 
-router.get('/getAttendance', (req, res, next) =>
+router.get('/getAttendance', checkToken, (req, res, next) =>
 {
 
     user.getAttendance(req.get('TUKTUK_TOKEN'),res)
@@ -306,7 +307,7 @@ router.post('/create', (req, res, next)=>
             });
         })
 });
-router.put('/edit',upload.single('image'), (req, res, next)=>
+router.put('/edit',checkToken, upload.single('image'), (req, res, next)=>
 {
     console.log("request "+ JSON.stringify(req.body)+"  "+req.file);
     user.updateUser(req.body, req.get('TUKTUK_TOKEN'), req.file, dbImagePath )
@@ -344,7 +345,28 @@ router.put('/userEdit/:id', (req, res, next)=>
             });
         })
 });
-router.post('/attendance', (req, res, next)=>
+router.put('/updateStatus/:id', checkToken, (req, res, next)=>
+{
+    console.log("request "+ JSON.stringify(req.body));
+    user.updateStatus(req.body,req.get('TUKTUK_TOKEN') ,req.params.id )
+        .then(result => {
+            console.log("Reponse "+ JSON.stringify(result));
+            if ('errorCode' in result) {
+                return res.status(result.errorCode).json({
+                    status : 'Success',
+                    statusCode : result.errorCode,
+                    message: result.message
+                });
+            }
+            let contextPath = req.protocol + '://' + req.get('host');
+            return res.status(HttpStatus.OK).json({
+                statusCode : '200',
+                message : '',
+                data : result
+            });
+        })
+});
+router.post('/attendance', checkToken, (req, res, next)=>
 {
     user.markAttendance(req.body,  req.get('TUKTUK_TOKEN'))
         .then(result => {

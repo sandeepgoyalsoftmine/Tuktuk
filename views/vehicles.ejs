@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script type="text/javascript" src="../public/javascripts/jquery-1.12.0.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="../public/javascripts/vehicleType.js"></script>
+
+    <% include partials/head.ejs%>
+</head>
+<body>
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <header>
+        <%include ./partials/header.ejs%>
+    </header>
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <br/>
+        <!-- InstanceBeginEditable name="ContentRegion" -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Vehicle
+                        <button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target=".bs-example-modal-md" >
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="dataTable_wrapper">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                <tr>
+                                    <th>Sr. No.</th>
+                                    <th>Vehicle Type</th>
+                                    <th>Vehicle No.</th>
+                                    <th>Driver Name</th>
+                                    <th>Created On</th>
+                                    <th>Edit</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <div class="lds-ripple"><div></div><div></div></div>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+
+        <div id="vehiclerEditModal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close btn btn-danger btn-circle" data-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Add Vehicle</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <form id="form2" role="form">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Vehicle Type</label>
+                                                        <select id="vehicle_Type" name="vehicle_Type" class="form-control">
+                                                            <option>Select</option>
+                                                            <%for(var i=0;i<data.VehicleTypes.length;i++){%>
+                                                              <option value='<%=data.VehicleTypes[i].vehicle_id%>'><%=data.VehicleTypes[i].vehicle_type%></option>
+                                                            <%}%>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Company</label>
+                                                        <input id="make" name="make" class="form-control" placeholder="Maruti, Toyoto, hyundai">
+
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Model</label>
+                                                        <input id="model" name="model" class="form-control" placeholder="Swift, Innova, Verna">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Vehicle Number</label>
+                                                        <input id="vehicle_number" name="vehicle_number" class="form-control">
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>RC No.</label>
+                                                        <input id="rc_no" name="rc_no" class="form-control">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Upload RC</label>
+                                                        <input id="rcImage" name="rcImage"  class="form-control" type="file">
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Permit No.</label>
+                                                        <input id="permitNo" name="permitNo"  class="form-control" type="text">
+
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Upload Permit</label>
+                                                        <input id="permitImage" name="permitImage"  class="form-control" type="file"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                               <div class="row">
+                                                   <div class="col-lg-6">
+                                                       <div class="form-group">
+                                                           <label>Insurance No.</label>
+                                                           <input id="insuranceNo" name="insuranceNo"  class="form-control" type="text">
+
+                                                           </input>
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-lg-6">
+                                                       <div class="form-group">
+                                                           <label>Upload Insurance</label>
+                                                           <input id="insuranceImage" name="insuranceImage"  class="form-control" type="file"/>
+                                                       </div>
+                                                   </div>
+                                                </div>
+
+
+
+
+
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- /.row (nested) -->
+                            </div>
+                            <!-- /.col-lg-12 -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="save" class="btn btn-success btn-default btn-lg">
+                            Update
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close btn btn-danger btn-circle" data-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Edit Vehicle Types</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <form id="form2" role="form">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Vehicle Type Id</label>
+                                                        <input id="vehicle_type_id" name="vehicle_type_id"  readonly class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Vehicle Type</label>
+                                                        <input id="vehicleType" name="vehicleType" class="form-control">
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <button type="button" id="update" name="update" onclick="UpdateVehicleType()" class="btn btn-success btn-default btn-lg">
+                                                Update
+                                            </button>
+
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- /.row (nested) -->
+                            </div>
+                            <!-- /.col-lg-12 -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- InstanceEndEditable -->
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+
+
+<script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+</script>
+<!-- InstanceEndEditable -->
+</body>

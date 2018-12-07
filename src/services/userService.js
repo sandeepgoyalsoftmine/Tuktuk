@@ -268,10 +268,45 @@ export async function createUser(user, created_by, token, res) {
         userID : newUserId
     });
 }
+export  async function updateStatus(reqData, token, userID){
+
+    let usersDetails = await Users.fetchUserByUserID(userID);
+    if(usersDetails[0].length < 0){
+        return {errorCode: HttpStatus.NOT_FOUND, message: 'Employee not exist'};
+    }
+    if(parseInt(usersDetails[0][0].user_type) !== 2){
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'User should be driver'};
+    }
+    if(usersDetails[0][0].status==="Deactivate" && reqData.status ==="Deactivate"){
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Driver Already Deactivate'};
+    }
+    if(usersDetails[0][0].status==="Deactivate"){
+        await bookshelf.transaction(async (t) => {
+            await UsersDao.updateRow(userID, {
+                status: 'Activate',
+                updated_on: new Date()
+            }, t);
+        });
+    }
+    if(usersDetails[0][0].status==="Activate" && reqData.status ==="Activate"){
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Driver Already Activate'};
+    }
+    if(usersDetails[0][0].status==="Activate"){
+        await bookshelf.transaction(async (t) => {
+            await UsersDao.updateRow(userID, {
+                status: 'Deactivate',
+                updated_on: new Date()
+            }, t);
+        });
+    }
+    return {message: 'Updated Successfully'};
+
+
+}
 export async function updateUserData(reqData, created_by, userID){
     let usersDetails = await Users.fetchUserByUserID(userID);
     if(usersDetails[0].length < 0){
-        return {errorCode: HttpStatus.NOT_FOUND, errors: 'Employee not exist'};
+        return {errorCode: HttpStatus.NOT_FOUND, message: 'Employee not exist'};
     }
     let email1 = '', token1 = '';
     let userData = await Users.getUserByEmail(reqData.emailid);

@@ -9,7 +9,7 @@ import * as userServices from '../services/UserService';
 
 let router = Router();
 
-router.post('/create', (req, res, next)=>
+router.post('/create',checkToken ,(req, res, next)=>
 {
     trackingService.createLocation(req.get('TUKTUK_TOKEN'),req.body)
         .then(result => {

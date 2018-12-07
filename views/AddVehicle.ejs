@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <script type="text/javascript" src="../public/javascripts/jquery-1.12.0.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="../public/javascripts/user.js"></script>
+
+    <% include partials/head.ejs%>
+</head>
+<body>
+
+<div id="wrapper">
+    <header>
+        <%include ./partials/header.ejs%>
+    </header>
+
+    <div id="page-wrapper">
+        <br/>
+
+        <!-- InstanceBeginEditable name="ContentRegion" -->
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                        Add Vehicle
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <div class="col-lg-12">
+                                    <form id="form2" role="form">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Vehicle Type</label>
+                                                    <select id="vehicle_Type" name="vehicle_Type" class="form-control">
+                                                        <option>Select</option>
+                                                        <%for(var i=0;i<data.VehicleTypes.length;i++){%>
+                                                        <option value='<%=data.VehicleTypes[i].vehicle_id%>'><%=data.VehicleTypes[i].vehicle_type%></option>
+                                                        <%}%>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Company</label>
+                                                    <input id="make" name="make" class="form-control" placeholder="Maruti, Toyoto, hyundai">
+
+                                                    </input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Model</label>
+                                                    <input id="model" name="model" class="form-control" placeholder="Swift, Innova, Verna">
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Vehicle Number</label>
+                                                    <input id="vehicle_number" name="vehicle_number" class="form-control">
+                                                    </input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>RC No.</label>
+                                                    <input id="rc_no" name="rc_no" class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Upload RC</label>
+                                                    <input id="rcImage" name="rcImage"  class="form-control" type="file">
+                                                    </input>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Permit No.</label>
+                                                    <input id="permitNo" name="permitNo"  class="form-control" type="text">
+
+                                                    </input>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Upload Permit</label>
+                                                    <input id="permitImage" name="permitImage"  class="form-control" type="file"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Insurance No.</label>
+                                                    <input id="insuranceNo" name="insuranceNo"  class="form-control" type="text">
+
+                                                    </input>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>Upload Insurance</label>
+                                                    <input id="insuranceImage" name="insuranceImage"  class="form-control" type="file"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <button type="submit" class="btn btn-success btn-default btn-lg">
+                                                    Save
+                                                </button>
+                                            </div>
+
+                                        </div>
+
+
+
+
+                                    </form>
+
+                                </div>
+                                <!-- /.row (nested) -->
+                            </div>
+                            <!-- /.col-lg-12 -->
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+
+            <!-- /.col-lg-12 -->
+        </div>
+
+    </div>
+
+</div>
+</div>
+</body>

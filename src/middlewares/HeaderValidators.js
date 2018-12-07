@@ -10,13 +10,13 @@ import User from '../models/Users';
 async function checkToken(req, res, next)
 {
    // console.log(req);
-    console.log(req.get('DRPEDIA_TOKEN'));
-    let token = req.get('DRPEDIA_TOKEN');
+    console.log(req.get('TUKTUK_TOKEN'));
+    let token = req.get('TUKTUK_TOKEN');
     if (!token)
     {
         req.session.destroy();
         res.statusCode = HttpStatus.FORBIDDEN;
-        return res.json({errors: {auth: ['Header DRPEDIA_TOKEN contains no data.']}});
+        return res.json({errors: {auth: ['Header TUKTUK_TOKEN contains no data.']}});
     }
     else
     {
@@ -27,7 +27,7 @@ async function checkToken(req, res, next)
         {
             req.session.destroy();
             res.statusCode = HttpStatus.FORBIDDEN;
-            return res.json({errors: {auth: ['Header DRPEDIA_TOKEN contains invalid Token.']}});
+            return res.json({errors: {auth: ['Header TUKTUK_TOKEN contains invalid Token.']}});
         }
     }
     next();
