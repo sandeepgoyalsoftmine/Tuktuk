@@ -243,6 +243,7 @@ export async function createUser(user, created_by, token, res) {
             password : user.password,
             city: user.city,
             dob: user.age,
+            status:'Activate',
             created_on: new Date(),
             created_by :createdBy
         }, t);
@@ -329,6 +330,7 @@ export async function updateUserData(reqData, created_by, userID){
                 motor_insurence_number: reqData.motor_insurence_number,
                 police_verification_number: reqData.police_verification_number,
                 aadhar_card_number: reqData.aadhar_card_number,
+                status: reqData.status,
                 updated_on: new Date()
             }, t);
         });
@@ -342,6 +344,7 @@ export async function updateUserData(reqData, created_by, userID){
                 mobile_no: reqData.mobile_number,
                 city: reqData.city,
                 dob: reqData.age,
+                status: 'Activate',
                 driving_licence_number: '',
                 pan_card_number: '',
                 certificate_of_registration_number: '',

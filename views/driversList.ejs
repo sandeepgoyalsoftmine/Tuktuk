@@ -12,7 +12,7 @@
     <% include partials/head.ejs%>
     <style>
 
-        }
+
         .led-green {
             margin: 0 auto;
             width: 24px;
@@ -113,7 +113,8 @@
                                     <td><%= data.UserDetails[i].emailid %></td>
                                     <td><%= data.UserDetails[i].user_type %></td>
 
-                                    <%if(data.UserDetails[i].status==='Deactivate'){%>
+                                    <%
+                                    if(data.UserDetails[i].status==='Deactivate'){%>
                                     <td><div class="led-red"></div></td>
                                     <%}else{%>
                                     <td><div class="led-green"></div></td>
@@ -130,9 +131,10 @@
                                 <td><%= data.UserDetails[i].name %></td>
                                 <td><%= data.UserDetails[i].emailid %></td>
                                 <td><%= data.UserDetails[i].user_type %></td>
-                                <%if(data.UserDetails[i].status==='Deactivate'){%>
+                                <%if(data.UserDetails[i].status==="Deactivate"){%>
                                 <td><div class="led-red"></div></td>
-                                <%}else{%>
+                                <%}else{
+                                    console.log("value in activate "+data.UserDetails[i].status);%>
                                 <td><div class="led-green"></div></td>
                                 <%}%>
                                 <td><%= data.UserDetails[i].created_on %></td>
@@ -163,7 +165,7 @@
                         <button type="button" class="close btn btn-danger btn-circle" data-dismiss="modal">
                             <i class="fa fa-times"></i>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel">Edit Employee</h4>
+                        <h4 class="modal-title" id="myModalLabel">Edit Drivers</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -322,6 +324,16 @@
                                                             </input>
                                                         </div>
                                                     </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label>Status</label>
+                                                            <select id="status" name="status" class="form-control">
+                                                                <option value ="Deactivate">Deactivate</option>
+                                                                <option value ="Activate">Activate</option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -337,7 +349,7 @@
                         <!-- /.row -->
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="update" onclick="UpdateEmployee()" class="btn btn-success btn-default btn-lg">
+                        <button type="button" id="update" onclick="UpdateDrivers()" class="btn btn-success btn-default btn-lg">
                             Update
                         </button>
                     </div>

@@ -177,6 +177,33 @@ function UpdateEmployee(){
             }
         });
 }
+function UpdateDrivers(){
+
+    document.getElementById('update').disabled = true;
+    var id = document.getElementById('user_id').value;
+    var ajaxCall = $.ajax(
+        {
+            type: 'PUT',
+            url: '../userEdit/'+id,
+            data: $('#form2').serialize(),
+            async: false,
+            success: function (response) {
+                if(response.statusCode==200){
+                    alert(response.data.message);
+                    closeModal();
+                }
+                window.location.href = "/getDrivers";
+            },
+            error: function (error) {
+                console.log(error.responseJSON)
+
+                alert(error.responseJSON.message);
+                document.getElementById('update').disabled = false;
+
+
+            }
+        });
+}
 function setEmployeeDocuments(userid){
     $.ajax(
         {
