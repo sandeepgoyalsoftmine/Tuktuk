@@ -23,6 +23,9 @@ export const FETCH_USER_BY_TOKEN = `
     WHERE u.token =:token
 `;
 
+export const FETCH_USERSTATUS_BY_TOKEN = `
+SELECT status from tbusers where token =:token`;
+
 
 
 export const CHECK_LOGIN = `    Select userid, emailid, password, user_type from tbusers where emailid =:userid and user_type = :usertype
@@ -55,4 +58,9 @@ order by emailid, loginhistory_id ;
 
 export const FETCH_USER_BY_EMAIL_AND_USERID = `
 Select userid, name, emailid, gender, dob, mobile_no from tbusers where emailid = :emailid' AND  tbusers.userid =:userID
+`;
+
+
+export const FETCH_USER_DETAILS_BY_TOKEN = `
+Select userid, name, emailid, gender, dob, mobile_no from tbusers where token =:token
 `;

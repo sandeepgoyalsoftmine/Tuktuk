@@ -14,10 +14,20 @@ class Users extends bookshelf.Model {
     get hasTimestamps() {
         return false;
     }
+    static fetchStatusByToken(token){
+        return bookshelf.knex.raw(queries.FETCH_USERSTATUS_BY_TOKEN, {
+            'token': token
+        })
+    }
 
     static checkLogin(userid, usertype1){
         console.log("email ID    "+userid);
         return bookshelf.knex.raw(queries.CHECK_LOGIN, {'userid': userid, 'usertype': usertype1 });
+    }
+    static fetchUserDetailsByToken(token){
+        return bookshelf.knex.raw(queries.FETCH_USER_DETAILS_BY_TOKEN, {
+            'token': token
+        })
     }
     static fetchAllUsers() {
         return bookshelf.knex.raw(queries.FETCH_ALL_USER

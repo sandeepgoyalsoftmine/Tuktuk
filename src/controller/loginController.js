@@ -66,6 +66,19 @@ router.get('/getAttendance', checkToken, (req, res, next) =>
             });
         })
 });
+router.get('/getStatus', checkToken, (req, res, next) =>
+{
+
+    user.getStatus(req.get('TUKTUK_TOKEN'),res)
+        .then(result =>
+        {
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
 router.get('/view/:id', function(req, res, next) {
     let contextPath = req.protocol + '://' + req.get('host');
     if(req.session.userID!=undefined) {
@@ -80,7 +93,6 @@ router.get('/view/:id', function(req, res, next) {
                             return res.status(HttpStatus.OK).json({
                                 statusCode : 200,
                                 message : '',
-                                data : result1
                             });
                         })
                 }
@@ -307,7 +319,7 @@ router.post('/create', (req, res, next)=>
             });
         })
 });
-router.put('/edit',checkToken, upload.single('image'), (req, res, next)=>
+router.put('/edit', upload.single('image'), (req, res, next)=>
 {
     console.log("request "+ JSON.stringify(req.body)+"  "+req.file);
     user.updateUser(req.body, req.get('TUKTUK_TOKEN'), req.file, dbImagePath )

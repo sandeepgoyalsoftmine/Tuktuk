@@ -14,6 +14,7 @@ export async function  login(reqData, usertype1, res) {
         typeOfUser = reqData.userType;
     else
         typeOfUser = usertype1;
+    console.log("usertyep for login "+reqData.userType+"     "+ typeOfUser);
     let userData = await Users.checkLogin(reqData.userID, typeOfUser);
     console.log("userDatsa "+JSON.stringify(userData[0]))
     if (userData[0].length < 1) {
@@ -27,11 +28,22 @@ export async function  login(reqData, usertype1, res) {
         await bookshelf.transaction(async (t) => {
             await UsersDao.updateRow(userData[0][0].userid, {token: token, last_login: new Date()}, t);
         });
+        let userDetails = await Users.fetchUserDetailsByToken(token);
         res.setHeader('TUKTUK_TOKEN', token);
-        return {message: 'Login Successfully'};
+
+        return {message: 'Login Successfully',
+            UserDetails : userDetails[0]};
     }else{
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'Already Login'};
     }
+}
+export async function getStatus(token){
+    let userData = await Users.fetchStatusByToken(token);
+    return {
+        UserStatus : userData[0][0]
+    }
+
+
 }
 
 export async function getAttendance(token,req)
@@ -204,6 +216,8 @@ export async function createUser(user, created_by, token, res) {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'City can not be blank.'};
     }
     let newUserId;
+    console.log("user.user_type  "+user.user_type+"      created_by  "+created_by);
+    console.log("user.vehicle_type   "+user.vehicle_type);
     if(user.user_type == 2 && created_by !=undefined){
         if(user.vehicle_type==='' || user.vehicle_type===undefined ||user.vehicle_type==='Select')
         {
@@ -379,7 +393,7 @@ export async function updateUserData(reqData, created_by, userID){
                 mobile_no: reqData.mobile_number,
                 city: reqData.city,
                 dob: reqData.age,
-                status: 'Activate',
+                status: 'Deactivate',
                 driving_licence_number: '',
                 pan_card_number: '',
                 certificate_of_registration_number: '',

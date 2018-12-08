@@ -64,7 +64,7 @@ router.get('/vehclesAdd',  function(req, res, next) {
         res.render('index', {path: contextPath, header: 'Login', operation: '', access1:'false'});
     }
 });
-router.get('/getVehicleType',checkToken,  (req, res, next) =>
+router.get('/getVehicleType',  (req, res, next) =>
 {
     VehicleService.getVehicleType(res)
         .then(result =>
