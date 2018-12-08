@@ -266,7 +266,7 @@ router.get('/getEmployeeAttendance', function(req, res, next) {
             if (result.length == 1) {
                 var usertype = parseInt(result[0].user_type);
                 if (parseInt(result[0].user_type) == 1) {
-                    user.getEmployees()
+                    user.getEmployeeAttendance()
                         .then(result1 => {
                             res.render('attendance', {
                                 path: contextPath, header: 'Attendence Sheet', operation: '',

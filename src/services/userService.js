@@ -423,13 +423,12 @@ export async function updateUser(reqData,token, reqfile, imagePath){
     });
 }
 
-export async function getUsers() {
-    let users = await Users.fetchAllEmployees();
-    console.log("userLists "+ JSON.stringify(users));
-    let loginDetails =  await TrackingTemp.fetchAttendance();
+export async function getEmployeeAttendance() {
+    let employeeAttendance =  await TrackingTemp.fetchAttendance();
+
+
     return ({
-        UserDetails : users[0],
-        LoginDetails : loginDetails[0],
+        LoginDetails : employeeAttendance[0],
         message : ''
     });
 }
