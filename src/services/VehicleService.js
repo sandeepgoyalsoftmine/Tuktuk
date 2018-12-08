@@ -3,6 +3,7 @@ import * as HttpStatus from "http-status-codes/index";
 import Users from "../models/Users";
 import VehicleTypesModel from "../models/VehicleTypesModel";
 import * as VehicleTypeDAO from '../dao/VehicleTypeDAO';
+import * as VehicleDao from '../dao/VehicleDao';
 
 export async function getVehicleType(){
     let vehicleTypes = await VehicleTypesModel.fetchVehicleTypes();
@@ -65,4 +66,61 @@ export  async function updateVehicleType(reqData, createdBy, vehicleTypeID){
     return {
         message : "Updated Successfully"
     };
+}
+
+export async function createVehicle(myfileName, dbImagePath, reqData, userID){
+    if(reqData.vehicle_Type === undefined || reqData.vehicle_Type===""  || reqData.vehicle_Type==='Select'){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid Vehicle type Please Select from given selection.'}
+    }if(reqData.make === undefined || reqData.make===""){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid company.'}
+    }if(reqData.model === undefined || reqData.model===""){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid Model.'}
+    }if(reqData.vehicle_number === undefined || reqData.vehicle_number===""){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid vehicle number.'}
+    }if(reqData.rc_no === undefined || reqData.rc_no===""){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid Rc number.'}
+    }if(reqData.permitNo === undefined || reqData.permitNo===""){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid permit number.'}
+    }if(reqData.insuranceNo === undefined || reqData.insuranceNo===""){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid Insurance number.'}
+    }
+    let rc_image="";
+    let permit_image = "";
+    let insurance_image = "";
+    console.log("myfilesname  "+ JSON.stringify(myfileName));
+    for(let i=0;i< myfileName.length;i++){
+        if(myfileName[i].fieldname==="rcImage"){
+            rc_image = myfileName[i].imagepath;
+        }else if(myfileName[i].fieldname==="permitImage"){
+            permit_image = myfileName[i].imagepath;
+        }else{
+            insurance_image = myfileName[i].imagepath;
+        }
+    }
+    console.log(rc_image+"    "+permit_image+"    "+insurance_image);
+    let newVehicleID = await bookshelf.transaction(async(t) =>
+    {
+        let newVehicle = await VehicleDao.createRow(
+            {
+                vehicle_type : reqData.vehicle_Type,
+                make: reqData.make,
+                model: reqData.model,
+                vehicle_number: reqData.vehicle_number,
+                rc_no: reqData.rc_no,
+                permit_no: reqData.permitNo,
+                insurance_no: reqData.insuranceNo,
+                rc_image: rc_image,
+                permit_path: permit_image,
+                insurance_path: insurance_image,
+                created_by : userID,
+                created_on: new Date()
+            }, t);
+        if (!newVehicle.id) {
+            return {errorCode: HttpStatus.INTERNAL_SERVER_ERROR, message: 'Server error'};
+        }
+    });
+    return {
+        message : "Successfully Added"
+    };
+
 }

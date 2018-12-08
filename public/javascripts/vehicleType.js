@@ -71,7 +71,6 @@ function UpdateVehicleType(){
 }
 function deleteVehicleType(vehicl_type_id){
     confirm("are you sure you want to delete, related items also will delete itself");
-
 }
 function closeModal(){
     $('#boardModal').modal('hide');
