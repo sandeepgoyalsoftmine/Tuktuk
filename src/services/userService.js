@@ -32,7 +32,7 @@ export async function  login(reqData, usertype1, res) {
         res.setHeader('TUKTUK_TOKEN', token);
 
         return {message: 'Login Successfully',
-            UserDetails : userDetails[0]};
+            UserDetails : userDetails[0][0]};
     }else{
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'Already Login'};
     }
