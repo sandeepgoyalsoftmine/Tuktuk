@@ -30,7 +30,6 @@ export async function  login(reqData, usertype1, res) {
         });
         let userDetails = await Users.fetchUserDetailsByToken(token);
         res.setHeader('TUKTUK_TOKEN', token);
-
         return {message: 'Login Successfully',
             UserDetails : userDetails[0][0]};
     }else{
