@@ -81,7 +81,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Employee List
+                        Vehicle List
 
                     </div>
                     <!-- /.panel-heading -->
@@ -92,54 +92,52 @@
                                 <tr>
                                     <th>Sr. no.</th>
                                     <th>Vehicle Type</th>
-                                    <th>Make</th>
                                     <th>Model</th>
                                     <th>Vehicle Number</th>
+                                    <th>Driver</th>
                                     <th>Created On</th>
                                     <th>Status</th>
-                                    <th>Edit</th>
-
 
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <%
-
-                                for(var i=0; i < data.UserDetails.length; i++) {
+                                for(var i=0; i < data.Vehicles.length; i++) {
                                 if(i%2==0){%>
                                 <tr class="even gradeC">
                                     <td><%= i+1 %></td>
-                                    <td><%= data.UserDetails[i].name %></td>
-                                    <td><%= data.UserDetails[i].emailid %></td>
-                                    <td><%= data.UserDetails[i].user_type %></td>
+                                    <td><%= data.Vehicles[i].vehicle_type %></td>
+
+                                    <td><%= data.Vehicles[i].model %></td>
+                                    <td><%= data.Vehicles[i].vehicle_number %></td>
+                                    <td><%= data.Vehicles[i].name %></td>
+                                    <td ><%= data.Vehicles[i].created_on %></td>
 
                                     <%
-                                    if(data.UserDetails[i].status==='Deactivate'){%>
+                                    if(data.Vehicles[i].status==='Deactivate'){%>
                                     <td><div class="led-red"></div></td>
                                     <%}else{%>
                                     <td><div class="led-green"></div></td>
                                     <%}%>
-                                    <td ><%= data.UserDetails[i].created_on %></td>
-                                    <td><button onclick="setEditEmployee(<%= data.UserDetails[i].userid %>)" class="btn btn-warning btn-circle" data-toggle="modal" data-target=".bs-example-modal-md"> <i class="fa fa-pencil"></i></button>
-                                    <td><button onclick="setEmployeeDocuments(<%= data.UserDetails[i].userid %>)" class="btn btn-group-justified btn-circle" data-toggle="modal" data-target=".bs-example-modal-lg"> <i class="fa fa-eye"></i></button>
 
 
 
                                 </tr>
                                 <%}else{%>
                                 <td><%= i+1 %></td>
-                                <td><%= data.UserDetails[i].name %></td>
-                                <td><%= data.UserDetails[i].emailid %></td>
-                                <td><%= data.UserDetails[i].user_type %></td>
-                                <%if(data.UserDetails[i].status==="Deactivate"){%>
+                                <td><%= data.Vehicles[i].vehicle_type %></td>
+
+                                <td><%= data.Vehicles[i].model %></td>
+                                <td><%= data.Vehicles[i].vehicle_number %></td>
+                                <td><%= data.Vehicles[i].name %></td>
+                                <td ><%= data.Vehicles[i].created_on %></td>
+
+                                <%
+                                if(data.Vehicles[i].status==='Deactivate'){%>
                                 <td><div class="led-red"></div></td>
-                                <%}else{
-                                    console.log("value in activate "+data.UserDetails[i].status);%>
+                                <%}else{%>
                                 <td><div class="led-green"></div></td>
                                 <%}%>
-                                <td><%= data.UserDetails[i].created_on %></td>
-                                <td><button onclick="setEditEmployee(<%= data.UserDetails[i].userid %>)"  class="btn btn-warning btn-circle" data-toggle="modal" data-target=".bs-example-modal-md"> <i class="fa fa-pencil"></i></button>
-                                <td><button onclick="setEmployeeDocuments(<%= data.UserDetails[i].userid %>)" class="btn btn-justified btn-circle" data-toggle="modal" data-target=".bs-example-modal-lg"> <i class="fa fa-eye"></i></button>
 
                                     <% }
                                     }%>
@@ -165,7 +163,7 @@
                         <button type="button" class="close btn btn-danger btn-circle" data-dismiss="modal">
                             <i class="fa fa-times"></i>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel">Edit Drivers</h4>
+                        <h4 class="modal-title" id="myModalLabel">Edit Vehicles</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">

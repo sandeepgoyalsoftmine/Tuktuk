@@ -122,6 +122,19 @@
                                             </div>
                                         </div>
                                         <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Driver</label>
+                                                <select id="driver" name="driver" class="form-control">
+                                                    <option>Select</option>
+                                                    <%for(var i=0;i<data.UnassignedDriver.length;i++){%>
+                                                    <option value='<%=data.UnassignedDriver[i].userid%>'><%=data.UnassignedDriver[i].name%></option>
+                                                    <%}%>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-lg-8">
                                             </div>
                                             <div class="col-lg-4">

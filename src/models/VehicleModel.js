@@ -1,6 +1,5 @@
 import bookshelf from '../db';
-import * as queries from "../queries/VehicleTypeQueries";
-
+import * as queries from "../queries/VehicleQuery";
 
 const TABLE_NAME = 'tbvehicle';
 class VehicleModel extends bookshelf.Model {
@@ -11,8 +10,8 @@ class VehicleModel extends bookshelf.Model {
     get hasTimestamps() {
         return false;
     }
-    static fetchVehicleTypes(){
-        return bookshelf.knex.raw(queries.FETCH_VEHICLE_TYPES);
+    static fetchAllVehicles(){
+        return bookshelf.knex.raw(queries.FETCH_ALL_VEHICLE);
     }
 
 

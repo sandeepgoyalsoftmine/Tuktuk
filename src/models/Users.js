@@ -76,6 +76,9 @@ class Users extends bookshelf.Model {
             'emailid': email
         })
     }
+    static fetchUnassignedDrivers(){
+        return bookshelf.knex.raw(queries.FETCH_UNASSIGNED_DRIVERS);
+    }
 
 }
 

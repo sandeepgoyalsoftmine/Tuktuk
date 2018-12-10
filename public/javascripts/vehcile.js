@@ -16,7 +16,7 @@ $(document).ready(function() {
                     console.log(data);
                     if(data.statusCode == 409 || data.statusCode=== '409'|| data.statusCode == 200 ) {
                         alert(data.data.message);
-                        document.getElementById("form1").reset();
+                        window.location.href = "/vehicles";
                     }
                 },
                 error: function (error) {

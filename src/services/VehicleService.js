@@ -1,25 +1,39 @@
 import bookshelf from '../db';
 import * as HttpStatus from "http-status-codes/index";
-import Users from "../models/Users";
+import VehicleModel from "../models/VehicleModel";
 import VehicleTypesModel from "../models/VehicleTypesModel";
 import * as VehicleTypeDAO from '../dao/VehicleTypeDAO';
 import * as VehicleDao from '../dao/VehicleDao';
+import Users from "../models/Users";
+import * as UsersDao from "../dao/users";
+
 
 export async function getVehicleType(){
     let vehicleTypes = await VehicleTypesModel.fetchVehicleTypes();
+    let unasignedDrivers = await Users.fetchUnassignedDrivers();
     return ({
         message : '',
-        VehicleTypes : vehicleTypes[0]
+        VehicleTypes : vehicleTypes[0],
+        UnassignedDriver : unasignedDrivers[0]
     });
-
 }
 
 export async function getVehicleTypeByVehicleTypeID(vehicleTypeID){
     let vehicleTypes = await VehicleTypesModel.fetchVehicleTypesByVehicleTypeID(vehicleTypeID);
+
     return ({
         message : '',
         VehicleTypes : vehicleTypes[0]
     });
+}
+
+export async function getAllVehicle(){
+    let vehicles = await  VehicleModel.fetchAllVehicles();
+    return ({
+        message:'',
+        Vehicles :vehicles[0]
+    })
+
 }
 
 export  async function createVehicleType(reqData, createdBy){
@@ -68,7 +82,10 @@ export  async function updateVehicleType(reqData, createdBy, vehicleTypeID){
     };
 }
 
+
+
 export async function createVehicle(myfileName, dbImagePath, reqData, userID){
+
     if(reqData.vehicle_Type === undefined || reqData.vehicle_Type===""  || reqData.vehicle_Type==='Select'){
         return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid Vehicle type Please Select from given selection.'}
     }if(reqData.make === undefined || reqData.make===""){
@@ -98,27 +115,58 @@ export async function createVehicle(myfileName, dbImagePath, reqData, userID){
         }
     }
     console.log(rc_image+"    "+permit_image+"    "+insurance_image);
-    let newVehicleID = await bookshelf.transaction(async(t) =>
-    {
-        let newVehicle = await VehicleDao.createRow(
-            {
-                vehicle_type : reqData.vehicle_Type,
-                make: reqData.make,
-                model: reqData.model,
-                vehicle_number: reqData.vehicle_number,
-                rc_no: reqData.rc_no,
-                permit_no: reqData.permitNo,
-                insurance_no: reqData.insuranceNo,
-                rc_image: rc_image,
-                permit_path: permit_image,
-                insurance_path: insurance_image,
-                created_by : userID,
-                created_on: new Date()
-            }, t);
-        if (!newVehicle.id) {
-            return {errorCode: HttpStatus.INTERNAL_SERVER_ERROR, message: 'Server error'};
-        }
-    });
+    let assignedValue=0;
+    if(reqData.driver === undefined || reqData.driver ==="" || reqData.driver === "Select"){
+        let newVehicleID = await bookshelf.transaction(async(t) =>
+        {
+            let newVehicle = await VehicleDao.createRow(
+                {
+                    vehicle_type : reqData.vehicle_Type,
+                    make: reqData.make,
+                    model: reqData.model,
+                    vehicle_number: reqData.vehicle_number,
+                    rc_no: reqData.rc_no,
+                    permit_no: reqData.permitNo,
+                    insurance_no: reqData.insuranceNo,
+                    rc_image: rc_image,
+                    permit_path: permit_image,
+                    insurance_path: insurance_image,
+                    created_by : userID,
+                    created_on: new Date()
+                }, t);
+            if (!newVehicle.id) {
+                return {errorCode: HttpStatus.INTERNAL_SERVER_ERROR, message: 'Server error'};
+            }
+        });
+    }else{
+        assignedValue = 1;
+        await bookshelf.transaction(async (t) => {
+            await UsersDao.updateRow(reqData.driver, {driver_assigned: assignedValue}, t);
+        });
+        let newVehicleID = await bookshelf.transaction(async(t) =>
+        {
+            let newVehicle = await VehicleDao.createRow(
+                {
+                    vehicle_type : reqData.vehicle_Type,
+                    make: reqData.make,
+                    model: reqData.model,
+                    vehicle_number: reqData.vehicle_number,
+                    rc_no: reqData.rc_no,
+                    permit_no: reqData.permitNo,
+                    insurance_no: reqData.insuranceNo,
+                    rc_image: rc_image,
+                    permit_path: permit_image,
+                    insurance_path: insurance_image,
+                    created_by : userID,
+                    assigned_driver_id : reqData.driver,
+                    created_on: new Date()
+                }, t);
+            if (!newVehicle.id) {
+                return {errorCode: HttpStatus.INTERNAL_SERVER_ERROR, message: 'Server error'};
+            }
+        });
+    }
+
     return {
         message : "Successfully Added"
     };

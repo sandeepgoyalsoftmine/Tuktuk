@@ -1,12 +1,12 @@
 export const FETCH_USER_DETAIL = `
-  SELECT u.userid, u.name, u.emailID  FROM tbuser AS u
+  SELECT u.userid, u.name, u.emailID, driver_assigned  FROM tbuser AS u
   WHERE u.userid =:userID
 `;
 
 export const FETCH_USER_BY_USERID = ` Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.gender,driving_licence_number, pan_card_number,
 certificate_of_registration_number, motor_insurence_number, police_verification_number, aadhar_card_number,  
  tbusers.dob, tbusers.mobile_no, user_type, city, DATE_FORMAT(tbusers.created_on, '%Y-%m-%d %H:%i:%s') AS created_on,
- tbusers.vehicle_type, tbusers.status
+ tbusers.vehicle_type, tbusers.status, tbusers.driver_assigned
 FROM tbusers
 WHERE tbusers.userid =:userID
 `;
@@ -42,7 +42,7 @@ LEFT OUTER JOIN tbuser_type on tbusers.user_type = tbuser_type.type_id
  Where tbusers.user_type = 3
 `;
 
-export const FETCH_DRIVERS = `Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.gender, tbusers.status,
+export const FETCH_DRIVERS = `Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.gender, tbusers.status, driver_assigned,
  tbusers.dob, tbusers.mobile_no, tbuser_type.user_type, DATE_FORMAT(tbusers.created_on, '%Y-%m-%d %H:%i:%s') AS created_on
 FROM tbusers
 LEFT OUTER JOIN tbuser_type on tbusers.user_type = tbuser_type.type_id
@@ -62,5 +62,9 @@ Select userid, name, emailid, gender, dob, mobile_no from tbusers where emailid 
 
 
 export const FETCH_USER_DETAILS_BY_TOKEN = `
-Select userid, name, emailid, gender, dob, mobile_no from tbusers where token =:token
+Select userid, name, emailid, gender, dob, mobile_no, driver_assigned from tbusers where token =:token
+`;
+
+export const FETCH_UNASSIGNED_DRIVERS = `
+SELECT userid, name, emailid from tbusers where user_type = 2 AND driver_assigned = 0
 `;
