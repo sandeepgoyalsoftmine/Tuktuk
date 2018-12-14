@@ -8,13 +8,20 @@ import Users from "../models/Users";
 import * as UsersDao from "../dao/users";
 
 
-export async function getVehicleType(){
+export async function getVehicleTypeWithUnassignedDriver(){
     let vehicleTypes = await VehicleTypesModel.fetchVehicleTypes();
     let unasignedDrivers = await Users.fetchUnassignedDrivers();
     return ({
         message : '',
         VehicleTypes : vehicleTypes[0],
         UnassignedDriver : unasignedDrivers[0]
+    });
+}
+export async function getVehicleType(){
+    let vehicleTypes = await VehicleTypesModel.fetchVehicleTypes();
+    return ({
+        message : '',
+        VehicleTypes : vehicleTypes[0]
     });
 }
 

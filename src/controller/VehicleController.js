@@ -47,7 +47,7 @@ router.get('/',  function(req, res, next) {
             if (result.length == 1) {
                 var usertype = parseInt(result[0].user_type);
                 if (parseInt(result[0].user_type) == 1) {
-                    VehicleService.getVehicleType()
+                    VehicleService.getVehicleTypeWithUnassignedDriver()
                         .then(result1 => {
                             res.render('AddVehicle', {
                                 path: contextPath, header: 'Add Vehicle', operation: '',
