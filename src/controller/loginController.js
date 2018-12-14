@@ -93,6 +93,7 @@ router.get('/view/:id', function(req, res, next) {
                             return res.status(HttpStatus.OK).json({
                                 statusCode : 200,
                                 message : '',
+                                data: result1
                             });
                         })
                 }

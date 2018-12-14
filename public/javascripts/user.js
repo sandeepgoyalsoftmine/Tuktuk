@@ -113,11 +113,11 @@ function setEditEmployee(userid){
             },
             success: function(response)
             {
-                if(response.data.UserDetails[0].user_type == 1){
+                if(response.data.UserDetails[0].user_type === "1"){
                     alert("Can not edit Admin");
                     closeModal();
                 }else {
-                    if(response.data.UserDetails[0].user_type == 2){
+                    if(response.data.UserDetails[0].user_type === "2"){
                         document.getElementById("driverValues").style.display = 'block';
 
                         document.getElementById('vehicle_type').value = response.data.UserDetails[0].vehicle_type;
@@ -135,7 +135,6 @@ function setEditEmployee(userid){
                     }else{
                         document.getElementById('sex').value = response.data.UserDetails[0].gender;
                     }
-                    console.log(response);
                     document.getElementById('user_id').value = response.data.UserDetails[0].userid;
                     document.getElementById('name').value = response.data.UserDetails[0].name;
                     document.getElementById('age').value = response.data.UserDetails[0].dob;
@@ -143,9 +142,50 @@ function setEditEmployee(userid){
                     document.getElementById('user_type').value = response.data.UserDetails[0].user_type;
                     document.getElementById('city').value = response.data.UserDetails[0].city;
                     document.getElementById('email').value = response.data.UserDetails[0].emailid;
-
                 }
+            }
+        });
+}
+function setEditDrivers(userid){
+    $.ajax(
+        {
+            type: "GET",
+            url: "/view/"+userid,
+            headers: {
+                "userID":localStorage.getItem("TUKTUK_TOKEN")
+            },
+            success: function(response)
+            {
+                if(response.data.UserDetails[0].user_type === "1"){
+                    alert("Can not edit Admin");
+                    closeModal();
+                }else {
+                    if(response.data.UserDetails[0].user_type === "2"){
+                        document.getElementById("driverValues").style.display = 'block';
 
+                        document.getElementById('vehicle_type').value = response.data.UserDetails[0].vehicle_type;
+                        document.getElementById('driving_licence_number').value = response.data.UserDetails[0].driving_licence_number;
+                        document.getElementById('pan_card_number').value = response.data.UserDetails[0].pan_card_number;
+                        document.getElementById('certificate_of_registration_number').value = response.data.UserDetails[0].certificate_of_registration_number;
+                        document.getElementById('motor_insurence_number').value = response.data.UserDetails[0].motor_insurence_number;
+                        document.getElementById('police_verification_number').value = response.data.UserDetails[0].police_verification_number;
+                        document.getElementById('aadhar_card_number').value = response.data.UserDetails[0].aadhar_card_number;
+                    }else{
+                        document.getElementById("driverValues").style.display = 'none';
+                    }
+                    if(response.data.UserDetails[0].gender===null){
+                        document.getElementById('sex').value = 'Select';
+                    }else{
+                        document.getElementById('sex').value = response.data.UserDetails[0].gender;
+                    }
+                    document.getElementById('user_id').value = response.data.UserDetails[0].userid;
+                    document.getElementById('name').value = response.data.UserDetails[0].name;
+                    document.getElementById('age').value = response.data.UserDetails[0].dob;
+                    document.getElementById('mobile_number').value = response.data.UserDetails[0].mobile_no;
+                    document.getElementById('user_type').value = response.data.UserDetails[0].user_type;
+                    document.getElementById('city').value = response.data.UserDetails[0].city;
+                    document.getElementById('email').value = response.data.UserDetails[0].emailid;
+                }
             }
         });
 }

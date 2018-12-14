@@ -120,7 +120,7 @@
                                     <td><div class="led-green"></div></td>
                                     <%}%>
                                     <td ><%= data.UserDetails[i].created_on %></td>
-                                    <td><button onclick="setEditEmployee(<%= data.UserDetails[i].userid %>)" class="btn btn-warning btn-circle" data-toggle="modal" data-target=".bs-example-modal-md"> <i class="fa fa-pencil"></i></button>
+                                    <td><button onclick="setEditDrivers(<%= data.UserDetails[i].userid %>)" class="btn btn-warning btn-circle" data-toggle="modal" data-target=".bs-example-modal-md"> <i class="fa fa-pencil"></i></button>
                                     <td><button onclick="setEmployeeDocuments(<%= data.UserDetails[i].userid %>)" class="btn btn-group-justified btn-circle" data-toggle="modal" data-target=".bs-example-modal-lg"> <i class="fa fa-eye"></i></button>
 
 
@@ -138,9 +138,8 @@
                                 <td><div class="led-green"></div></td>
                                 <%}%>
                                 <td><%= data.UserDetails[i].created_on %></td>
-                                <td><button onclick="setEditEmployee(<%= data.UserDetails[i].userid %>)"  class="btn btn-warning btn-circle" data-toggle="modal" data-target=".bs-example-modal-md"> <i class="fa fa-pencil"></i></button>
+                                <td><button onclick="setEditDrivers(<%= data.UserDetails[i].userid %>)"  class="btn btn-warning btn-circle" data-toggle="modal" data-target=".bs-example-modal-md"> <i class="fa fa-pencil"></i></button>
                                 <td><button onclick="setEmployeeDocuments(<%= data.UserDetails[i].userid %>)" class="btn btn-justified btn-circle" data-toggle="modal" data-target=".bs-example-modal-lg"> <i class="fa fa-eye"></i></button>
-
                                     <% }
                                     }%>
 
