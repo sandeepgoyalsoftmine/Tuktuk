@@ -59,3 +59,5 @@ router.post('/loginfb', passport.authenticate('facebook-token', {scope: ['email'
         });
     }
 });
+
+export default router;
