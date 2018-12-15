@@ -93,6 +93,7 @@
                                     <th>Sr. no.</th>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>Mobile No.</th>
                                     <th>User Type</th>
                                     <th>Status</th>
                                     <th>Date</th>
@@ -111,6 +112,8 @@
                                     <td><%= i+1 %></td>
                                     <td><%= data.UserDetails[i].name %></td>
                                     <td><%= data.UserDetails[i].emailid %></td>
+                                    <td><%= data.UserDetails[i].mobile_no %></td>
+
                                     <td><%= data.UserDetails[i].user_type %></td>
 
                                     <%
@@ -130,6 +133,7 @@
                                 <td><%= i+1 %></td>
                                 <td><%= data.UserDetails[i].name %></td>
                                 <td><%= data.UserDetails[i].emailid %></td>
+                                <td><%= data.UserDetails[i].mobile_no %></td>
                                 <td><%= data.UserDetails[i].user_type %></td>
                                 <%if(data.UserDetails[i].status==="Deactivate"){%>
                                 <td><div class="led-red"></div></td>

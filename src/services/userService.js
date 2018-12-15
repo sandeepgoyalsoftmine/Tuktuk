@@ -130,42 +130,10 @@ export async function getUserByEmail(email) {
 }
 
 
-export async function registerFbUser(reqData,res)
-{
-    let duplicate = await checkDuplicateEmail(reqData.user);
-    console.log("duplicate value "+duplicate);
-    if(!duplicate)
-    {
 
-        let result= await createUser(reqData.user,res);
-        return result;
-    }
-    else
-    {
-        let result= await loginEmail(reqData.user,res);
-        return result;
-    }
-}
-export async function checkDuplicateEmail(user) {
-    console.log("userInfo "+user.userid);
-    let data = await Users.fetchUserDetail(user);
-    if (data[0].length > 0) {
-        return true;
-    }
 
-    return false;
-}
 
-export async function getCounts(token,req)
-{
-    let userID = await Users.fetchUserByToken(token);
-    let counts = await Users.fetchCountsByUSerID(userID[0][0].userid);
-    return ({
-        message : '',
-        Counts : counts[0]
-    });
 
-}
 
 export async function createUser(user, created_by, token, res) {
     let email1 = '', token1 = '';
@@ -481,21 +449,7 @@ export  async function getUserDocByUserID(userid){
     });
 }
 
-export async function loginEmail(user, res) {
-    const token = generateToken(user.userid);
-    await bookshelf.transaction(async(t) => {
-        await UsersDao.updateRow(user.userid, {last_login: new Date(), token : token}, t);
-    });
-    let usersDetails = await Users.fetchUserByUserID(user.userid);
 
-    res.setHeader('DRPEDIA_TOKEN', token);
-
-    return ({
-        UserDetails : usersDetails[0],
-        message : 'Login Successfully'
-    });
-
-}
 /**
  * Generate  token by user id.
  *
@@ -506,3 +460,4 @@ export function generateToken(userid) {
     let dbhash = microtime.now().toString() + userid;
     return crypto.createHash('md5').update(dbhash).digest('hex');
 }
+

@@ -80,6 +80,12 @@ class Users extends bookshelf.Model {
         return bookshelf.knex.raw(queries.FETCH_UNASSIGNED_DRIVERS);
     }
 
+    static fetchUserDetail(user) {
+        return bookshelf.knex.raw(queries.FETCH_USER_DETAIL, {
+            'userID': user.userid
+        })
+    };
+
 }
 
 export default Users;
