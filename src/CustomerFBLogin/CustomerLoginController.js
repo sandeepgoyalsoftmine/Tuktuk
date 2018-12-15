@@ -54,7 +54,7 @@ router.post('/loginfb', passport.authenticate('facebook-token', {scope: ['email'
     }
     else {
         return res.status(HttpStatus.OK).json({
-            statusCode: '400',
+            statusCode: 400,
             message: 'Invalid token'
         });
     }

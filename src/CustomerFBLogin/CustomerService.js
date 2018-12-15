@@ -48,7 +48,9 @@ export async function createCustomer(user,res) {
         return newUsers.userid;
     });
     res.setHeader('TUKTUK_TOKEN', token);
+    let usersDetails = await CustomerModel.fetchCustomerDetailByUserID(user.userid);
     return ({
+        CustomerDetails : usersDetails[0][0],
         message : 'User Created'
     });
 }
@@ -63,7 +65,7 @@ export async function loginEmail(user, res) {
     res.setHeader('TUKTUK_TOKEN', token);
 
     return ({
-        UserDetails : usersDetails[0],
+        CustomerDetails : usersDetails[0][0],
         message : 'Login Successfully'
     });
 }
