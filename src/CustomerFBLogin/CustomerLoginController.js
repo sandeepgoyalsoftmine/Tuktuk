@@ -43,7 +43,7 @@ passport.deserializeUser(function (user, done) {
 router.post('/loginfb', passport.authenticate('facebook-token', {scope: ['email']}), (req, res) => {
     if (req.user) {
         console.log(" information " + JSON.stringify(req.user));
-        CustomerService.registerFbUser(req, res)
+        CustomerService.registerFbUser(req.get('device_type'), req.get('version'),req, res)
             .then(result => {
                 return res.status(HttpStatus.OK).json({
                     statusCode: '200',
