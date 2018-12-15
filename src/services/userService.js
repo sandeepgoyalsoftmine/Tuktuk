@@ -48,7 +48,7 @@ export async function getStatus(token){
 export async function getAttendance(token,req)
 {
     let userData = await Users.fetchUserByToken(token);
-    if(userData[0] < 1){
+    if(userData.length < 1){
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
     }
     let attendanceDetails = await Users.fetchAttendanceDetails(token);

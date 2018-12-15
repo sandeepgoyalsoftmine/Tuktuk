@@ -70,3 +70,8 @@ Select userid, name, emailid, gender, dob, mobile_no, driver_assigned from tbuse
 export const FETCH_UNASSIGNED_DRIVERS = `
 SELECT userid, name, emailid from tbusers where user_type = 2 AND driver_assigned = 0
 `;
+
+export const FETCH_ATTENDANCE_DETAILS_BY_TOKEN = `
+    Select u.userid, u.emailid, u.in_time, u.out_time, u.login_status from tbusers As u
+    WHERE u.token =:token
+`;
