@@ -55,7 +55,6 @@ router.get('/', function(req, res, next) {
 
 router.get('/getAttendance', checkToken, (req, res, next) =>
 {
-
     user.getAttendance(req.get('TUKTUK_TOKEN'),res)
         .then(result =>
         {
