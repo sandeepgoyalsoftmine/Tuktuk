@@ -13,7 +13,6 @@ import OtpController from './OtpForEmail/OtpController';
 let router = Router();
 
 
-
 router.use('/', loginController);
 router.use('/tracking', trackingController);
 router.use('/vehicle', VehicleTypeController);
