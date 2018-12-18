@@ -14,10 +14,10 @@ class CustomerModel extends bookshelf.Model {
     get hasTimestamps() {
         return false;
     }
-
     static fetchCustomerDetailByUserID(user) {
         return bookshelf.knex.raw(queries.FETCH_CUSTOMER_DETAIL_BY_USERID, {
-            'userID': user.userid
+            'userID': user.userid,
+            'email': user.email
         })
     };
 
