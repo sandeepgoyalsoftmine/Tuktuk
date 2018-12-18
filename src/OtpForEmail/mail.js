@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 export function sendMail(emailSubject, emailBody, email, attachmentImages) {
   let transporter = nodemailer.createTransport(
     {
-      host: 'smtp.1and1.com',
+      host: 'smtp.gmail.com',
       port: 587,
       secure: false, // true for 465, false for other ports
       auth:

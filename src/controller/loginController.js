@@ -9,8 +9,8 @@ import path from 'path';
 import {checkToken} from "../middlewares/HeaderValidators";
 var myfileName =[];
 // var imgPath = '../../../../apache8//Tuktuk_images';
-var imgPath = '../../public/assets/upload';
-var dbImagePath = '../../public/assets/upload';
+var imgPath = '../../public/images';
+var dbImagePath = '../../public/images';
 var myfileName2 = [];
 let randomString = function () {
     let text = "";
@@ -55,7 +55,6 @@ router.get('/', function(req, res, next) {
 
 router.get('/getAttendance', checkToken, (req, res, next) =>
 {
-
     user.getAttendance(req.get('TUKTUK_TOKEN'),res)
         .then(result =>
         {

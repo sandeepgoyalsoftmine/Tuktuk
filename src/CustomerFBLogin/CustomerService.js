@@ -49,7 +49,7 @@ export async function createCustomer(device_type,version, user,res) {
         return newUsers.userid;
     });
     res.setHeader('TUKTUK_TOKEN', token);
-    let usersDetails = await CustomerModel.fetchCustomerDetailByUserID(user.userid);
+    let usersDetails = await CustomerModel.fetchCustomerDetailByUserID(user);
     return ({
         CustomerDetails : usersDetails[0][0],
         message : 'User Created'
