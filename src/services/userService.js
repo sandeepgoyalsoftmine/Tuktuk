@@ -62,6 +62,30 @@ export async function getAttendance(token,req)
     return obj;
 
 }
+export async function driverDuty(reqData, token){
+    if((reqData.driver_duty_status).toUpperCase() === "ON" || (reqData.driver_duty_status).toUpperCase() === "OFF"){
+
+    }else{
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Duty should be On or Off'};
+    }
+    let userData = await Users.fetchDriverByToken(token);
+    if (userData[0].length < 1) {
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
+    }
+    console.log("userdata   "+JSON.stringify(userData[0][0]))
+    if((userData[0][0].driver_duty_status).toUpperCase() === (reqData.driver_duty_status).toUpperCase()){
+        if((userData[0][0].driver_duty_status).toUpperCase() === "ON")
+            return {errorCode: HttpStatus.CONFLICT, message : 'Already On Duty'};
+        else
+            return {errorCode: HttpStatus.CONFLICT, message : 'Already off out'};
+    }
+    await bookshelf.transaction(async (t) => {
+        await UsersDao.updateRow(userData[0][0].userid, {driver_duty_status: reqData.driver_duty_status, updated_on : new Date()}, t);
+    });
+    userData = await Users.fetchDriverByToken(token);
+    return userData[0][0];
+}
+
 export async function markAttendance(reqData, token){
     let userData = await Users.fetchUserByToken(token);
     if (userData[0].length < 1) {

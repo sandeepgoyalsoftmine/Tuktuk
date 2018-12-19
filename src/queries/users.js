@@ -23,6 +23,11 @@ export const FETCH_USER_BY_TOKEN = `
     WHERE u.token =:token
 `;
 
+export const FETCH_DRIVER_BY_TOKEN = `
+Select u.userid, u.emailid, u.driver_duty_status from tbusers As u
+    WHERE u.token =:token AND user_type = 2
+`;
+
 export const FETCH_USERSTATUS_BY_TOKEN = `
 SELECT status from tbusers where token =:token`;
 

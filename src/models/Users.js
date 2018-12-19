@@ -46,6 +46,12 @@ class Users extends bookshelf.Model {
             'token': token
         })
     };
+
+    static fetchDriverByToken(token) {
+        return bookshelf.knex.raw(queries.FETCH_DRIVER_BY_TOKEN, {
+            'token': token
+        })
+    };
     static fetchAttendanceDetails(token) {
         return bookshelf.knex.raw(queries.FETCH_ATTENDANCE_DETAILS_BY_TOKEN, {
             'token': token
