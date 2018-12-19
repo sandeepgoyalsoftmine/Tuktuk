@@ -8,7 +8,8 @@ import bookshelf from "../db";
 export async function otpGenerator(){
     return otpGenrator.generate(6, {alphabets :false, upperCase: false, specialChars: false });
 }
-export async function otpVerifyForEmail(reqData, token, devicetype, version){
+export async function otpVerifyForEmail(reqData, token, devicetype, version, res){
+    console.log("reqData   ")
     let otpVerifier = await UserModel.fetchOtpForEmail(token, reqData.otp);
     console.log("after query  "+JSON.stringify(otpVerifier[0]));
     if(otpVerifier[0].leading<1){
@@ -17,7 +18,7 @@ export async function otpVerifyForEmail(reqData, token, devicetype, version){
     await bookshelf.transaction(async (t) => {
         await UsersDao.updateRow(otpVerifier[0][0].customer_id, {email_verified: "1"}, t);
     });
-
+    res.setHeader('TUKTUK_TOKEN', token);
     return {
         message: "Otp successfully verified for email"
     }
