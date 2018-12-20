@@ -10,7 +10,7 @@ import * as mailUtil from '../OtpForEmail/mail';
 export async function createUser(user, device_type,version,res) {
     console.log("token test");
     let token = generateToken(user.userid);
-    console.log("token " + token);
+    console.log(JSON.stringify(user)+ "   token " + token);
     let userData = await UserModel.fetchUserWithEmailMobile(user.email, user.mobile_no);
     if (userData[0].length > 0) {
         return {errorCode: HttpStatus.CONFLICT, message: 'Email or mobile already exist'};
@@ -40,6 +40,7 @@ export async function createUser(user, device_type,version,res) {
     let body = `Hi ${user.name},<br>Please verify Email with otp, and OTP is ${emailOtp}`;
     mailUtil.sendMail(emailSubject, body, user.email);
     let usersDetails = await UserModel.fetchUserWithEmailMobile(user.email, user.mobile_no);
+    res.setHeader('TUKTUK_TOKEN', token);
     return ({
         CustomerDetails: usersDetails[0][0],
         message: 'OTP is sent to your email and mobile no'

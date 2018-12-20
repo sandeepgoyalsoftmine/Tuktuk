@@ -2,11 +2,11 @@ import {Router} from 'express';
 import HttpStatus from 'http-status-codes';
 import * as OTPGeneration from './OTPGeneration'
 import * as SignUpService from "../";
-import {checkToken} from "../middlewares/HeaderValidators";
+import {checkTokenCustomer} from "../middlewares/HeaderValidators";
 
 let router = Router();
 
-router.post('/', checkToken, (req, res, next)=>
+router.post('/',checkTokenCustomer, (req, res, next)=>
 {
     OTPGeneration.otpVerifyForEmail(req.body, req.get('TUKTUK_TOKEN'),req.get('device_type'), req.get('version'), res)
         .then(result => {

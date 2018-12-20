@@ -51,7 +51,7 @@ let upload = multer(
 router.post('/create', (req, res, next)=>
 {
     console.log(req.session.userID+ "   test   ", req.body);
-    SignUpService.createUser(req.body, req.get('device_type'), req.get('version'))
+    SignUpService.createUser(req.body, req.get('device_type'), req.get('version'), res)
         .then(result => {
             if('errorCode' in result){
                 return res.status(result.errorCode).json({

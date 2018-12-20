@@ -8,11 +8,11 @@ import microtime from "microtime";
 
 export async function  login(deviceType, version, reqData, res) {
     let customerData = await CustomerLoginEmailMobModel.fetchCustomerDetailByEmailOrMobile(reqData.userid);
-    console.log("customerData "+JSON.stringify(customerData[0]));
+    console.log(JSON.stringify(reqData)+"    customerData "+JSON.stringify(customerData[0]));
     if (customerData[0].length < 1) {
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Customer not exists'};
     }
-    if (customerData[0][0].password != reqData.password) {
+    if (customerData[0][0].password != reqData.Password) {
         return {errorCode: HttpStatus.UNAUTHORIZED, message: 'Incorrect password'};
     }
     if(customerData[0].length == 1) {

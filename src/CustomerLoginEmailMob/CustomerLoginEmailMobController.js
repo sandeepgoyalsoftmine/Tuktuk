@@ -3,7 +3,7 @@ import HttpStatus from 'http-status-codes';
 import * as CustomerLoginEmailMobService from "./CustomerLoginEmailMobService";
 let router = Router();
 
-router.post('/login', (req, res, next) =>
+router.post('/', (req, res, next) =>
 {
     console.log("Customer request:",req.body);
     CustomerLoginEmailMobService.login(req.get('device_type'), req.get('version'), req.body,  res)

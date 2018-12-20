@@ -26,6 +26,11 @@ class UserModel extends bookshelf.Model {
             'token': token
         })
     }
+    static fetchCustomerwithToken(token){
+        return bookshelf.knex.raw(queries.FETCH_CUSTOMER_WITH_token, {
+            'token': token
+        })
+    }
 
 }
 
