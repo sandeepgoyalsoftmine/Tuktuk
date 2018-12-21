@@ -44,6 +44,15 @@ export async function getStatus(token){
 
 
 }
+export async function getDriverDuty(token){
+    let userData = await Users.fetchDriverByToken(token);
+    if(userData.length < 1){
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
+    }
+    return {
+        driverDutyDetails : userData[0][0]
+    }
+}
 
 export async function getAttendance(token,req)
 {

@@ -65,6 +65,18 @@ router.get('/getAttendance', checkToken, (req, res, next) =>
             });
         })
 });
+router.get('/driverDuty', checkToken, (req, res, next) =>
+{
+    user.getDriverDuty(req.get('TUKTUK_TOKEN'),res)
+        .then(result =>
+        {
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
 router.get('/getStatus', checkToken, (req, res, next) =>
 {
 
