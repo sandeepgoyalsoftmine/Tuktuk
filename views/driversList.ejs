@@ -6,6 +6,7 @@
     <script type="text/javascript" src="../public/javascripts/jquery-1.12.0.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="../public/javascripts/user.js"></script>
+    <script type="text/javascript" src="../public/javascripts/drivers.js"></script>
     <script type="text/javascript" src="../public/javascripts/bootstrap_toggle.js"></script>
     <link href="../public/stylesheets/bootstrap_toggle.css" rel="stylesheet">
 
@@ -81,7 +82,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Employee List
+                        Drivers List
 
                     </div>
                     <!-- /.panel-heading -->
@@ -376,58 +377,117 @@
                                     <div class="col-lg-12">
                                         <div id="form2" role="form">
                                             <div class = "row">
+                                                <input type="hidden" id="driver_id" name="driver_id">
                                                 <div class = "col-sm-6 col-md-3">
-                                                    <h4><b>Profile Pic</b></h4>
+                                                    <h4><b>Profile Pic</b>
+                                                        <button onclick="showPicBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
+                                                        <button onclick="savePicBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
+                                                    </h4>
+
                                                     <div class="container">
                                                         <div class = "thumbnail">
                                                             <img id="profilePic" name="profilePic">
                                                         </div>
+
                                                     </div>
-
-                                                    <div class = "caption">
-
-
+                                                    <div id="profileDiv">
+                                                        <form id="editDriverPic">
+                                                        <div class="form-group">
+                                                            <label>Upload Profile Pic</label>
+                                                            <input id="image" name="image"  class="form-control" type="file"/>
+                                                        </div>
+                                                            <input type="hidden" id="type" name="type" value="driver_pic">
+                                                        </form>
                                                     </div>
                                                 </div>
                                                 <div id="driverDetails2">
 
                                                     <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Driving License</b></h4>
+                                                        <h4><b>Driving License</b>
+                                                            <button onclick="showDrivingLicenseBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
+                                                            <button onclick="saveDrivingLicenseBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
+                                                        </h4>
                                                         <div class="container">
                                                             <div class = "thumbnail">
                                                                 <img id="drivingLicense" name="drivingLicense">
                                                             </div>
                                                         </div>
 
-                                                        <div class = "caption">
+                                                        <div id="drivingLicenseDiv">
+                                                            <form id="editDLPic">
+                                                            <div class="form-group">
+                                                                <label>Upload Driving License</label>
+                                                                <input id="image" name="image"  class="form-control" type="file"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>DLNumber</label>
+                                                                <input id="fieldNumber" name="fieldNumber" type="text" class="form-control">
+                                                                </input>
+                                                                <input type="hidden" id="field" name="field" value="driving_licence_number">
+                                                                <input type="hidden" id="type" name="type" value="driving_licence_front">
 
-
+                                                            </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                     <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Pan Card</b></h4>
+                                                        <h4><b>Pan Card</b>
+                                                            <button onclick="showPancardBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
+                                                            <button onclick="savePancardBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
+                                                        </h4>
                                                         <div class="container">
                                                             <div class = "thumbnail">
                                                                 <img id="pancard" name="pancard">
                                                             </div>
                                                         </div>
 
-                                                        <div class = "caption">
+                                                        <div id="pancardDiv">
+                                                            <form id="editPancarPic">
+                                                            <div class="form-group">
+                                                                <label>Upload Pancard</label>
+                                                                <input id="image" name="image"  class="form-control" type="file"/>
+                                                                <input type="hidden" id="type" name="type" value="pancard">
+                                                            </div>
 
 
+
+                                                        <div class="form-group">
+                                                            <label>Pancard Number</label>
+                                                            <input id="fieldNumber" name="fieldNumber" type="text" class="form-control">
+                                                            </input>
+                                                            <input type="hidden" id="field" name="field" value="pan_card_number">
+                                                        </div>
+                                                            </form>
                                                         </div>
                                                     </div>
+
                                                     <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Registration Certificate</b></h4>
+                                                        <h4><b>RC</b>
+                                                            <button onclick="showRCBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
+                                                            <button onclick="saveRCBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
+                                                        </h4>
                                                         <div class="container">
                                                             <div class = "thumbnail">
                                                                 <img id="registrationCertificate" name="registrationCertificate">
                                                             </div>
                                                         </div>
 
-                                                        <div class = "caption">
+                                                        <div id="registrationCertificateDiv">
+                                                            <form id="editRcPic">
+                                                            <div class="form-group">
+                                                                <label>Upload RC</label>
+                                                                <input id="image" name="image"  class="form-control" type="file"/>
+                                                                <input type="hidden" id="type" name="type" value="registration_certificate">
 
+                                                            </div>
 
+                                                            <div class="form-group">
+                                                                <label>RC Number</label>
+                                                                <input id="fieldNumber" name="fieldNumber" type="text" class="form-control">
+                                                                </input>
+                                                                <input type="hidden" id="field" name="field" value="certificate_of_registration_number">
+                                                            </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -437,42 +497,91 @@
                                                 <div class = "row">
 
                                                     <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Motor Insurence</b></h4>
+                                                        <h4><b>Motor Insurence</b>
+                                                            <button onclick="showMotorBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
+                                                            <button onclick="saveMotorBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
+                                                        </h4>
                                                         <div class="container">
                                                             <div class = "thumbnail">
                                                                 <img id="mototInsurence" name="mototInsurence">
                                                             </div>
                                                         </div>
 
-                                                        <div class = "caption">
+                                                        <div id="motorInsurenceDiv">
+                                                            <form id="editMotorPic">
+                                                            <div class="form-group">
 
+                                                                <label>Upload Motor Insurance</label>
+                                                                <input id="image" name="image"  class="form-control" type="file"/>
+                                                                <input type="hidden" id="type" name="type" value="motor_insurence"/>
 
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Moto Insurance Number</label>
+                                                                <input id="fieldNumber" name="fieldNumber" type="text" class="form-control">
+                                                                </input>
+                                                                <input type="hidden" id="field" name="field" value="motor_insurence_number">
+                                                            </div>
+                                                        </form>
                                                         </div>
                                                     </div>
                                                     <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Police Verification</b></h4>
+                                                        <h4><b>Police Verification</b>
+                                                            <button onclick="showPoliceVerificationBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
+                                                            <button onclick="savePoliceVerificationBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
+                                                        </h4>
                                                         <div class="container">
+
                                                             <div class = "thumbnail">
                                                                 <img id="policeVerification" name="policeVerification">
                                                             </div>
                                                         </div>
 
-                                                        <div class = "caption">
+                                                        <div id="policeVerificationDiv">
+                                                            <form id="editPVPic">
+                                                            <div class="form-group">
+                                                                <label>Upload Police Verification</label>
+                                                                <input id="image" name="image"  class="form-control" type="file"/>
+                                                                <input type="hidden" id="type" name="type" value="police_verification"/>
+                                                            </div>
 
-
+                                                            <div class="form-group">
+                                                                <label>Police Verification Number</label>
+                                                                <input id="fieldNumber" name="fieldNumber" type="text" class="form-control">
+                                                                </input>
+                                                                <input type="hidden" id="field" name="field" value="police_verification_number">
+                                                            </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                     <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Adhar Card</b></h4>
+                                                        <h4><b>Adhar Card</b>
+                                                            <button onclick="showAdharBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
+                                                            <button onclick="saveAdharBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
+                                                        </h4>
                                                         <div class="container">
                                                             <div class = "thumbnail">
                                                                 <img id="adharCard" name="adharCard">
                                                             </div>
                                                         </div>
 
-                                                        <div class = "caption">
+                                                        <div id="adharCardDiv">
+                                                            <form id="editAdharPic">
+                                                            <div class="form-group">
+                                                                <label>Upload Adhar Card</label>
+                                                                <input id="image" name="image"  class="form-control" type="file"/>
+                                                                <input type="hidden" id="type" name="type" value="adhar_card"/>
 
+                                                            </div>
 
+                                                            <div class="form-group">
+                                                                <label>Adhar Card Number</label>
+                                                                <input id="fieldNumber" name="fieldNumber" type="text" class="form-control">
+                                                                </input>
+                                                                <input type="hidden" id="field" name="field" value="aadhar_card_number">
+                                                            </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>

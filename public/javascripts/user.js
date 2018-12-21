@@ -119,7 +119,6 @@ function setEditEmployee(userid){
                 }else {
                     if(response.data.UserDetails[0].user_type === "2"){
                         document.getElementById("driverValues").style.display = 'block';
-
                         document.getElementById('vehicle_type').value = response.data.UserDetails[0].vehicle_type;
                         document.getElementById('driving_licence_number').value = response.data.UserDetails[0].driving_licence_number;
                         document.getElementById('pan_card_number').value = response.data.UserDetails[0].pan_card_number;
@@ -254,22 +253,64 @@ function setEmployeeDocuments(userid){
             },
             success: function(response)
             {
+                document.getElementById("driver_id").value=response.data.UserDocuments[0].userid;
                 if(response.data.UserDocuments[0].user_type == 1){
                     alert("Can not edit Admin");
                     closeEditModal();
                 }else {
 
                     console.log(response);
-                    document.getElementById("profilePic").src = response.data.UserDocuments[0].driver_pic;
+                    document.getElementById("profileDiv").style.display="none";
+                    if(response.data.UserDocuments[0].driver_pic===null){
+                        document.getElementById("profilePic").src ="../../public/images/dummy.jpg"
+                    }else{
+                        document.getElementById("profilePic").src = response.data.UserDocuments[0].driver_pic;
+                    }
+
                     if (response.data.UserDocuments[0].user_type == 2){
-                        document.getElementById("driverDetails").style.display='block'
-                        document.getElementById("driverDetails2").style.display='block'
-                        document.getElementById("drivingLicense").src = response.data.UserDocuments[0].driving_licence_front;
-                    document.getElementById("pancard").src = response.data.UserDocuments[0].pancard;
-                    document.getElementById("registrationCertificate").src = response.data.UserDocuments[0].registration_certificate;
-                    document.getElementById("mototInsurence").src = response.data.UserDocuments[0].motor_insurence;
-                    document.getElementById("policeVerification").src = response.data.UserDocuments[0].police_verification;
-                    document.getElementById("adharCard").src = response.data.UserDocuments[0].adhar_card;
+
+                        document.getElementById("adharCardDiv").style.display="none";
+                        document.getElementById("policeVerificationDiv").style.display="none";
+                        document.getElementById("motorInsurenceDiv").style.display="none";
+                        document.getElementById("registrationCertificateDiv").style.display="none";
+                        document.getElementById("pancardDiv").style.display="none";
+                        document.getElementById("drivingLicenseDiv").style.display="none";
+
+                        document.getElementById("driverDetails").style.display='block';
+                        document.getElementById("driverDetails2").style.display='block';
+
+                        if(response.data.UserDocuments[0].adhar_card===null){
+                            document.getElementById("adharCard").src ="../../public/images/dummy.jpg"
+                        }else{
+                            document.getElementById("adharCard").src = response.data.UserDocuments[0].adhar_card;
+                        }
+                        if(response.data.UserDocuments[0].police_verification===null){
+                            document.getElementById("policeVerification").src ="../../public/images/dummy.jpg"
+                        }else{
+                            document.getElementById("policeVerification").src = response.data.UserDocuments[0].police_verification;
+                        }
+                        if(response.data.UserDocuments[0].motor_insurence===null){
+                            document.getElementById("mototInsurence").src ="../../public/images/dummy.jpg"
+                        }else{
+                            document.getElementById("mototInsurence").src = response.data.UserDocuments[0].motor_insurence;
+                        }
+                        if(response.data.UserDocuments[0].registration_certificate===null){
+                            document.getElementById("registrationCertificate").src ="../../public/images/dummy.jpg"
+                        }else{
+                            document.getElementById("registrationCertificate").src = response.data.UserDocuments[0].registration_certificate;
+                        }
+                        if(response.data.UserDocuments[0].pancard===null){
+                            document.getElementById("pancard").src ="../../public/images/dummy.jpg"
+                        }else{
+                            document.getElementById("pancard").src = response.data.UserDocuments[0].pancard;
+                        }
+                        if(response.data.UserDocuments[0].driving_licence_front===null){
+                            document.getElementById("drivingLicense").src ="../../public/images/dummy.jpg"
+                        }else{
+                            document.getElementById("drivingLicense").src = response.data.UserDocuments[0].driving_licence_front;
+                        }
+
+
                 }else{
                         document.getElementById("driverDetails").style.display='none'
                         document.getElementById("driverDetails2").style.display='none'
@@ -309,3 +350,4 @@ function closeModal(){
 function closeEditModal(){
     $('#documentEditModal').modal('hide');
 }
+

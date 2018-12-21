@@ -427,6 +427,44 @@ export async function updateUser(reqData,token, reqfile, imagePath){
         message : 'Updated Successfully'
     });
 }
+export async function updateUserForPortal(reqData,token, reqfile, imagePath, driver_id){
+    let image = '';
+    if(reqfile == undefined){
+        return {errorCode: HttpStatus.NOT_FOUND, errors: 'Image Not Found'};
+    }
+    if (reqfile !== undefined) {
+        image = reqfile.filename;
+    }
+    if(reqData.type==='' || reqData.type===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'type cannot be blank.'};
+    }
+
+    let imagefieldName = reqData.type;
+
+    if(reqData.type==="driver_pic") {
+        await bookshelf.transaction(async (t) => {
+            var obj = {updated_on: new Date()};
+            obj[imagefieldName] = imagePath + '/' + image;
+
+            await UsersDao.updateRow(parseInt(driver_id), obj, t);
+        });
+    }else{
+        let fieldNumber = reqData.field;
+        await bookshelf.transaction(async (t) => {
+            var obj = {updated_on: new Date(), };
+            obj[imagefieldName] = imagePath + '/' + image;
+            obj[fieldNumber] = reqData.fieldNumber;
+            await UsersDao.updateRow(parseInt(driver_id), obj, t);
+        });
+    }
+    let usersDetails = await Users.fetchUserByUserID(driver_id)
+    console.log("done from back");
+    return ({
+        UserDetails : usersDetails[0],
+        message : 'Updated Successfully'
+    });
+}
 
 export async function getEmployeeAttendance() {
     let employeeAttendance =  await TrackingTemp.fetchAttendance();

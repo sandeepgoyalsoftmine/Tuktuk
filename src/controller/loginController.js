@@ -336,6 +336,24 @@ router.put('/edit', upload.single('image'), (req, res, next)=>
             });
         })
 });
+
+router.put('/editDoc/:id', upload.single('image'), (req, res, next)=>
+{
+    console.log("request "+ JSON.stringify  (req.body)+"  "+req.file);
+    user.updateUserForPortal(req.body, req.get('TUKTUK_TOKEN'), req.file, dbImagePath, req.params.id )
+        .then(result => {
+            console.log("Reponse "+ JSON.stringify(result));
+            if ('errorCode' in result) {
+                return res.status(result.errorCode).json(result);
+            }
+            let contextPath = req.protocol + '://' + req.get('host');
+            return res.status(HttpStatus.OK).json({
+                statusCode : '200',
+                message : '',
+                data : result
+            });
+        })
+});
 router.put('/userEdit/:id', (req, res, next)=>
 {
     console.log("request "+ JSON.stringify(req.body));
