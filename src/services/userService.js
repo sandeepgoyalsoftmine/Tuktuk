@@ -459,6 +459,10 @@ export async function updateUserForPortal(reqData,token, reqfile, imagePath, dri
             await UsersDao.updateRow(parseInt(driver_id), obj, t);
         });
     }else{
+        if(reqData.field==='' || reqData.field===undefined)
+        {
+            return {errorCode: HttpStatus.BAD_REQUEST, message: 'value cannot be blank.'};
+        }
         let fieldNumber = reqData.field;
         await bookshelf.transaction(async (t) => {
             var obj = {updated_on: new Date(), };

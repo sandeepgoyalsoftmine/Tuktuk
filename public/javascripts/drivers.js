@@ -12,14 +12,17 @@ function editDoc(form){
             contentType: false,
             success: function (data, textStatus, request) {
                 console.log(data);
-                if(data.statusCode == 409 || data.statusCode=== '409'|| data.statusCode == 200 ) {
+                if(data.statusCode == 200 ) {
                     alert(data.data.message);
                     window.location.href = "/getDrivers";
                 }
             },
             error: function (error) {
                 console.log(error);
-                alert(error.responseJSON.message);
+                if(data.statusCode == 409 || data.statusCode=== '409' || data.statusCode == 400 || data.statusCode=== '400')
+                    alert(error.responseJSON.message);
+                if(data.statusCode == 404 || data.statusCode=== '404')
+                    alert(error.responseJSON.message);
             }
         });
 }
@@ -83,4 +86,15 @@ function saveAdharBlog() {
     document.getElementById("adharCardDiv").style.display="none";
     var form = $('#editAdharPic')[0];
     editDoc(form);
+}
+
+function updatePic(input, field) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#'+field)
+                .attr('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
 }

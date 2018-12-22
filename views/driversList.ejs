@@ -394,7 +394,7 @@
                                                         <form id="editDriverPic">
                                                         <div class="form-group">
                                                             <label>Upload Profile Pic</label>
-                                                            <input id="image" name="image"  class="form-control" type="file"/>
+                                                            <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'profilePic')" />
                                                         </div>
                                                             <input type="hidden" id="type" name="type" value="driver_pic">
                                                         </form>
@@ -417,7 +417,7 @@
                                                             <form id="editDLPic">
                                                             <div class="form-group">
                                                                 <label>Upload Driving License</label>
-                                                                <input id="image" name="image"  class="form-control" type="file"/>
+                                                                <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'drivingLicense')"/>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>DLNumber</label>
@@ -445,7 +445,7 @@
                                                             <form id="editPancarPic">
                                                             <div class="form-group">
                                                                 <label>Upload Pancard</label>
-                                                                <input id="image" name="image"  class="form-control" type="file"/>
+                                                                <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'pancard')"/>
                                                                 <input type="hidden" id="type" name="type" value="pancard">
                                                             </div>
 
@@ -476,7 +476,7 @@
                                                             <form id="editRcPic">
                                                             <div class="form-group">
                                                                 <label>Upload RC</label>
-                                                                <input id="image" name="image"  class="form-control" type="file"/>
+                                                                <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'registrationCertificate')"/>
                                                                 <input type="hidden" id="type" name="type" value="registration_certificate">
 
                                                             </div>
@@ -512,7 +512,7 @@
                                                             <div class="form-group">
 
                                                                 <label>Upload Motor Insurance</label>
-                                                                <input id="image" name="image"  class="form-control" type="file"/>
+                                                                <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'mototInsurence')"/>
                                                                 <input type="hidden" id="type" name="type" value="motor_insurence"/>
 
                                                             </div>
@@ -542,7 +542,7 @@
                                                             <form id="editPVPic">
                                                             <div class="form-group">
                                                                 <label>Upload Police Verification</label>
-                                                                <input id="image" name="image"  class="form-control" type="file"/>
+                                                                <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'policeVerification')"/>
                                                                 <input type="hidden" id="type" name="type" value="police_verification"/>
                                                             </div>
 
@@ -570,7 +570,7 @@
                                                             <form id="editAdharPic">
                                                             <div class="form-group">
                                                                 <label>Upload Adhar Card</label>
-                                                                <input id="image" name="image"  class="form-control" type="file"/>
+                                                                <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'adharCard')"/>
                                                                 <input type="hidden" id="type" name="type" value="adhar_card"/>
 
                                                             </div>
