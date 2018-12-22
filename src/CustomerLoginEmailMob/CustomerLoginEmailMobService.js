@@ -7,7 +7,7 @@ import microtime from "microtime";
 
 
 export async function  login(deviceType, version, reqData, res) {
-    let customerData = await CustomerLoginEmailMobModel.fetchCustomerDetailByEmailOrMobile(reqData.userid);
+    let customerData = await CustomerLoginEmailMobModel.fetchCustomerDetailByEmailOrMobile(reqData.userID);
     console.log(JSON.stringify(reqData)+"    customerData "+JSON.stringify(customerData[0]));
     if (customerData[0].length < 1) {
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Customer not exists'};
@@ -16,7 +16,7 @@ export async function  login(deviceType, version, reqData, res) {
         return {errorCode: HttpStatus.UNAUTHORIZED, message: 'Incorrect password'};
     }
     if(customerData[0].length == 1) {
-        const token = generateToken(reqData.userid);
+        const token = generateToken(reqData.userID);
         await bookshelf.transaction(async (t) => {
             await CustomerLoginEmailMobileDao.updateRow(customerData[0][0].customer_id, {token: token, last_login: new Date(), login_via: deviceType}, t);
         });
