@@ -21,6 +21,12 @@ class CustomerModel extends bookshelf.Model {
         })
     };
 
+    static fetchCustomerDetailBycustomer_ID(customer_id) {
+        return bookshelf.knex.raw(queries.FETCH_CUSTOMER_DETAIL_BY_CUSTOMERID, {
+            'customer_id': customer_id
+        })
+    };
+
 }
 
 export default CustomerModel;

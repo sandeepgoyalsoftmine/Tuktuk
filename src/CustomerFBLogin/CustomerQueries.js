@@ -3,3 +3,9 @@ SELECT customer_id, email_id, user_id, name, mobile_no, photo_url, gender
 FROM tbcustomers
 WHERE tbcustomers.user_id =:userID OR email_id =:email
 `;
+
+export const FETCH_CUSTOMER_DETAIL_BY_CUSTOMERID = `
+SELECT customer_id, email_id, user_id, name, mobile_no, photo_url, gender 
+FROM tbcustomers
+WHERE tbcustomers.customer_id =:customer_id
+`;

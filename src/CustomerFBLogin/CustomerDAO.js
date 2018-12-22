@@ -16,5 +16,5 @@ export async function createRow(newCustomer, transaction) {
  * @returns {Promise.<*>}
  */
 export async function updateRow(userid, data, transaction) {
-    return await CustomerModel.where({'userid':userid}).save(data, {method: 'update', transacting: transaction});
+    return await CustomerModel.where({'customer_id':userid}).save(data, {method: 'update', transacting: transaction});
 }

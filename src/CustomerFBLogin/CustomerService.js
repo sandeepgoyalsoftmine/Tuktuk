@@ -3,6 +3,7 @@ import * as CustomerDAO from "./CustomerDAO";
 import bookshelf from "../db";
 import crypto from "crypto";
 import microtime from "microtime";
+import * as HttpStatus from "http-status-codes/index";
 
 export async function registerFbUser(device_type, version, reqData,res)
 {
@@ -57,11 +58,13 @@ export async function createCustomer(device_type,version, user,res) {
 }
 
 export async function loginEmail(device_type,version, user, res) {
+    let data = await CustomerModel.fetchCustomerDetailByUserID(user);
+console.log("customer fetch details  "+ JSON.stringify(data[0][0]));
     const token = generateToken(user.userid);
     await bookshelf.transaction(async(t) => {
-        await CustomerDAO.updateRow(user.userid, {last_login: new Date(), token : token, login_via : device_type}, t);
+        await CustomerDAO.updateRow(data[0][0].customer_id, {last_login: new Date(), token : token, login_via : device_type, user_id: user.userid}, t);
     });
-    let usersDetails = await CustomerModel.fetchCustomerDetailByUserID(user.userid);
+    let usersDetails = await CustomerModel.fetchCustomerDetailBycustomer_ID(data[0][0].customer_id);
 
     res.setHeader('TUKTUK_TOKEN', token);
 
