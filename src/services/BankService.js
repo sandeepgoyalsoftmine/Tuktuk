@@ -26,34 +26,34 @@ export async function getBankDetailsByBankID(bankid) {
 
 export async function updateBankDetails(reqData, createdBy){
 
-    if(reqData.bank_name==='' || reqData.bank_name===undefined)
+    if(reqData.bankname==='' || reqData.bankname===undefined)
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'Bank Name cannot be blank.'};
     }
-    if(reqData.account_holder==='' || reqData.account_holder===undefined)
+    if(reqData.accountholder==='' || reqData.accountholder===undefined)
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'Account Holder name can not be blank'};
     }
-    if(reqData.account_no==='' || reqData.account_no===undefined)
+    if(reqData.accountno==='' || reqData.accountno===undefined)
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'Account number cannot be blank.'};
     }
-    if(reqData.ifsc_code==='' || reqData.ifsc_code===undefined)
+    if(reqData.ifsccode==='' || reqData.ifsccode===undefined)
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'IFSC code cannot be blank.'};
     }
-    let checkbank = await BankModel.fetchBankDetailsByBankID(reqData.bank_id);
+    let checkbank = await BankModel.fetchBankDetailsByBankID(reqData.bankid);
     console.log("check Bank   "+ JSON.stringify(checkbank[0]));
     if(checkbank[0].length<1){
-        return {errorCode: HttpStatus.CONFLICT, message: reqData.bank_id+' Not exist.'};
+        return {errorCode: HttpStatus.CONFLICT, message: reqData.bankid+' Not exist.'};
     }
     await bookshelf.transaction(async (t) => {
-        let updateBankDetails = await BankDao.updateRow(reqData.bank_id,
+        let updateBankDetails = await BankDao.updateRow(reqData.bankid,
             {
-                bank_name : reqData.bank_name,
-                account_holder : reqData.account_holder,
-                account: reqData.account_no,
-                ifsc_code: reqData.ifsc_code,
+                bank_name : reqData.bankname,
+                account_holder : reqData.accountholder,
+                account: reqData.accountno,
+                ifsc_code: reqData.ifsccode,
                 updated_on: new Date(),
                 updated_by :createdBy
             }, t);

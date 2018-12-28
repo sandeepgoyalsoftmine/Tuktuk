@@ -102,6 +102,19 @@ router.get('/getStatus', checkToken, (req, res, next) =>
             });
         })
 });
+router.get('/getDriverList', (req, res, next) =>
+{
+    user.getAllDriversList(res)
+        .then(result =>
+        {
+            console.log("result for driver list "+ JSON.stringify(result));
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
 router.get('/view/:id', function(req, res, next) {
     let contextPath = req.protocol + '://' + req.get('host');
     if(req.session.userID!=undefined) {

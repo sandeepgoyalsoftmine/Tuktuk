@@ -52,7 +52,7 @@ Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.gender,
 FROM tbusers
 LEFT OUTER JOIN tbuser_type on tbusers.user_type = tbuser_type.type_id
  Where tbusers.user_type = 3
- order by tbusers.created_on
+ order by tbusers.created_on desc
 `;
 
 export const FETCH_DRIVERS = `Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.gender, tbusers.status, driver_assigned,
@@ -60,7 +60,11 @@ export const FETCH_DRIVERS = `Select tbusers.userid, tbusers.name, tbusers.email
 FROM tbusers
 LEFT OUTER JOIN tbuser_type on tbusers.user_type = tbuser_type.type_id
  Where tbusers.user_type = 2
- order by tbusers.created_on
+ order by tbusers.created_on desc
+`;
+export const FETCH_DRIVERS_LIST = `Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.mobile_no
+FROM tbusers
+ Where tbusers.user_type = 2
 `;
 
 export const FETCH_USER_BY_EMAIL = 'Select userid, emailid, password, user_type from tbusers where emailid = :email';

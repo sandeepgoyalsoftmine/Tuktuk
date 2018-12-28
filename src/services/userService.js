@@ -172,7 +172,12 @@ export async function getUserByEmail(email) {
     return userDetails[0];
 }
 
-
+export async function getAllDriversList(){
+    let drivers = await Users.fetchDriversList();
+    return {
+        driverList: drivers[0]
+    };
+}
 
 
 
