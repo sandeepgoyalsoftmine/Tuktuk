@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <script type="text/javascript" src="../../public/javascripts/jquery-1.12.0.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="../../public/javascripts/bank.js"></script>
+    <% include partials/head.ejs%>
+</head>
+<body>
+
+<div id="wrapper">
+    <header>
+        <%include ./partials/header.ejs%>
+    </header>
+
+    <div id="page-wrapper">
+        <br/>
+
+        <!-- InstanceBeginEditable name="ContentRegion" -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                        Add Bank Details
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <div class="col-lg-12">
+                                    <form id="form1" name="form1"  role="form">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Name</label>
+                                                    <input id="name" name="name" readonly value="<%=data.UserDetails[0].name%>" class="form-control">
+
+                                                    </input>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Email</label>
+                                                    <input id="email" name="emailid"  readonly value="<%=data.UserDetails[0].emailid%>" class="form-control">
+                                                    </input>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Mobile Number</label>
+                                                    <input id="mobile_number" name="mobile_number" class="form-control" readonly value="<%=data.UserDetails[0].mobile_no%>" maxlength="10">
+
+                                                    </input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Bank Name</label>
+                                                    <input id="bank_name" name="bank_name" class="form-control" type="text" maxlength="10">
+
+                                                    </input>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Account Holder</label>
+                                                    <input id="account_holder" name="account_holder" type="text" class="form-control">
+                                                    </input>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Account Number</label>
+                                                    <input id="account_no" name="account_no" type="number" class="form-control">
+
+                                                    </input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div  class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>IFSC Code</label>
+                                                    <input id="ifsc_code" name="ifsc_code" class="form-control">
+
+                                                    </input>
+                                                </div>
+                                                <%=console.log("reqqqqqqqqqqq     "+JSON.stringify(data.UserDetails[0].userid))%>
+
+                                                <input id="user_id" name="user_id" type="hidden" value="<%=data.UserDetails[0].userid%>" class="form-control">
+
+                                                </input>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <button type="submit"  class="btn btn-success btn-default btn-lg">
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                                <!-- /.row (nested) -->
+                            </div>
+                            <!-- /.col-lg-12 -->
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+
+    </div>
+</div>
+</body>

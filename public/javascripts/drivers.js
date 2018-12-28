@@ -98,3 +98,7 @@ function updatePic(input, field) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+function addBankDetails(userid){
+    window.location.href = "bank/addBank/"+userid;
+}
