@@ -15,6 +15,6 @@ export async function createRow(newBankDetails, transaction) {
  * @param data
  * @returns {Promise.<*>}
  */
-export async function updateRow(userid, data, transaction) {
-    return await BankModel.where({'userid':userid}).save(data, {method: 'update', transacting: transaction});
+export async function updateRow(bankid, data, transaction) {
+    return await BankModel.where({'bankid':bankid}).save(data, {method: 'update', transacting: transaction});
 }

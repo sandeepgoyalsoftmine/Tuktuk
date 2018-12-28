@@ -15,5 +15,10 @@ class BankModel extends bookshelf.Model {
     static fetchBankDetailsWithDriver(){
         return bookshelf.knex.raw(queries.FETCH_BANK_DETAILS_WITH_DRIVER);
     }
+    static fetchBankDetailsByBankID(bankid){
+        return bookshelf.knex.raw(queries.FETCH_BANK_DETAILS_BY_BANK_ID,{
+            bank_id: bankid
+        });
+    }
 }
 export default BankModel;

@@ -22,3 +22,55 @@ $(document).ready(function() {
             });
     });
 });
+
+function setBankDetails(bankid){
+    $.ajax(
+        {
+            type: "GET",
+            url: "../bank/view/" + bankid,
+            headers: {
+                "userID": localStorage.getItem("TUKTUK_TOKEN")
+            },
+            success: function (response) {
+                document.getElementById('bank_id').value = response.data.BankDetails[0].bankid;
+                document.getElementById('name').value = response.data.BankDetails[0].name;
+                document.getElementById('mobile_number').value = response.data.BankDetails[0].mobile_no;
+                document.getElementById('email').value = response.data.BankDetails[0].emailid;
+                document.getElementById('bank_name').value = response.data.BankDetails[0].bank_name;
+                document.getElementById('account_holder').value = response.data.BankDetails[0].account_holder;
+                document.getElementById('account_no').value = response.data.BankDetails[0].account;
+                document.getElementById('ifsc_code').value = response.data.BankDetails[0].ifsc_code;
+            }
+        });
+
+}
+
+function UpdateBankDetails(){
+    document.getElementById('update').disabled = true;
+    alert(id);
+    var ajaxCall = $.ajax(
+        {
+            type: 'PUT',
+            url: '../bank/edit/'+id,
+            data: $('#form2').serialize(),
+            async: false,
+            success: function (response) {
+                if(response.statusCode==200){
+                    alert(response.data.message);
+                    closeModal();
+                }
+                window.location.href = "/bank/getBankDetails";
+            },
+            error: function (error) {
+                console.log(error.responseJSON)
+
+                alert(error.responseJSON.message);
+                document.getElementById('update').disabled = false;
+
+
+            }
+        });
+}
+function closeModal(){
+    $('#bankEditModal').modal('hide');
+}
