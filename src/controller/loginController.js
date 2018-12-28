@@ -1,6 +1,7 @@
 import {Router} from 'express';
 import HttpStatus from 'http-status-codes';
 import * as user from '../services/userService'
+import * as DriverService from '../services/DriverService';
 
 let router = Router();
 
@@ -65,6 +66,9 @@ router.get('/getAttendance', checkToken, (req, res, next) =>
             });
         })
 });
+
+
+
 router.get('/driverDuty', checkToken, (req, res, next) =>
 {
     user.getDriverDuty(req.get('TUKTUK_TOKEN'),res)
@@ -427,8 +431,6 @@ router.post('/attendance', checkToken, (req, res, next)=>
                 data : result
             });
         })
-
-
 });
 
 router.post('/driverDuty', checkToken, (req, res, next)=>
@@ -450,10 +452,30 @@ router.post('/driverDuty', checkToken, (req, res, next)=>
                 data : result
             });
         })
-
-
 });
-
-
+router.post('/getEstimate', (req, res, next) =>
+{
+    DriverService.getEstimatedFare(req.body,res)
+        .then(result =>
+        {
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
+router.post('/startRide', checkToken, (req, res, next) =>
+{
+    DriverService.startRide(req.body, req.get('TUKTUK_TOKEN'), res)
+        .then(result =>
+        {
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
 
 export default router;
