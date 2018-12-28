@@ -47,7 +47,7 @@ function setBankDetails(bankid){
 
 function UpdateBankDetails(){
     document.getElementById('update').disabled = true;
-    alert(id);
+    var id = document.getElementById('bank_id').value;
     var ajaxCall = $.ajax(
         {
             type: 'PUT',
