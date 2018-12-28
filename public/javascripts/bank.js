@@ -16,6 +16,7 @@ $(document).ready(function() {
                         alert(data.data.message);
                         document.getElementById("form1").reset();
                         closeModal1();
+                        window.location.href = "/bank/getBankDetails";
                     }
                 },
                 error: function (error) {
@@ -70,8 +71,6 @@ function UpdateBankDetails(){
 
                 alert(error.responseJSON.message);
                 document.getElementById('update').disabled = false;
-
-
             }
         });
 }
