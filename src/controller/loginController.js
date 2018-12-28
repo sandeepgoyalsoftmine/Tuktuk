@@ -65,6 +65,18 @@ router.get('/getAttendance', checkToken, (req, res, next) =>
             });
         })
 });
+router.get('/driverDocuments', checkToken, (req, res, next) =>
+{
+    user.getDriverDocuments(req.get('TUKTUK_TOKEN'),res)
+        .then(result =>
+        {
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
 router.get('/driverDuty', checkToken, (req, res, next) =>
 {
     user.getDriverDuty(req.get('TUKTUK_TOKEN'),res)
@@ -331,6 +343,7 @@ router.post('/create', (req, res, next)=>
             });
         })
 });
+
 router.put('/edit', upload.single('image'), (req, res, next)=>
 {
     console.log("request "+ JSON.stringify(req.body)+"  "+req.file);

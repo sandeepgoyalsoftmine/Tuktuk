@@ -54,6 +54,16 @@ export async function getDriverDuty(token){
     }
 }
 
+export async function getDriverDocuments(token){
+    let driverDocuments = await Users.fetchDiverDocuments(token);
+    if(driverDocuments.length < 1){
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
+    }
+    return {
+        driverDocuments : driverDocuments[0][0]
+    }
+}
+
 export async function getAttendance(token,req)
 {
     let userData = await Users.fetchUserByToken(token);

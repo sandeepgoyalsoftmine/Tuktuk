@@ -11,6 +11,13 @@ FROM tbusers
 WHERE tbusers.userid =:userID
 `;
 
+export const FETCH_DRIVER_DOCUMENTS_TOKEN = `Select tbusers.userid, tbusers.name, ifnull(driving_licence_front,'') as driving_licence_front ,ifnull(pancard,'') as pancard ,
+ifnull(registration_certificate, '') as registration_certificate,ifnull(motor_insurence,'') as motor_insurence, 
+ifnull(police_verification,'') as police_verification, ifnull(adhar_card,'') as adhar_card
+FROM tbusers
+WHERE tbusers.token =:token
+`;
+
 export const FETCH_USER_DOCUMENT_BY_USERID = `
 Select userid,user_type, driver_pic, driving_licence_front, pancard, registration_certificate, motor_insurence,
 police_verification, adhar_card
