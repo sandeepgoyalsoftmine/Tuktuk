@@ -26,6 +26,36 @@ router.post('/create' ,(req, res, next)=>
         })
 });
 
+router.get('/getBankDetails', function(req, res, next) {
+    let contextPath = req.protocol + '://' + req.get('host');
+    if(req.session.userID!=undefined) {
+        userService.getUserByEmail(req.session.userID).then(result => {
+            console.log("result 0 ",result)
+            if (result.length == 1) {
+                var usertype = parseInt(result[0].user_type);
+                if (parseInt(result[0].user_type) == 1) {
+                    BankService.getBankDetails()
+                        .then(result1 => {
+                            console.log("Bank Details "+ JSON.stringify(result1));
+                            res.render('BankDetails', {
+                                path: contextPath, header: 'Bank Details', operation: '',
+                                data: result1,
+                                access1: 'true'
+                            });
+                        })
+                }
+                else {
+                    res.render('BankDetails', {path: contextPath, header: 'Bank Details', operation: '', access1: 'false'});
+                }
+            } else {
+                res.render('index', {path: contextPath, header: 'Login', operation: '', access1: 'false'});
+            }
+        })
+    }else{
+        res.render('index', {path: contextPath, header: 'Login', operation: '', access1:'false'});
+    }
+});
+
 
 
 

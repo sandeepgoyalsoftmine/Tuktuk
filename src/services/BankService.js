@@ -1,7 +1,20 @@
 import bookshelf from "../db";
 import * as BankDao from "../dao/BankDao";
-import Users from "../models/Users";
+import BankModel from "../models/BankModel";
 import * as HttpStatus from "http-status-codes/index";
+
+
+
+
+export async function getBankDetails(){
+    let driverBankDetials =  await BankModel.fetchBankDetailsWithDriver();
+
+
+    return ({
+        BankDetails : driverBankDetials[0],
+        message : ''
+    });
+}
 
 export async function createBankDetails(reqData, sessionID){
     console.log("reqDatas   "+ JSON.stringify(reqData)+"    session "+ sessionID);
