@@ -9,6 +9,7 @@ import SignUpController from './SignUpWithEmailVerification/SignUpController';
 import OtpController from './OtpForEmail/OtpController';
 import CustomerLoginEmailMobController from './CustomerLoginEmailMob/CustomerLoginEmailMobController'
 import CustomerBankController from './controller/CustomerBankController'
+import BankController from './controller/BankController';
 /**
  * Contains all API routes for the application.
  */
@@ -24,5 +25,5 @@ router.use('/signup', SignUpController);
 router.use('/otpverify', OtpController);
 router.use('/customerLogin', CustomerLoginEmailMobController);
 router.use('/bank', CustomerBankController);
-
+router.use('/banks', BankController);
 export default router;
