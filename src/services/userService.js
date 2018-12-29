@@ -8,7 +8,9 @@ import * as HttpStatus from "http-status-codes/index";
 import  * as LoginHistoryDao from '../dao/LoginHistoryDao';
 import * as TrackingTempDao from "../dao/TrackingTempDao";
 
-export async function  login(reqData, usertype1, res) {
+export async function  login(reqData, usertype1, deviceToken, res) {
+    if(deviceToken===undefined)
+        deviceToken='';
     let typeOfUser;
     if(reqData.userType !=undefined)
         typeOfUser = reqData.userType;
@@ -26,7 +28,7 @@ export async function  login(reqData, usertype1, res) {
     if(userData[0].length == 1 ) {
         const token = generateToken(reqData.userid);
         await bookshelf.transaction(async (t) => {
-            await UsersDao.updateRow(userData[0][0].userid, {token: token, last_login: new Date()}, t);
+            await UsersDao.updateRow(userData[0][0].userid, {device_id:deviceToken,token: token, last_login: new Date()}, t);
         });
         let userDetails = await Users.fetchUserDetailsByToken(token);
         res.setHeader('TUKTUK_TOKEN', token);

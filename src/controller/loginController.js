@@ -179,7 +179,7 @@ router.post('/login', (req, res, next) =>
 {
     console.log("User request:",req.body);
     let userType = 3;
-    user.login(req.body, userType, res)
+    user.login(req.body, userType,req.get('DEVICE_TOKEN'), res)
         .then(result =>
         {
             if('errorCode' in result){
@@ -205,7 +205,7 @@ router.post('/loginPortal', (req, res, next) =>
 {
     console.log("User request:",req.body);
     let usertype = 1;
-    user.login(req.body, usertype, res)
+    user.login(req.body, usertype, res, '')
         .then(result =>
         {
             if('errorCode' in result){

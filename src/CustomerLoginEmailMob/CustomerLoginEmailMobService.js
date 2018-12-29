@@ -6,7 +6,7 @@ import crypto from "crypto";
 import microtime from "microtime";
 
 
-export async function  login(deviceType, version, reqData, res) {
+export async function  login(deviceType, version, reqData, deviceToken, res) {
     let customerData = await CustomerLoginEmailMobModel.fetchCustomerDetailByEmailOrMobile(reqData.userID);
     console.log(JSON.stringify(reqData)+"    customerData "+JSON.stringify(customerData[0]));
     if (customerData[0].length < 1) {
@@ -18,7 +18,7 @@ export async function  login(deviceType, version, reqData, res) {
     if(customerData[0].length == 1) {
         const token = generateToken(reqData.userID);
         await bookshelf.transaction(async (t) => {
-            await CustomerLoginEmailMobileDao.updateRow(customerData[0][0].customer_id, {token: token, last_login: new Date(), login_via: deviceType}, t);
+            await CustomerLoginEmailMobileDao.updateRow(customerData[0][0].customer_id, {device_id: deviceToken,token: token, last_login: new Date(), login_via: deviceType}, t);
         });
         let customerDetails = await CustomerLoginEmailMobModel.fetchCustomerByToken(token);
         res.setHeader('TUKTUK_TOKEN', token);

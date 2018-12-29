@@ -6,7 +6,7 @@ let router = Router();
 router.post('/', (req, res, next) =>
 {
     console.log("Customer request:",req.body);
-    CustomerLoginEmailMobService.login(req.get('device_type'), req.get('version'), req.body,  res)
+    CustomerLoginEmailMobService.login(req.get('device_type'), req.get('version'), req.body, req.get('DEVICE_TOKEN'),  res)
         .then(result =>
         {
             if('errorCode' in result){
