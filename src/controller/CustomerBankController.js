@@ -2,7 +2,7 @@ import {Router} from 'express';
 import {checkToken} from '../middlewares/HeaderValidators';
 import HttpStatus from 'http-status-codes';
 import * as userService from "../services/userService";
-import * as BankService from '../services/BankService';
+import * as CustomerBankService from '../services/CustomerBankService';
 import * as VehicleService from "../services/VehicleService";
 
 // import dateformat from "date-utils";
@@ -13,7 +13,7 @@ let router = Router();
 router.post('/create' ,(req, res, next)=>
 {
     console.log("in bank controller", req);
-    BankService.createBankDetails(req.body, req.session.userID)
+    CustomerBankService.createBankDetails(req.body, req.session.userID)
         .then(result => {
             if ('errorCode' in result) {
                 return res.status(result.errorCode).json(result);
@@ -30,7 +30,7 @@ router.post('/create' ,(req, res, next)=>
 router.put('/edit/:id', (req, res, next)=>
 {
     console.log("request "+ JSON.stringify(req.body));
-    BankService.updateBankDetails(req.body, req.session.userID,req.params.id )
+    CustomerBankService.updateBankDetails(req.body, req.session.userID,req.params.id )
         .then(result => {
             console.log("Reponse "+ JSON.stringify(result));
             if ('errorCode' in result) {
@@ -57,7 +57,7 @@ router.get('/getBankDetails', function(req, res, next) {
             if (result.length == 1) {
                 var usertype = parseInt(result[0].user_type);
                 if (parseInt(result[0].user_type) == 1) {
-                    BankService.getBankDetails()
+                    CustomerBankService.getBankDetails()
                         .then(result1 => {
                             console.log("Bank Details "+ JSON.stringify(result1));
                             res.render('BankDetails', {
@@ -87,7 +87,7 @@ router.get('/view/:id', function(req, res, next) {
             if (result.length == 1) {
                 var usertype = parseInt(result[0].user_type);
                 if (parseInt(result[0].user_type) == 1) {
-                    BankService.getBankDetailsByBankID(req.params.id)
+                    CustomerBankService.getBankDetailsByBankID(req.params.id)
                         .then(result1 => {
                             console.log("bank details for edit "+ JSON.stringify(result1));
                             return res.status(HttpStatus.OK).json({

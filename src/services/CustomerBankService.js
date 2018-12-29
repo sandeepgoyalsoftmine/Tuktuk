@@ -1,6 +1,6 @@
 import bookshelf from "../db";
-import * as BankDao from "../dao/BankDao";
-import BankModel from "../models/BankModel";
+import * as CustomerBankDao from "../dao/CustomerBankDao";
+import CustomerBankModel from "../models/CustomerBankModel";
 import * as HttpStatus from "http-status-codes/index";
 import VehicleTypesModel from "../models/VehicleTypesModel";
 import * as VehicleTypeDAO from "../dao/VehicleTypeDAO";
@@ -9,7 +9,7 @@ import * as VehicleTypeDAO from "../dao/VehicleTypeDAO";
 
 
 export async function getBankDetails(){
-    let driverBankDetials =  await BankModel.fetchBankDetailsWithDriver();
+    let driverBankDetials =  await CustomerBankModel.fetchBankDetailsWithDriver();
     return ({
         BankDetails : driverBankDetials[0],
         message : ''
@@ -17,7 +17,7 @@ export async function getBankDetails(){
 }
 
 export async function getBankDetailsByBankID(bankid) {
-    let driverBankDetials =  await BankModel.fetchBankDetailsByBankID(bankid);
+    let driverBankDetials =  await CustomerBankModel.fetchBankDetailsByBankID(bankid);
     return ({
         BankDetails : driverBankDetials[0],
         message : ''
@@ -42,13 +42,13 @@ export async function updateBankDetails(reqData, createdBy){
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'IFSC code cannot be blank.'};
     }
-    let checkbank = await BankModel.fetchBankDetailsByBankID(reqData.bankid);
+    let checkbank = await CustomerBankModel.fetchBankDetailsByBankID(reqData.bankid);
     console.log("check Bank   "+ JSON.stringify(checkbank[0]));
     if(checkbank[0].length<1){
         return {errorCode: HttpStatus.CONFLICT, message: reqData.bankid+' Not exist.'};
     }
     await bookshelf.transaction(async (t) => {
-        let updateBankDetails = await BankDao.updateRow(reqData.bankid,
+        let updateBankDetails = await CustomerBankDao.updateRow(reqData.bankid,
             {
                 bank_name : reqData.bankname,
                 account_holder : reqData.accountholder,
@@ -88,7 +88,7 @@ export async function createBankDetails(reqData, sessionID){
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'Driver id cannot be blank.'};
     }
     let newBankID = await bookshelf.transaction(async(t) => {
-        let newBank = await BankDao.createRow({
+        let newBank = await CustomerBankDao.createRow({
             driver_id :reqData.user_id ,
             bank_name : reqData.bank_name,
             account_holder : reqData.account_holder,

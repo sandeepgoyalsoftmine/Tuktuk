@@ -8,7 +8,7 @@ import loginFbController from './CustomerFBLogin/CustomerLoginController'
 import SignUpController from './SignUpWithEmailVerification/SignUpController';
 import OtpController from './OtpForEmail/OtpController';
 import CustomerLoginEmailMobController from './CustomerLoginEmailMob/CustomerLoginEmailMobController'
-import BankController from './controller/BankController'
+import CustomerBankController from './controller/CustomerBankController'
 /**
  * Contains all API routes for the application.
  */
@@ -23,6 +23,6 @@ router.use('/customer', loginFbController);
 router.use('/signup', SignUpController);
 router.use('/otpverify', OtpController);
 router.use('/customerLogin', CustomerLoginEmailMobController);
-router.use('/bank', BankController);
+router.use('/bank', CustomerBankController);
 
 export default router;

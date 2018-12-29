@@ -1,9 +1,9 @@
 import bookshelf from '../db';
-import * as queries from "../queries/BankQuery";
+import * as queries from "../queries/CustomerBankQuery";
 
 
-const TABLE_NAME = 'tbbank';
-class BankModel extends bookshelf.Model {
+const TABLE_NAME = 'tbcustomerbank';
+class CustomerBankModel extends bookshelf.Model {
     get tableName() {
         return TABLE_NAME;
     }
@@ -21,4 +21,4 @@ class BankModel extends bookshelf.Model {
         });
     }
 }
-export default BankModel;
+export default CustomerBankModel;
