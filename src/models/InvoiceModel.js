@@ -1,4 +1,5 @@
 import bookshelf from '../db';
+import * as queries from "../queries/InvoiceQuery";
 
 const TABLE_NAME = 'tbinvoice';
 
@@ -9,6 +10,11 @@ class InvoiceModel extends bookshelf.Model {
 
     get hasTimestamps() {
         return false;
+    }
+    static fetchRideDetails(ride_id){
+        return bookshelf.knex.raw(queries.FETCH_RIDE_DETAILS_BY_RIDE_ID, {
+            'ride_id': ride_id
+        })
     }
 }
 export default InvoiceModel;

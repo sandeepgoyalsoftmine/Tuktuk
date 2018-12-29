@@ -5,6 +5,7 @@ import * as EstimationDao from "../dao/EstimationDao";
 import * as InvoiceDao from "../dao/InvoiceDao";
 import bookshelf from "../db";
 import Users from '../models/Users';
+import InvoiceModel from "../models/InvoiceModel";
 
 distanceMatrix.key('AIzaSyC2zwzwJP1SFBRGVt80SroTm-7ga-z1lcA');
 const TIME_COST = 1.5;
@@ -137,23 +138,15 @@ export async function getEstimatedFare(reqData){
     }
 }
 
-export async function startRide(reqData, token){
+export async function getInvoice(reqData, token){
     console.log("reqData   "+ JSON.stringify(reqData)+"    token  "+ token);
-    if(isNaN(reqData.sourceLat))
+    if(isNaN(reqData.ride_id))
     {
-        return {errorCode: HttpStatus.BAD_REQUEST, message: 'source latitude should be double type value.'};
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Ride id should be integer.'};
     }
-    if(isNaN(reqData.sourceLng))
-    {
-        return {errorCode: HttpStatus.BAD_REQUEST, message: 'source longitude should be double type value.'};
-    }
-    if(isNaN(reqData.destinationLat))
-    {
-        return {errorCode: HttpStatus.BAD_REQUEST, message: 'destination latitude should be double type value.'};
-    }
-    if(isNaN(reqData.destinationLng))
-    {
-        return {errorCode: HttpStatus.BAD_REQUEST, message: 'destination longitude should be double type value.'};
+    let rideDetails = InvoiceModel.fetchRideDetails(reqData.ride_id);
+    if (rideDetails[0].length < 1) {
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid ride id'};
     }
     let driver = await Users.fetchDriverByToken(token);
     console.log(JSON.stringify(driver[0]));
