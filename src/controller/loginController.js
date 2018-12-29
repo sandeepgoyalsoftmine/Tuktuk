@@ -205,7 +205,7 @@ router.post('/loginPortal', (req, res, next) =>
 {
     console.log("User request:",req.body);
     let usertype = 1;
-    user.login(req.body, usertype, res, '')
+    user.login(req.body, usertype,'', res)
         .then(result =>
         {
             if('errorCode' in result){
