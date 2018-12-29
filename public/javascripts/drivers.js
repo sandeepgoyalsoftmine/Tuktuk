@@ -14,7 +14,7 @@ function editDoc(form){
                 console.log(data);
                 if(data.statusCode == 200 ) {
                     alert(data.data.message);
-                    window.location.href = "/getDrivers";
+
                 }
             },
             error: function (error) {
