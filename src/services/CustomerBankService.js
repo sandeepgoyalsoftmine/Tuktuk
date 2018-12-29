@@ -9,6 +9,7 @@ import * as VehicleTypeDAO from "../dao/VehicleTypeDAO";
 
 
 export async function getBankDetails(){
+    console.log("in get customerBAnk");
     let driverBankDetials =  await CustomerBankModel.fetchBankDetailsWithDriver();
     return ({
         BankDetails : driverBankDetials[0],
@@ -17,6 +18,7 @@ export async function getBankDetails(){
 }
 
 export async function getBankDetailsByBankID(bankid) {
+    console.log("bank id "+ bankid)
     let driverBankDetials =  await CustomerBankModel.fetchBankDetailsByBankID(bankid);
     return ({
         BankDetails : driverBankDetials[0],

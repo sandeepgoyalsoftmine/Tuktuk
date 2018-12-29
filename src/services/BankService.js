@@ -11,6 +11,14 @@ export async function getBanks(){
     });
 }
 
+export async function getAllbankList(){
+    let banks =  await BankModel.fetchAllBanks();
+    return ({
+        Banks : banks[0],
+        message : ''
+    });
+}
+
 export async function createBank(reqData, sessionID){
     console.log("reqDatas   "+ JSON.stringify(reqData)+"    session "+ sessionID);
     if(reqData.bank_name==='' || reqData.bank_name===undefined)

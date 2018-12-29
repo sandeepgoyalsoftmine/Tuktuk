@@ -4,7 +4,7 @@
 <head>
     <script type="text/javascript" src="../../public/javascripts/jquery-1.12.0.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script type="text/javascript" src="../../public/javascripts/bank.js"></script>
+    <script type="text/javascript" src="../../public/javascripts/addbank.js"></script>
     <% include partials/head.ejs%>
 </head>
 <body>
@@ -61,7 +61,9 @@
                                             <div class="col-lg-4">
                                                 <div class="form-group">
                                                     <label>Bank Name</label>
-                                                    <input id="bank_name" name="bank_name" class="form-control" type="text" maxlength="100">
+                                                    <select id="bank_name" name="bank_name" class="form-control">
+                                                        <option>Select</option>
+                                                    </select>
 
                                                     </input>
                                                 </div>

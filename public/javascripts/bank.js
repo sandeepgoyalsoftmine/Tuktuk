@@ -31,7 +31,7 @@ function setBankDetails(bankid){
     $.ajax(
         {
             type: "GET",
-            url: "../bank/view/" + bankid,
+            url: "../bank/view/"+bankid,
             headers: {
                 "userID": localStorage.getItem("TUKTUK_TOKEN")
             },
@@ -75,6 +75,37 @@ function UpdateBankDetails(){
         });
 }
 $(document).ready(function() {
+    var combo1 = document.getElementById("bank_name");
+    while (combo1.firstChild) {
+        combo1.removeChild(combo1.firstChild);
+    }
+    var option = document.createElement("option");
+    option.text = "Loading...";
+    combo1.add(option, null);
+    $.ajax(
+        {
+            type: "GET",
+            url: "../banks/getBankList",
+            headers: {
+                "userID": localStorage.getItem("TUKTUK_TOKEN")
+            },
+            success: function (response) {
+                while (combo1.firstChild) {
+                    combo1.removeChild(combo1.firstChild);
+                }
+                var option = document.createElement("option");
+                option.text = "Select";
+                combo1.add(option, null);
+
+                for (var j = 0; j < response.data.Banks.length; j++) {
+                    var option = document.createElement("option");
+                    option.text = response.data.Banks[j].bank_name;
+                    option.value = response.data.Banks[j].bank_id;
+                    combo1.add(option, null);
+                }
+
+            }
+        });
     var combo = document.getElementById("user_id");
     while (combo.firstChild) {
         combo.removeChild(combo.firstChild);
@@ -107,6 +138,38 @@ $(document).ready(function() {
                     ob.mobile_no= response.data.driverList[j].mobile_no;
                     ob.emailid = response.data.driverList[j].emailid;
                     driverArray.push(ob);
+                }
+
+            }
+        });
+
+    var combo2 = document.getElementById("bankname");
+    while (combo2.firstChild) {
+        combo2.removeChild(combo2.firstChild);
+    }
+    var option = document.createElement("option");
+    option.text = "Loading...";
+    combo2.add(option, null);
+    $.ajax(
+        {
+            type: "GET",
+            url: "../banks/getBankList",
+            headers: {
+                "userID": localStorage.getItem("TUKTUK_TOKEN")
+            },
+            success: function (response) {
+                while (combo2.firstChild) {
+                    combo2.removeChild(combo2.firstChild);
+                }
+                var option = document.createElement("option");
+                option.text = "Select";
+                combo2.add(option, null);
+
+                for (var j = 0; j < response.data.Banks.length; j++) {
+                    var option = document.createElement("option");
+                    option.text = response.data.Banks[j].bank_name;
+                    option.value = response.data.Banks[j].bank_id;
+                    combo2.add(option, null);
                 }
 
             }
