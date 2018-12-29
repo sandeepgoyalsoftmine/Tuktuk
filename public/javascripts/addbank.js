@@ -24,7 +24,7 @@ $(document).ready(function() {
                 for (var j = 0; j < response.data.Banks.length; j++) {
                     var option = document.createElement("option");
                     option.text = response.data.Banks[j].bank_name;
-                    option.value = response.data.Banks[j].bank_id;
+                    option.value = response.data.Banks[j].bank_name;
                     combo1.add(option, null);
                 }
 
