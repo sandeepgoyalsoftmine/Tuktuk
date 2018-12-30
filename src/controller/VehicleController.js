@@ -38,6 +38,20 @@ let upload = multer(
         storage: storage
     });
 
+router.get('/getVehicleDetails', (req, res, next) =>
+{
+    VehicleService.getVehicleDetailsByUserId(req.get('TUKTUK_TOKEN'))
+        .then(result =>
+        {
+            console.log("result for driver list "+ JSON.stringify(result));
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
+
 router.get('/',  function(req, res, next) {
     let contextPath = req.protocol + '://' + req.get('host');
     console.log("request "+req.session.userID);

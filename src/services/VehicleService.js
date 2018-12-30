@@ -40,6 +40,22 @@ export async function getAllVehicle(){
         message:'',
         Vehicles :vehicles[0]
     })
+}
+
+export async function getVehicleDetailsByUserId(token){
+    let userData = await Users.fetchDriverByToken(token);
+    if(userData[0].length < 1){
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
+    }
+    let vehicleDetails = await VehicleModel.fetchVehicleDetailsWithUserID(userData[0][0].userid);
+    let vehicleStatus = false;
+    if(vehicleDetails[0].length > 0){
+        vehicleStatus = true;
+    }
+    return {
+        VehicleDetails:vehicleDetails[0][0],
+        status:vehicleStatus
+    }
 
 }
 

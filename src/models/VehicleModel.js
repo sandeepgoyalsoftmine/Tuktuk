@@ -13,6 +13,11 @@ class VehicleModel extends bookshelf.Model {
     static fetchAllVehicles(){
         return bookshelf.knex.raw(queries.FETCH_ALL_VEHICLE);
     }
+    static fetchVehicleDetailsWithUserID(userid){
+        return bookshelf.knex.raw(queries.FETCH_VEHICLE_DETAILS_BY_USER_ID,{
+            userid: userid
+        });
+    }
 
 
 }
