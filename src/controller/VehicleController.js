@@ -155,6 +155,29 @@ router.get('/getVehicle', function(req, res, next) {
 });
 
 
+router.put('/edit', (req, res, next)=>
+{
+    console.log("request "+ JSON.stringify(req.body));
+    VehicleService.updateVehicle(req.body,req.get('TUKTUK_TOKEN'))
+        .then(result => {
+            console.log("Reponse "+ JSON.stringify(result));
+            if ('errorCode' in result) {
+                return res.status(result.errorCode).json({
+                    status : 'Success',
+                    statusCode : result.errorCode,
+                    message: result.message
+                });
+            }
+            let contextPath = req.protocol + '://' + req.get('host');
+            return res.status(HttpStatus.OK).json({
+                statusCode : '200',
+                message : '',
+                data : result
+            });
+        })
+});
+
+
 
 
 

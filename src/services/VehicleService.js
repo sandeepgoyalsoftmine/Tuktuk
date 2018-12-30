@@ -193,5 +193,39 @@ export async function createVehicle(myfileName, dbImagePath, reqData, userID){
     return {
         message : "Successfully Added"
     };
+}
+export async function updateVehicle(reqData, token){
+    let userData = await Users.fetchDriverByToken(token);
+    if(userData.length < 1){
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
+    }
+    if(reqData.vehicle_Type === undefined || reqData.vehicle_Type===""  || reqData.vehicle_Type==='Select'){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid Vehicle type Please Select from given selection.'}
+    }if(reqData.make === undefined || reqData.make===""){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid company.'}
+    }if(reqData.model === undefined || reqData.model===""){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid Model.'}
+    }if(reqData.vehicle_number === undefined || reqData.vehicle_number===""){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid vehicle number.'}
+    }
+    await bookshelf.transaction(async (t) => {
+        await VehicleDao.updateRow(userData[0][0].userid,
+            {
+                vehicle_type: reqData.vehicle_Type,
+                make: reqData.make,
+                model: reqData.model,
+                vehicle_number: reqData.vehicle_number,
+                rc_no: reqData.rc_no,
+                permit_no: reqData.permitNo,
+                insurance_no: reqData.insuranceNo,
+                updated_by: userData[0][0].userid,
+                updated_on: new Date()
+            }, t);
+    });
+    let VehicleDetails = await VehicleModel.fetchVehicleDetailsWithUserID(userData[0][0].userid);
+    return ({
+        VehicleDetails : VehicleDetails[0][0],
+        message : 'Vehicle Updated Successfully'
+    });
 
 }
