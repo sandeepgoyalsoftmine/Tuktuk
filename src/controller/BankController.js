@@ -38,6 +38,19 @@ router.get('/getBankList', (req, res, next) =>
             });
         })
 });
+router.get('/getAccount', (req, res, next) =>
+{
+    BankService.getAccountDetails(req.get('TUKTUK_TOKEN'), res)
+        .then(result =>
+        {
+            console.log("result for bank list "+ JSON.stringify(result));
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
 
 router.get('/getBankDetails', function(req, res, next) {
     let contextPath = req.protocol + '://' + req.get('host');

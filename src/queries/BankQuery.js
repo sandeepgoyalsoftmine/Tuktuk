@@ -8,3 +8,8 @@ SELECT bank_id, bank_name, short_name, created_on
 FROM tbbank
 WHERE bank_name =:bank_name
 `;
+
+export const FETCH_BANK_BY_USER_ID = `
+SELECT bank_name, account_holder, account, ifsc_code 
+FROM tbcustomerbank
+`;
