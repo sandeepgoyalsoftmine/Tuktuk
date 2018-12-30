@@ -80,7 +80,10 @@ Select userid, name, emailid, gender, dob, mobile_no from tbusers where emailid 
 
 
 export const FETCH_USER_DETAILS_BY_TOKEN = `
-Select userid, name, emailid, gender, dob, mobile_no, driver_assigned from tbusers where token =:token
+Select userid, name, emailid, gender, dob, mobile_no, driver_assigned, tbvehicletypes.vehicle_type
+from tbusers
+LEFT OUTER JOIN tbvehicletypes on tbusers.vehicle_type = tbvehicletypes.vehicle_id
+where token =:token
 `;
 
 export const FETCH_UNASSIGNED_DRIVERS = `

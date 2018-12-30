@@ -196,7 +196,7 @@ export async function createVehicle(myfileName, dbImagePath, reqData, userID){
 }
 export async function updateVehicle(reqData, token){
     let userData = await Users.fetchDriverByToken(token);
-    if(userData.length < 1){
+    if(userData[0].length < 1){
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
     }
     if(reqData.vehicle_Type === undefined || reqData.vehicle_Type===""  || reqData.vehicle_Type==='Select'){

@@ -18,3 +18,7 @@ export async function createRow(newBankDetails, transaction) {
 export async function updateRow(bankid, data, transaction) {
     return await CustomerBankModel.where({'bankid':bankid}).save(data, {method: 'update', transacting: transaction});
 }
+
+export async function updateRowAPI(userid, data, transaction) {
+    return await CustomerBankModel.where({'driver_id':userid}).save(data, {method: 'update', transacting: transaction});
+}

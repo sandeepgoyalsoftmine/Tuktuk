@@ -155,7 +155,7 @@ router.get('/getVehicle', function(req, res, next) {
 });
 
 
-router.put('/edit', (req, res, next)=>
+router.put('/edit', checkToken, (req, res, next)=>
 {
     console.log("request "+ JSON.stringify(req.body));
     VehicleService.updateVehicle(req.body,req.get('TUKTUK_TOKEN'))

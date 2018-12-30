@@ -4,6 +4,7 @@ import CustomerBankModel from "../models/CustomerBankModel";
 import * as HttpStatus from "http-status-codes/index";
 import VehicleTypesModel from "../models/VehicleTypesModel";
 import * as VehicleTypeDAO from "../dao/VehicleTypeDAO";
+import Users from "../models/Users";
 
 
 
@@ -27,7 +28,6 @@ export async function getBankDetailsByBankID(bankid) {
 }
 
 export async function updateBankDetails(reqData, createdBy){
-
     if(reqData.bankname==='' || reqData.bankname===undefined)
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'Bank Name cannot be blank.'};
@@ -58,6 +58,45 @@ export async function updateBankDetails(reqData, createdBy){
                 ifsc_code: reqData.ifsccode,
                 updated_on: new Date(),
                 updated_by :createdBy
+            }, t);
+    });
+    return {
+        message : "Updated Successfully"
+    };
+
+}
+export async function updateAccount(reqData, token){
+
+    let userData = await Users.fetchDriverByToken(token);
+    if(userData[0].length < 1){
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
+    }
+    if(reqData.bankname==='' || reqData.bankname===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Bank Name cannot be blank.'};
+    }
+    if(reqData.accountholder==='' || reqData.accountholder===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Account Holder name can not be blank'};
+    }
+    if(reqData.accountno==='' || reqData.accountno===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Account number cannot be blank.'};
+    }
+    if(reqData.ifsccode==='' || reqData.ifsccode===undefined)
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'IFSC code cannot be blank.'};
+    }
+
+    await bookshelf.transaction(async (t) => {
+        let updateBankDetails = await CustomerBankDao.updateRowAPI(userData[0][0].userid,
+            {
+                bank_name : reqData.bankname,
+                account_holder : reqData.accountholder,
+                account: reqData.accountno,
+                ifsc_code: reqData.ifsccode,
+                updated_on: new Date(),
+                updated_by :userData[0][0].userid
             }, t);
     });
     return {

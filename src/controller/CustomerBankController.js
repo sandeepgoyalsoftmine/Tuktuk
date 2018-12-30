@@ -2,6 +2,7 @@ import {Router} from 'express';
 import HttpStatus from 'http-status-codes';
 import * as userService from "../services/userService";
 import * as CustomerBankService from '../services/CustomerBankService';
+import {checkToken} from "../middlewares/HeaderValidators";
 
 // import dateformat from "date-utils";
 
@@ -29,6 +30,26 @@ router.put('/edit/:id', (req, res, next)=>
 {
     console.log("request "+ JSON.stringify(req.body));
     CustomerBankService.updateBankDetails(req.body, req.session.userID,req.params.id )
+        .then(result => {
+            console.log("Reponse "+ JSON.stringify(result));
+            if ('errorCode' in result) {
+                return res.status(result.errorCode).json({
+                    status : 'Success',
+                    statusCode : result.errorCode,
+                    message: result.message
+                });
+            }
+            let contextPath = req.protocol + '://' + req.get('host');
+            return res.status(HttpStatus.OK).json({
+                statusCode : '200',
+                message : '',
+                data : result
+            });
+        })
+});
+router.put('/editAccount',checkToken, (req, res, next)=>
+{
+    CustomerBankService.updateAccount(req.body,req.get('TUKTUK_TOKEN') )
         .then(result => {
             console.log("Reponse "+ JSON.stringify(result));
             if ('errorCode' in result) {
