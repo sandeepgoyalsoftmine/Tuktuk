@@ -12,3 +12,9 @@ FROM tbcustomerbank
 LEFT OUTER JOIN tbusers on tbcustomerbank.driver_id = tbusers.userid
 where bankid =:bank_id
 `;
+
+export const FETCH_BANK_DETAILS_BY_DRIVER_ID = `
+SELECT bankid,bank_name, account_holder, account, ifsc_code 
+FROM tbcustomerbank
+WHERE driver_id =:driver_id
+`;

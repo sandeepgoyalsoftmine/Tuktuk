@@ -5,6 +5,7 @@ import * as HttpStatus from "http-status-codes/index";
 import VehicleTypesModel from "../models/VehicleTypesModel";
 import * as VehicleTypeDAO from "../dao/VehicleTypeDAO";
 import Users from "../models/Users";
+import BankModel from "../models/BankModel";
 
 
 
@@ -127,6 +128,10 @@ export async function createBankDetails(reqData, sessionID){
     if(reqData.user_id==='' || reqData.user_id===undefined)
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'Driver id cannot be blank.'};
+    }
+    let checkCustomerBank = await CustomerBankModel.fetchBankDetailsByDriverID(reqData.user_id);
+    if(checkCustomerBank[0].length>0){
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Driver Account Already Exist Please Edit for any Update'};
     }
     let newBankID = await bookshelf.transaction(async(t) => {
         let newBank = await CustomerBankDao.createRow({

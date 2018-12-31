@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+
+<head>
+
+    <script type="text/javascript" src="../public/javascripts/jquery-1.12.0.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="../public/javascripts/Discount.js"></script>
+
+    <% include partials/head.ejs %>
+    <style>
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .container img {
+            width: 100%;
+            height: auto;
+        }
+
+        .container .btn {
+            position: absolute;
+            top: 80%;
+            left: 80%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            color: white;
+            padding: 8px 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            opacity: 0.7;
+        }
+
+        .container .btn:hover {
+            background-color: #efad4f;
+        }
+    </style>
+</head>
+<body>
+
+<div id="wrapper">
+    <header>
+        <% include ./partials/header.ejs %>
+    </header>
+    <div id="page-wrapper">
+        <br/>
+        <div class="row">
+            <div class="col-lg-12">
+                <br>
+                <form action="/property/userWiseProperty/date" method="post">
+                    <!---->
+                </form>
+
+            </div>
+        </div>
+        <!-- InstanceBeginEditable name="ContentRegion" -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Add Discount
+                        <button  type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target=".bs-example-modal-sm" >
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="dataTable_wrapper">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                <tr>
+                                    <th>S No.</th>
+                                    <th>Discount Ride KM</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <!--<th>Edit</th>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <%
+                                for(var i = 0; i < data.Discount.length; i++) {
+                                if(i % 2 == 0){ %>
+                                <tr class="even gradeC">
+                                    <td><%= i + 1 %></td>
+                                    <td><%= data.Discount[i].discount_ride_km %></td>
+                                    <td><%= data.Discount[i].status %></td>
+                                    <td><%= data.Discount[i].date%></td>
+
+
+                                    <!--<td>-->
+                                    <!--<button -->
+                                    <!--class="btn btn-warning btn-circle" data-toggle="modal"-->
+                                    <!--data-target=".bs-example-modal-md"><i class="fa fa-pencil"></i></button></td>-->
+                                </tr>
+                                <% }else{ %>
+                                <td><%= i + 1 %></td>
+                                <td><%= data.Discount[i].discount_ride_km %></td>
+                                <td><%= data.Discount[i].status %></td>
+                                <td><%= data.Discount[i].date%></td>
+
+
+                                <!--<td>-->
+                                <!--<button -->
+                                <!--class="btn btn-warning btn-circle" data-toggle="modal"-->
+                                <!--data-target=".bs-example-modal-md"><i class="fa fa-pencil"></i></button></td>-->
+                                <% }
+                                } %>
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div id="bankEditModal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close btn btn-danger btn-circle" data-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Edit Banks</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <form id="form2" role="form">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Bank ID</label>
+                                                        <input id="bankid" name="bankid" readonly
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Bank Name</label>
+                                                        <input id="bankname" name="bankname" readonly  class="form-control">
+
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Short Name</label>
+                                                        <input id="short_name" name="short_name" class="form-control" readonly maxlength="100">
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- /.row (nested) -->
+                            </div>
+                            <!-- /.col-lg-12 -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="update" onclick="UpdateBankDetails()"
+                                class="btn btn-success btn-default btn-lg">
+                            Update
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="bankAddModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close btn btn-danger btn-circle" data-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Add Discounts</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <form id="form1" role="form">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                        <label>Discount Ride Km</label>
+                                                        <input id="discount_ride_km" name="discount_ride_km" class="form-control">
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <button type="submit"  class="btn btn-success btn-default btn-lg">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- /.row (nested) -->
+                            </div>
+                            <!-- /.col-lg-12 -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+</script>
+</body>

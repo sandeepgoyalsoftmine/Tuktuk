@@ -20,5 +20,10 @@ class CustomerBankModel extends bookshelf.Model {
             bank_id: bankid
         });
     }
+    static fetchBankDetailsByDriverID(driver_id){
+        return bookshelf.knex.raw(queries.FETCH_BANK_DETAILS_BY_DRIVER_ID,{
+            driver_id: driver_id
+        });
+    }
 }
 export default CustomerBankModel;
