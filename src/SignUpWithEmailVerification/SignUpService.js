@@ -12,6 +12,7 @@ export async function createUser(user, device_type,version,res) {
     let token = generateToken(user.userid);
     console.log(JSON.stringify(user)+ "   token " + token);
     let userData = await UserModel.fetchUserWithEmailMobile(user.email, user.mobile_no);
+
     if (userData[0].length > 0) {
         return {errorCode: HttpStatus.CONFLICT, message: 'Email or mobile already exist'};
     }
