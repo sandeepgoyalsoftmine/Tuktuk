@@ -8,3 +8,14 @@ SELECT discount_id, discount_ride_km, status
 FROM tbdiscount
 WHERE discount_ride_km =:km
 `;
+
+export const FETCH_DISCOUNT_BY_DISCOUNT_ID = `
+SELECT discount_id, discount_ride_km, status 
+FROM tbdiscount
+WHERE discount_id =:discount_id
+`;
+
+export const DEACTIVATE_ALL_EXCEPT_DISCOUNT_ID = `
+UPDATE tbdiscount
+set status = 'Deactivate' where discount_id <>:discount_id
+`;

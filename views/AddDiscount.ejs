@@ -77,7 +77,7 @@
                                     <th>Discount Ride KM</th>
                                     <th>Status</th>
                                     <th>Date</th>
-                                    <!--<th>Edit</th>-->
+                                    <th>Edit</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -91,10 +91,10 @@
                                     <td><%= data.Discount[i].date%></td>
 
 
-                                    <!--<td>-->
-                                    <!--<button -->
-                                    <!--class="btn btn-warning btn-circle" data-toggle="modal"-->
-                                    <!--data-target=".bs-example-modal-md"><i class="fa fa-pencil"></i></button></td>-->
+                                    <td>
+                                    <button  onclick="setRefferal(<%= data.Discount[i].discount_id %>)"
+                                    class="btn btn-warning btn-circle" data-toggle="modal"
+                                    data-target=".bs-example-modal-md"><i class="fa fa-pencil"></i></button></td>
                                 </tr>
                                 <% }else{ %>
                                 <td><%= i + 1 %></td>
@@ -103,10 +103,10 @@
                                 <td><%= data.Discount[i].date%></td>
 
 
-                                <!--<td>-->
-                                <!--<button -->
-                                <!--class="btn btn-warning btn-circle" data-toggle="modal"-->
-                                <!--data-target=".bs-example-modal-md"><i class="fa fa-pencil"></i></button></td>-->
+                                <td>
+                                <button onclick="setRefferal(<%= data.Discount[i].discount_id %>)"
+                                class="btn btn-warning btn-circle" data-toggle="modal"
+                                data-target=".bs-example-modal-md"><i class="fa fa-pencil"></i></button></td>
                                 <% }
                                 } %>
                                 </tbody>
@@ -129,7 +129,7 @@
                         <button type="button" class="close btn btn-danger btn-circle" data-dismiss="modal">
                             <i class="fa fa-times"></i>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel">Edit Banks</h4>
+                        <h4 class="modal-title" id="myModalLabel">Edit Discount</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -140,8 +140,8 @@
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Bank ID</label>
-                                                        <input id="bankid" name="bankid" readonly
+                                                        <label>Discount Id</label>
+                                                        <input id="discount_id" name="discount_id" readonly
                                                                class="form-control">
                                                     </div>
                                                 </div>
@@ -149,8 +149,8 @@
 
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Bank Name</label>
-                                                        <input id="bankname" name="bankname" readonly  class="form-control">
+                                                        <label>Discount Ride Km</label>
+                                                        <input id="discountridekm" name="discountridekm" class="form-control">
 
                                                         </input>
                                                     </div>
@@ -159,9 +159,12 @@
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Short Name</label>
-                                                        <input id="short_name" name="short_name" class="form-control" readonly maxlength="100">
-                                                        </input>
+                                                        <label>Status</label>
+                                                        <select id="status" name="status" class="form-control">
+                                                            <option>Deactivate</option>
+                                                            <option>Activate</option>
+                                                        </select>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -175,7 +178,7 @@
                         <!-- /.row -->
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="update" onclick="UpdateBankDetails()"
+                        <button type="button" id="update" onclick="UpdateDiscount()"
                                 class="btn btn-success btn-default btn-lg">
                             Update
                         </button>

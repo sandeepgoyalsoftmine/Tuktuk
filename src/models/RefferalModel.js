@@ -20,5 +20,16 @@ class RefferalModel extends bookshelf.Model {
             km:km
         })
     }
+    static fetchRefferalByDiscountID(discount_id){
+        return bookshelf.knex.raw(queries.FETCH_DISCOUNT_BY_DISCOUNT_ID, {
+            discount_id:discount_id
+        })
+    }
+    static deactivateAll(discount_id){
+        console.log("in model");
+        return bookshelf.knex.raw(queries.DEACTIVATE_ALL_EXCEPT_DISCOUNT_ID, {
+            discount_id:discount_id
+        })
+    }
 }
 export default RefferalModel;

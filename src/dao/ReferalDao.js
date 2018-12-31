@@ -15,6 +15,6 @@ export async function createRow(newBank, transaction) {
  * @param data
  * @returns {Promise.<*>}
  */
-export async function updateRow(bankid, data, transaction) {
-    return await RefferalModel.where({'bank_id':bankid}).save(data, {method: 'update', transacting: transaction});
+export async function updateRow(discount_id, data, transaction) {
+    return await RefferalModel.where({'discount_id':discount_id}).save(data, {method: 'update', transacting: transaction});
 }
