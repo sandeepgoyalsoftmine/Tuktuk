@@ -11,6 +11,7 @@ import CustomerLoginEmailMobController from './CustomerLoginEmailMob/CustomerLog
 import CustomerBankController from './controller/CustomerBankController'
 import BankController from './controller/BankController';
 import RefferalController from './controller/RefferalController';
+import CallerController from './controller/CallerController';
 /**
  * Contains all API routes for the application.
  */
@@ -28,4 +29,5 @@ router.use('/customerLogin', CustomerLoginEmailMobController);
 router.use('/bank', CustomerBankController);
 router.use('/banks', BankController);
 router.use('/discount', RefferalController);
+router.use('/caller',CallerController);
 export default router;

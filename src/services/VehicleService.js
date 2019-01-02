@@ -208,6 +208,7 @@ export async function updateVehicle(reqData, token){
     }if(reqData.vehicle_number === undefined || reqData.vehicle_number===""){
         return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid vehicle number.'}
     }
+    console.log("USerID   "+userData[0][0].userid);
     await bookshelf.transaction(async (t) => {
         await VehicleDao.updateRow(userData[0][0].userid,
             {

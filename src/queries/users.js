@@ -94,3 +94,20 @@ export const FETCH_ATTENDANCE_DETAILS_BY_TOKEN = `
     Select u.userid, u.emailid, u.in_time, u.out_time, u.login_status from tbusers As u
     WHERE u.token =:token
 `;
+
+export const fetchUserIDByMobileNumber = `
+SELECT userid
+FROM tbusers
+WHERE mobile_no =:mobile_no
+`;
+
+export const fetchUserMobileNumberByIDANdStatus = `
+SELECT customer_id, id 
+FROM tb_ride_details 
+where driver_id =:driver_id and status =:status  ;
+`;
+
+export const FETCH_MOBILE_NO_BY_USER_ID = `
+SELECT mobile_no
+FROM tbusers
+WHERE userid =:userid`;

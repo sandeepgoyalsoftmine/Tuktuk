@@ -25,6 +25,22 @@ class CustomerLoginEmailMobModel extends bookshelf.Model {
             token: token
         })
     }
+    static fetchCustomerIDByMobileNumber(mobile_no){
+        return bookshelf.knex.raw(queries.FETCH_CUSTOMER_ID_BY_MOBILE_NUMBER, {
+            mobile_no: mobile_no
+        })
+    }
+    static fetchRideIDFromRideDetailsByCustomerID(customer_id, status){
+        return bookshelf.knex.raw(queries.FETCH_RIDE_ID_FROM_RIDE_DETAILS_BY_CUSTOMER_ID, {
+            customer_id: customer_id,
+            status: status
+        })
+    }
+    static fetchMobileNumberByCustomerId(customerID){
+        return bookshelf.knex.raw(queries.FETCH_MOBILE_NO_BY_CUSTOMER_ID, {
+            customer_id: customerID
+        })
+    }
 
 }
 

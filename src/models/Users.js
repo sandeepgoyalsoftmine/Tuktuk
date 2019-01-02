@@ -76,11 +76,10 @@ class Users extends bookshelf.Model {
         })
     }
     static fetchUserDocumentsByUserID(userid){
-    return bookshelf.knex.raw(queries.FETCH_USER_DOCUMENT_BY_USERID, {
-    'userID' : userid
-})
-}
-
+        return bookshelf.knex.raw(queries.FETCH_USER_DOCUMENT_BY_USERID, {
+            'userID' : userid
+        })
+    }
     static getUserByEmail(email){
         return bookshelf.knex.raw(queries.FETCH_USER_BY_EMAIL, {'email': email});
     }
@@ -99,6 +98,22 @@ class Users extends bookshelf.Model {
             'userID': user.userid
         })
     };
+    static fetchUserIDByMobileNumber(mobile_no){
+        return bookshelf.knex.raw(queries.fetchUserIDByMobileNumber, {
+            mobile_no: mobile_no
+        })
+    }
+    static fetchRideIDFromRideDetailsByDriverID(driver_id, status){
+        return bookshelf.knex.raw(queries.fetchUserMobileNumberByIDANdStatus, {
+            driver_id: driver_id,
+            status:status
+        })
+    }
+    static fetchMobileNumberByUserID(userid){
+        return bookshelf.knex.raw(queries.FETCH_MOBILE_NO_BY_USER_ID, {
+            userid: userid
+        })
+    }
 
 }
 
