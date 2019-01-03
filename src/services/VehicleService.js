@@ -217,8 +217,8 @@ export async function updateVehicle(reqData, token){
                 model: reqData.model,
                 vehicle_number: reqData.vehicle_number,
                 rc_no: reqData.rc_no,
-                permit_no: reqData.permitNo,
-                insurance_no: reqData.insuranceNo,
+                permit_no: reqData.permit_no,
+                insurance_no: reqData.insurance_no,
                 updated_by: userData[0][0].userid,
                 updated_on: new Date()
             }, t);

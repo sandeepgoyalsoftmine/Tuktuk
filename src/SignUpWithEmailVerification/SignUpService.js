@@ -31,6 +31,7 @@ export async function createUser(user, device_type,version,res) {
             mobile_verified: "0",
             email_verified: "0",
             password: user.password,
+            refferal: user.referral_code,
             last_login: new Date(),
             created_on: new Date(),
             token: token
