@@ -4,6 +4,8 @@ import * as HttpStatus from "http-status-codes/index";
 import bookshelf from "../db";
 import crypto from "crypto";
 import microtime from "microtime";
+import * as UsersDao from "../dao/users";
+import Users from "../models/Users";
 
 
 export async function  login(deviceType, version, reqData, deviceToken, res) {
@@ -27,6 +29,19 @@ export async function  login(deviceType, version, reqData, deviceToken, res) {
     }else{
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'Already Login'};
     }
+}
+export async function updateDeviceToken(token, device_id){
+    let userData = await CustomerLoginEmailMobModel.fetchCustomerByToken(token);
+    if(userData.length < 1){
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
+    }
+    await bookshelf.transaction(async (t) => {
+        await CustomerLoginEmailMobileDao.updateRow(userData[0][0].customer_id, {
+            device_id: device_id,
+            updated_on: new Date()
+        }, t);
+    });
+    return {message: 'Updated Successfully'};
 }
 
 export function generateToken(userid) {

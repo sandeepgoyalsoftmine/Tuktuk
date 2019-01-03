@@ -334,6 +334,19 @@ export  async function updateStatus(reqData, token, userID){
 
 
 }
+export async function updateDeviceToken(token, device_id){
+    let userData = await Users.fetchUserByToken(token);
+    if(userData.length < 1){
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
+    }
+    await bookshelf.transaction(async (t) => {
+        await UsersDao.updateRow(userData[0][0].userid, {
+            device_id: device_id,
+            updated_on: new Date()
+        }, t);
+    });
+    return {message: 'Updated Successfully'};
+}
 export async function updateUserData(reqData, created_by, userID){
     let usersDetails = await Users.fetchUserByUserID(userID);
     if(usersDetails[0].length < 0){

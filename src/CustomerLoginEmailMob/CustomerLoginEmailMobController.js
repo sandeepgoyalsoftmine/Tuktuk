@@ -1,6 +1,8 @@
 import {Router} from 'express';
 import HttpStatus from 'http-status-codes';
 import * as CustomerLoginEmailMobService from "./CustomerLoginEmailMobService";
+import {checkToken} from "../middlewares/HeaderValidators";
+import * as user from "../services/userService";
 let router = Router();
 
 router.post('/', (req, res, next) =>
@@ -27,6 +29,28 @@ router.post('/', (req, res, next) =>
                 data : result
             });
         }).catch(err => next(err));
+});
+
+router.put('/deviceToken',checkToken, (req, res, next)=>
+{
+    console.log("request "+ JSON.stringify(req.body));
+    CustomerLoginEmailMobService.updateDeviceToken(req.get('TUKTUK_TOKEN'),req.get('DEVICE_TOKEN'))
+        .then(result => {
+            console.log("Reponse "+ JSON.stringify(result));
+            if ('errorCode' in result) {
+                return res.status(result.errorCode).json({
+                    status : 'Success',
+                    statusCode : result.errorCode,
+                    message: result.message
+                });
+            }
+            let contextPath = req.protocol + '://' + req.get('host');
+            return res.status(HttpStatus.OK).json({
+                statusCode : '200',
+                message : '',
+                data : result
+            });
+        })
 });
 
 
