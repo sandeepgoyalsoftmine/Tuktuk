@@ -28,3 +28,8 @@ SELECT mobile_no
 FROM tbcustomers
 WHERE customer_id =:customer_id
 `;
+
+export const FETCH_CUSTOMER_RIDE_HISTORY = `
+SELECT source_lat, source_long, destination_lat, destination_long, status, created_at, payment_method 
+FROM tb_ride_details where customer_id =:customer_id
+`;

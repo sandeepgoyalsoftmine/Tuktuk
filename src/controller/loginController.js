@@ -497,8 +497,26 @@ router.post('/driverDuty', checkToken, (req, res, next)=>
                 data : result
             });
         })
-
-
+});
+router.get('/driverHistory', checkToken, (req, res, next)=>
+{
+    user.driverHistory(req.get('TUKTUK_TOKEN'))
+        .then(result => {
+            console.log("result "+ JSON.stringify(result));
+            if('errorCode' in result){
+                return res.status(result.errorCode).json({
+                    status : 'Success',
+                    statusCode : result.errorCode,
+                    message: result.message
+                });
+            }
+            let contextPath = req.protocol + '://' + req.get('host');
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
 });
 
 

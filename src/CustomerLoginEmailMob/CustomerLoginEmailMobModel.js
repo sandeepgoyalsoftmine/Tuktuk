@@ -41,6 +41,11 @@ class CustomerLoginEmailMobModel extends bookshelf.Model {
             customer_id: customerID
         })
     }
+    static fetchCustomerHistory(customer_id){
+        return bookshelf.knex.raw(queries.FETCH_CUSTOMER_RIDE_HISTORY, {
+            customer_id: customer_id
+        })
+    }
 
 }
 

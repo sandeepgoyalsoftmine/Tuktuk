@@ -4,6 +4,7 @@ import bookshelf from "../db";
 import crypto from "crypto";
 import microtime from "microtime";
 import * as HttpStatus from "http-status-codes/index";
+import CustomerLoginEmailMobModel from "../CustomerLoginEmailMob/CustomerLoginEmailMobModel";
 
 export async function registerFbUser(device_type, version, reqData,deviceToken,res)
 {
@@ -73,6 +74,17 @@ console.log("customer fetch details  "+ JSON.stringify(data[0][0]));
         CustomerDetails : usersDetails[0][0],
         message : 'Login Successfully'
     });
+}
+
+export async function customerHistory(token){
+    let userData = await CustomerLoginEmailMobModel.fetchCustomerByToken(token);
+    if (userData[0].length < 1) {
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
+    }
+    let customerHistory = await CustomerLoginEmailMobModel.fetchCustomerHistory(userData[0][0].customer_id);
+    return {
+        CustomerHistory : customerHistory[0]
+    }
 }
 
 export function generateToken(userid) {

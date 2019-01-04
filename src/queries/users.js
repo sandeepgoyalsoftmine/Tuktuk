@@ -112,3 +112,8 @@ export const FETCH_MOBILE_NO_BY_USER_ID = `
 SELECT mobile_no
 FROM tbusers
 WHERE userid =:userid`;
+
+export const FETCH_DRIVER_RIDE_HISTORY = `
+SELECT source_lat, source_long, destination_lat, destination_long, status, created_at, payment_method 
+FROM tb_ride_details where driver_id =:userid
+`;

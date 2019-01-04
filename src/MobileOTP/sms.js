@@ -14,7 +14,7 @@ export async function sendSMS(mobileNumber, msg) {
             if (!error && response.statusCode == 200) {
                 console.log(body)
                 var data = body;
-                console.log("dataaaaa   " + body.msg_id);
+                console.log("dataaaaa   " + body.msg_id[0]);
                 message = "Message Sent";
             } else {
                 message =  error;

@@ -114,6 +114,11 @@ class Users extends bookshelf.Model {
             userid: userid
         })
     }
+    static fetchDriverHistory(userid){
+        return bookshelf.knex.raw(queries.FETCH_DRIVER_RIDE_HISTORY, {
+            userid: userid
+        })
+    }
 
 }
 

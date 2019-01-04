@@ -2,6 +2,7 @@ import {Router} from 'express';
 import passport from 'passport';
 import HttpStatus from 'http-status-codes';
 import * as CustomerService from './CustomerService';
+import {checkToken, checkTokenCustomer} from "../middlewares/HeaderValidators";
 
 
 let FacebookTokenStrategy = require('passport-facebook-token');
@@ -58,6 +59,27 @@ router.post('/loginfb', passport.authenticate('facebook-token', {scope: ['email'
             message: 'Invalid token'
         });
     }
+});
+
+router.get('/customerHistory', checkTokenCustomer, (req, res, next)=>
+{
+    CustomerService.customerHistory(req.get('TUKTUK_TOKEN'))
+        .then(result => {
+            console.log("result "+ JSON.stringify(result));
+            if('errorCode' in result){
+                return res.status(result.errorCode).json({
+                    status : 'Success',
+                    statusCode : result.errorCode,
+                    message: result.message
+                });
+            }
+            let contextPath = req.protocol + '://' + req.get('host');
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
 });
 
 export default router;

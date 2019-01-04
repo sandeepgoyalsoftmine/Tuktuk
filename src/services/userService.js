@@ -83,6 +83,17 @@ export async function getAttendance(token,req)
     return obj;
 
 }
+export async function driverHistory(token){
+    let userData = await Users.fetchDriverByToken(token);
+    if (userData[0].length < 1) {
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
+    }
+    let driverHistory = await Users.fetchDriverHistory(userData[0][0].userid);
+    return {
+        DriverHistory : driverHistory[0]
+    }
+}
+
 export async function driverDuty(reqData, token){
     if((reqData.driver_duty_status).toUpperCase() === "ON" || (reqData.driver_duty_status).toUpperCase() === "OFF"){
 
