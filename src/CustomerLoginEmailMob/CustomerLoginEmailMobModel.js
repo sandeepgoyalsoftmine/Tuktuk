@@ -46,6 +46,11 @@ class CustomerLoginEmailMobModel extends bookshelf.Model {
             customer_id: customer_id
         })
     }
+    static fetchcallerID(callid){
+        return bookshelf.knex.raw(queries.FETCH_CALLER_DETAIL_BY_CALL_ID, {
+            call_id: callid
+        })
+    }
 
 }
 

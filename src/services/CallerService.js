@@ -29,6 +29,10 @@ export async function createCaller(reqData){
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'Call time cannot be blank.'};
     }
+    let checkCallID = await CustomerLoginEmailMobModel.fetchcallerID(reqData.callid);
+    if(checkCallID[0].length > 0){
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Call id already exist.'};
+    }
     let call_from_driver =0;
     let call_from_customer =0;
     let customerMobile = await CustomerLoginEmailMobModel.fetchCustomerIDByMobileNumber(reqData.callfrom);
@@ -109,6 +113,10 @@ export async function updateCaller(reqData){
     if(reqData.status==='' || reqData.status===undefined)
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'status cannot be blank.'};
+    }
+    let checkCallID = await CustomerLoginEmailMobModel.fetchcallerID(reqData.callid);
+    if(checkCallID[0].length <1){
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Call id not exist.'};
     }
     await bookshelf.transaction(async (t) => {
         let updateBankDetails = await CallerDao.updateRow(reqData.callid,
