@@ -3,6 +3,7 @@ import * as HttpStatus from "http-status-codes/index";
 import * as BankDao from "../dao/BankDao";
 import bookshelf from "../db";
 import Users from "../models/Users";
+import CustomerBankModel from "../models/CustomerBankModel";
 
 export async function getBanks(){
     let banks =  await BankModel.fetchAllBanks();
@@ -25,7 +26,7 @@ export async function getAccountDetails(token){
     if(userData.length < 1){
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
     }
-    let account = await BankModel.fetchAccountByUserid(userData[0][0].userid);
+    let account = await CustomerBankModel.fetchBankDetailsByDriverID(userData[0][0].userid);
     let accountStatus = true;
     if(account[0].length > 0){
         if(account[0][0].bank_name==null)

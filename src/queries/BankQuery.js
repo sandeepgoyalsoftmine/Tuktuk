@@ -11,5 +11,5 @@ WHERE bank_name =:bank_name
 
 export const FETCH_BANK_BY_USER_ID = `
 SELECT bank_name, account_holder, account, ifsc_code 
-FROM tbcustomerbank
+FROM tbcustomerbank where 
 `;
