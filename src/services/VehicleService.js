@@ -48,9 +48,22 @@ export async function getVehicleDetailsByUserId(token){
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
     }
     let vehicleDetails = await VehicleModel.fetchVehicleDetailsWithUserID(userData[0][0].userid);
-    let vehicleStatus = false;
+    let vehicleStatus = true;
     if(vehicleDetails[0].length > 0){
-        vehicleStatus = true;
+        if(vehicleDetails[0][0].vehicle_type==null)
+            vehicleStatus = false;
+        if(vehicleDetails[0][0].make==null)
+            vehicleStatus = false;
+        if(vehicleDetails[0][0].model==null)
+            vehicleStatus = false;
+        if(vehicleDetails[0][0].vehicle_number==null)
+            vehicleStatus = false;
+        if(vehicleDetails[0][0].rc_no==null)
+            vehicleStatus = false;
+        if(vehicleDetails[0][0].permit_no==null)
+            vehicleStatus = false;
+        if(vehicleDetails[0][0].insurance_no==null)
+            vehicleStatus = false;
     }
     return {
         VehicleDetails:vehicleDetails[0][0],

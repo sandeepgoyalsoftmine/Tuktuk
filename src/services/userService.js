@@ -7,6 +7,7 @@ import bookshelf from '../db';
 import * as HttpStatus from "http-status-codes/index";
 import  * as LoginHistoryDao from '../dao/LoginHistoryDao';
 import * as TrackingTempDao from "../dao/TrackingTempDao";
+import * as VehicleDao from "../dao/VehicleDao";
 
 export async function  login(reqData, usertype1, deviceToken, res) {
     if(deviceToken===undefined)
@@ -274,6 +275,20 @@ export async function createUser(user, created_by, token, res) {
 
             return newUsers.id;
         });
+        let newVehicleID = await bookshelf.transaction(async(t) => {
+            let newVehicle = await VehicleDao.createRow(
+                {
+                    vehicle_type: user.vehicle_type,
+                    status: 'Deactivate',
+                    assigned_driver_id: newUserId,
+                    created_by: createdBy,
+                    created_on: new Date()
+                }, t);
+            if (!newVehicle.id) {
+                return {errorCode: HttpStatus.INTERNAL_SERVER_ERROR, message: 'Server error'};
+            }
+        });
+
     }else{
         newUserId = await bookshelf.transaction(async(t) => {
         let newUsers = await UsersDao.createRow({
