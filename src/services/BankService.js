@@ -26,9 +26,18 @@ export async function getAccountDetails(token){
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
     }
     let account = await BankModel.fetchAccountByUserid(userData[0][0].userid);
-    let accountStatus = false;
+    let accountStatus = true;
     if(account[0].length > 0){
-        accountStatus = true;
+        if(account[0][0].bank_name==null)
+            accountStatus = false;
+        if(account[0][0].account_holder==null)
+            accountStatus = false;
+        if(account[0][0].account==null)
+            accountStatus = false;
+        if(account[0][0].ifsc_code==null)
+            accountStatus = false;
+    }else{
+        accountStatus = false;
     }
     return {
         AccountDetails:account[0][0],

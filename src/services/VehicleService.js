@@ -64,6 +64,8 @@ export async function getVehicleDetailsByUserId(token){
             vehicleStatus = false;
         if(vehicleDetails[0][0].insurance_no==null)
             vehicleStatus = false;
+    }else{
+        vehicleStatus = false;
     }
     return {
         VehicleDetails:vehicleDetails[0][0],
