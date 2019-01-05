@@ -91,8 +91,32 @@ export async function driverHistory(token){
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
     }
     let driverHistory = await Users.fetchDriverHistory(userData[0][0].userid);
+    for(let i=0; i< driverHistory[0].length;i++) {
+        if (driverHistory[0][i].status == 4) {
+            delete driverHistory[0][i].status;
+            driverHistory[0][0].status = "Completed";
+        }
+        if (driverHistory[0][i].status == 3) {
+            delete driverHistory[0][i].status;
+            driverHistory[0][0].status = "Processed";
+        }
+        if (driverHistory[0][i].status == 2) {
+            delete driverHistory[0][i].status;
+            driverHistory[0][0].status = "Accepted";
+        }
+        let customerDetails = {
+            name: driverHistory[0][i].name,
+            rating: driverHistory[0][i].Rating,
+        }
+        driverHistory[0][i].customer_details = customerDetails;
+        delete driverHistory[0][i].Company;
+        delete driverHistory[0][i].model;
+        delete driverHistory[0][i].vehicle_number;
+        delete driverHistory[0][i].name;
+        delete driverHistory[0][i].Rating;
+    }
     return {
-        DriverHistory : driverHistory[0]
+        driverHistory : driverHistory[0]
     }
 }
 
