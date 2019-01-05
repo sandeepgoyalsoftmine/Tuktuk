@@ -100,6 +100,7 @@ export async function customerHistory(token){
             final_amount: customerHistory[0][i].final_cost,
             total_amount: customerHistory[0][i].total_cost,
             discount: customerHistory[0][i].discount,
+            gst: customerHistory[0][i].gst
         }
         let driverDetails = {
             driver_id: customerHistory[0][i].userid,
