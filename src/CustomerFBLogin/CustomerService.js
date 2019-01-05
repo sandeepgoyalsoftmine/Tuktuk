@@ -82,8 +82,51 @@ export async function customerHistory(token){
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
     }
     let customerHistory = await CustomerLoginEmailMobModel.fetchCustomerHistory(userData[0][0].customer_id);
+    for(let i=0; i< customerHistory[0].length;i++){
+        if(customerHistory[0][i].status == 4){
+            delete customerHistory[0][i].status;
+            customerHistory[0][0].status = "Completed";
+        }
+        if(customerHistory[0][i].status == 3){
+            delete customerHistory[0][i].status;
+            customerHistory[0][0].status = "Processed";
+        }
+        if(customerHistory[0][i].status == 2){
+            delete customerHistory[0][i].status;
+            customerHistory[0][0].status = "Accepted";
+        }
+        let paymentDetails = {
+            payment_method : customerHistory[0][i].payment_method,
+            final_amount: customerHistory[0][i].final_cost,
+            total_amount: customerHistory[0][i].total_cost,
+            discount: customerHistory[0][i].discount,
+        }
+        let driverDetails = {
+            driver_id: customerHistory[0][i].userid,
+            name: customerHistory[0][i].name,
+            driver_pic:customerHistory[0][i].driver_pic,
+            rating: customerHistory[0][i].Rating,
+            vehicle_company: customerHistory[0][i].Company,
+            vehicle_model:customerHistory[0][i].model,
+            vehicle_number: customerHistory[0][i].vehicle_number
+        }
+        customerHistory[0][i].payment_details = paymentDetails;
+        customerHistory[0][i].driver_details = driverDetails;
+        delete customerHistory[0][i].Company;
+        delete customerHistory[0][i].model;
+        delete customerHistory[0][i].vehicle_number;
+        delete customerHistory[0][i].payment_method;
+        delete customerHistory[0][i].final_cost;
+        delete customerHistory[0][i].total_cost;
+        delete customerHistory[0][i].discount;
+        delete customerHistory[0][i].userid;
+        delete customerHistory[0][i].name;
+        delete customerHistory[0][i].driver_pic;
+        delete customerHistory[0][i].Rating;
+
+    }
     return {
-        CustomerHistory : customerHistory[0]
+        customerHistory : customerHistory[0]
     }
 }
 
