@@ -197,20 +197,14 @@ export async function getAllDriversList(){
 
 
 
-export async function createUser(user, created_by, token, res) {
-    let email1 = '', token1 = '';
-    if(user.emailid===undefined)
-        token1 = token;
-    else
-        email1 = user.emailid;
-    let userr, createdBy;
+export async function createUser(user, created_by, res) {
+    let createdBy;
     if(created_by===undefined) {
-        // userr = await Users.fetchUserByToken(token);
-        // createdBy = userr[0][0].emailid;
+        createdBy = '';
     }
     else
         createdBy = created_by;
-    let userData = await Users.getUserByEmail(email1);
+    let userData = await Users.getUserByEmail(user.emailid);
     console.log("userdata length "+ userData[0]);
     if (userData[0].length > 0) {
         return {errorCode: HttpStatus.CONFLICT, message : 'Email already exist'};
@@ -247,7 +241,7 @@ export async function createUser(user, created_by, token, res) {
     let newUserId;
     console.log("user.user_type  "+user.user_type+"      created_by  "+created_by);
     console.log("user.vehicle_type   "+user.vehicle_type);
-    if(user.user_type == 2 && created_by !=undefined){
+    if(user.user_type == 2){
         if(user.vehicle_type==='' || user.vehicle_type===undefined ||user.vehicle_type==='Select')
         {
             return {errorCode: HttpStatus.BAD_REQUEST, message: 'Please Select valid Vehicle type.'};

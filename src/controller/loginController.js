@@ -339,7 +339,7 @@ router.get('/getEmployeeAttendance', function(req, res, next) {
 router.post('/create', (req, res, next)=>
 {
     console.log(req.session.userID+ "   test   ", req.body);
-    user.createUser(req.body, req.session.userID, req.get('TUKTUK_TOKEN') )
+    user.createUser(req.body, req.session.userID)
         .then(result => {
             if('errorCode' in result){
                 return res.status(result.errorCode).json({
