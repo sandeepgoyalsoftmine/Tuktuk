@@ -87,7 +87,7 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="dataTable_wrapper">
-                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table style="font-size: smaller" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
                                     <th>Sr. no.</th>
@@ -95,7 +95,7 @@
                                     <th>Model</th>
                                     <th>Vehicle Number</th>
                                     <th>Driver</th>
-                                    <th>Created On</th>
+                                    <th>Mobile no.</th>
                                     <th>Status</th>
                                 </tr>
                                 </thead>
@@ -110,7 +110,7 @@
                                     <td><%= data.Vehicles[i].model %></td>
                                     <td><%= data.Vehicles[i].vehicle_number %></td>
                                     <td><%= data.Vehicles[i].name %></td>
-                                    <td ><%= data.Vehicles[i].created_on %></td>
+                                    <td ><%= data.Vehicles[i].mobile_no %></td>
 
                                     <%
                                     if(data.Vehicles[i].status==='Deactivate'){%>
@@ -129,7 +129,7 @@
                                 <td><%= data.Vehicles[i].model %></td>
                                 <td><%= data.Vehicles[i].vehicle_number %></td>
                                 <td><%= data.Vehicles[i].name %></td>
-                                <td ><%= data.Vehicles[i].created_on %></td>
+                                <td ><%= data.Vehicles[i].mobile_no %></td>
 
                                 <%
                                 if(data.Vehicles[i].status==='Deactivate'){%>
