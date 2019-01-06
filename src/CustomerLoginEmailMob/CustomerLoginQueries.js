@@ -35,7 +35,7 @@ tb_ride_details.status, payment_method
 , tbvehicle.make as Company, tbvehicle.model, tbvehicle.vehicle_number , tbinvoice.final_cost, tbinvoice.total_cost
 , tbinvoice.discount, tbinvoice.source_address, tbinvoice.destination_address,tbinvoice.source_time,
 tbinvoice.destination_time, tbusers.name, tbinvoice.gst,
-tbusers.driver_pic, tbusers.userid, tb_ride_details.customer_rating as Rating
+tbusers.driver_pic, tbusers.userid, tb_ride_details.driver_rating as Rating
 FROM tb_ride_details
 LEFT OUTER JOIN tbvehicle on tb_ride_details.driver_id = tbvehicle.assigned_driver_id
 LEFT OUTER JOIN tbinvoice on tb_ride_details.id = tbinvoice.ride_id

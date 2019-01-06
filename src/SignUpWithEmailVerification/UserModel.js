@@ -26,6 +26,12 @@ class UserModel extends bookshelf.Model {
             'token': token
         })
     }
+    static fetchOtpForMobile(token, otp){
+        return bookshelf.knex.raw(queries.FETCH_MOBILE_OTP_WITH_token, {
+            'mobile_otp': otp,
+            'token': token
+        })
+    }
     static fetchCustomerwithToken(token){
         return bookshelf.knex.raw(queries.FETCH_CUSTOMER_WITH_token, {
             'token': token

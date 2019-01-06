@@ -38,14 +38,16 @@ export async function createUser(user, device_type,version,res) {
         }, t);
         return newUsers.userid;
     });
-    let emailSubject = 'TUKTUK: OTP for email Verification.';
     let body = `Hi ${user.name},<br>Please verify Email with otp, and OTP is ${emailOtp}`;
-    mailUtil.sendMail(emailSubject, body, user.email);
+    let resu = await sendSMS(user.mobile_no,body);
+    // let emailSubject = 'TUKTUK: OTP for email Verification.';
+    //
+    // mailUtil.sendMail(emailSubject, body, user.email);
     let usersDetails = await UserModel.fetchUserWithEmailMobile(user.email, user.mobile_no);
     res.setHeader('TUKTUK_TOKEN', token);
     return ({
         CustomerDetails: usersDetails[0][0],
-        message: 'OTP is sent to your email and mobile no'
+        message: 'OTP is sent to your  mobile no'
     });
 
 }
