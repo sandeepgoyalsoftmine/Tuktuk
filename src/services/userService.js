@@ -9,12 +9,8 @@ import  * as LoginHistoryDao from '../dao/LoginHistoryDao';
 import * as TrackingTempDao from "../dao/TrackingTempDao";
 import * as VehicleDao from "../dao/VehicleDao";
 import * as CustomerBankDao from "../dao/CustomerBankDao";
+import {rideStatus} from '../Constants/enum';
 
-const RideRequested = 'Ride Requested';
-const RideBooked = 'Ride Booked';
-const RideProcessing = 'Ride Processing';
-const RideCompleted = 'Ride Completed';
-const RideFailed = 'Ride Failed';
 export async function  login(reqData, usertype1, deviceToken, res) {
     if(deviceToken===undefined)
         deviceToken='';
@@ -99,15 +95,15 @@ export async function driverHistory(token){
     for(let i=0; i< driverHistory[0].length;i++) {
         if (driverHistory[0][i].status == 4) {
             delete driverHistory[0][i].status;
-            driverHistory[0][0].status = RideCompleted;
+            driverHistory[0][0].status = rideStatus.RideCompleted;
         }
         if (driverHistory[0][i].status == 3) {
             delete driverHistory[0][i].status;
-            driverHistory[0][0].status = RideProcessing;
+            driverHistory[0][0].status = rideStatus.RideProcessing;
         }
         if (driverHistory[0][i].status == 2) {
             delete driverHistory[0][i].status;
-            driverHistory[0][0].status = RideBooked;
+            driverHistory[0][0].status = rideStatus.RideBooked;
         }
         let customerDetails = {
             name: driverHistory[0][i].name,
