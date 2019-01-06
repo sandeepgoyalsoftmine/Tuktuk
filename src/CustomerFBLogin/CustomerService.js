@@ -5,7 +5,11 @@ import crypto from "crypto";
 import microtime from "microtime";
 import * as HttpStatus from "http-status-codes/index";
 import CustomerLoginEmailMobModel from "../CustomerLoginEmailMob/CustomerLoginEmailMobModel";
-
+const RideRequested = 'Ride Requested';
+const RideBooked = 'Ride Booked';
+const RideProcessing = 'Ride Processing';
+const RideCompleted = 'Ride Completed';
+const RideFailed = 'Ride Failed';
 export async function registerFbUser(device_type, version, reqData,deviceToken,res)
 {
     let duplicate = await checkDuplicateEmail(reqData.user);
@@ -85,15 +89,15 @@ export async function customerHistory(token){
     for(let i=0; i< customerHistory[0].length;i++){
         if(customerHistory[0][i].status == 4){
             delete customerHistory[0][i].status;
-            customerHistory[0][0].status = "Completed";
+            customerHistory[0][0].status = RideCompleted;
         }
         if(customerHistory[0][i].status == 3){
             delete customerHistory[0][i].status;
-            customerHistory[0][0].status = "Processed";
+            customerHistory[0][0].status = RideProcessing;
         }
         if(customerHistory[0][i].status == 2){
             delete customerHistory[0][i].status;
-            customerHistory[0][0].status = "Accepted";
+            customerHistory[0][0].status = RideBooked;
         }
         let paymentDetails = {
             payment_method : customerHistory[0][i].payment_method,
