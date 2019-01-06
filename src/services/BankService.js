@@ -23,7 +23,7 @@ export async function getAllbankList(){
 
 export async function getAccountDetails(token){
     let userData = await Users.fetchDriverByToken(token);
-    if(userData.length < 1){
+    if(userData[0].length < 1){
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid Token'};
     }
     let account = await CustomerBankModel.fetchBankDetailsByDriverID(userData[0][0].userid);

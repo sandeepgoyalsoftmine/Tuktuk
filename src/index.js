@@ -8,6 +8,7 @@ import './env';
 import './db';
 import passport from 'passport';
 import routes from './routes';
+import apiRoutes from './apiRoutes'
 import session from 'express-session';
 import fs from 'fs';
 const app = express();
@@ -47,8 +48,8 @@ app.use('/public/images',express.static(path.join(__dirname,'../public/images'))
 app.use(passport.initialize());
 
 // Site Routes
+app.use('/njs/', apiRoutes);
 app.use('/', routes);
-
 
 app.listen(app.get('port'), app.get('host'), () => {
   console.log('info', `Server started at https://${app.get('host')}:${app.get('port')}`);
