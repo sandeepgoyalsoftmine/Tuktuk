@@ -41,6 +41,10 @@ class Users extends bookshelf.Model {
         return bookshelf.knex.raw(queries.FETCH_DRIVERS
         )
     }
+    static fetchDriverIds(){
+        return bookshelf.knex.raw(queries.FETCH_DRIVERS_ID
+        )
+    }
     static fetchDriversList(){
         return bookshelf.knex.raw(queries.FETCH_DRIVERS_LIST);
     }

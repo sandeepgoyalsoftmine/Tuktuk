@@ -1,6 +1,7 @@
 import {Router} from 'express';
 import HttpStatus from 'http-status-codes';
 import * as user from '../services/userService'
+import * as schedule from '../schedule/schedule'
 
 let router = Router();
 
@@ -105,6 +106,19 @@ router.get('/getStatus', checkToken, (req, res, next) =>
 router.get('/getDriverList', (req, res, next) =>
 {
     user.getAllDriversList(res)
+        .then(result =>
+        {
+            console.log("result for driver list "+ JSON.stringify(result));
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
+router.get('/start', (req, res, next) =>
+{
+    schedule.a()
         .then(result =>
         {
             console.log("result for driver list "+ JSON.stringify(result));
@@ -474,8 +488,6 @@ router.post('/attendance', checkToken, (req, res, next)=>
                 data : result
             });
         })
-
-
 });
 
 router.post('/driverDuty', checkToken, (req, res, next)=>

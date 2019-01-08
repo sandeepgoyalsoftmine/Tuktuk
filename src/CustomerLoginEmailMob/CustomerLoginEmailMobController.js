@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import HttpStatus from 'http-status-codes';
 import * as CustomerLoginEmailMobService from "./CustomerLoginEmailMobService";
-import {checkToken} from "../middlewares/HeaderValidators";
+import {checkToken, checkTokenCustomer} from "../middlewares/HeaderValidators";
 import * as user from "../services/userService";
 let router = Router();
 
@@ -31,7 +31,7 @@ router.post('/', (req, res, next) =>
         }).catch(err => next(err));
 });
 
-router.put('/deviceToken',checkToken, (req, res, next)=>
+router.put('/deviceToken',checkTokenCustomer, (req, res, next)=>
 {
     console.log("request "+ JSON.stringify(req.body));
     CustomerLoginEmailMobService.updateDeviceToken(req.get('TUKTUK_TOKEN'),req.get('DEVICE_TOKEN'))
