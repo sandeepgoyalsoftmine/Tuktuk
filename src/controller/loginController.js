@@ -2,6 +2,7 @@ import {Router} from 'express';
 import HttpStatus from 'http-status-codes';
 import * as user from '../services/userService'
 import * as schedule from '../schedule/schedule'
+import * as DriverService from '../services/DriverService';
 
 let router = Router();
 
@@ -193,7 +194,7 @@ router.post('/login', (req, res, next) =>
 {
     console.log("User request:",req.body);
     let userType = 3;
-    user.login(req.body, userType,req.get('DEVICE_TOKEN'), res)
+    user.login(req.body, userType, res)
         .then(result =>
         {
             if('errorCode' in result){
@@ -370,7 +371,6 @@ router.post('/create', (req, res, next)=>
             });
         })
 });
-
 router.put('/edit', upload.single('image'), (req, res, next)=>
 {
     console.log("request "+ JSON.stringify(req.body)+"  "+req.file);
@@ -488,6 +488,8 @@ router.post('/attendance', checkToken, (req, res, next)=>
                 data : result
             });
         })
+
+
 });
 
 router.post('/driverDuty', checkToken, (req, res, next)=>
@@ -523,6 +525,30 @@ router.get('/driverHistory', checkToken, (req, res, next)=>
                 });
             }
             let contextPath = req.protocol + '://' + req.get('host');
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
+router.post('/getEstimate', (req, res, next) =>
+{
+    DriverService.getEstimatedFare(req.body,res)
+        .then(result =>
+        {
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
+router.post('/getInvoice', checkToken, (req, res, next) =>
+{
+    DriverService.getInvoice(req.body, req.get('TUKTUK_TOKEN'), res)
+        .then(result =>
+        {
             return res.status(HttpStatus.OK).json({
                 statusCode : 200,
                 message : '',
