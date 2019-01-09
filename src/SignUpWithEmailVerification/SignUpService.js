@@ -5,6 +5,7 @@ import UserModel from "./UserModel";
 import * as HttpStatus from "http-status-codes/index";
 import * as OTPGeneration from '../OtpForEmail/OTPGeneration'
 import * as mailUtil from '../OtpForEmail/mail';
+import * as sms from '../MobileOTP/sms';
 
 
 export async function createUser(user, device_type,version,res) {
@@ -18,6 +19,11 @@ export async function createUser(user, device_type,version,res) {
     }
     let mobileOtp = await OTPGeneration.otpGenerator();
     let emailOtp = await OTPGeneration.otpGenerator();
+    let refe=0;
+    if(user.referral_code==="")
+        refe = 0;
+    else
+        refe = parseInt(user.referral_code);
     let newUserId = await bookshelf.transaction(async (t) => {
         let newUsers = await UserDao.createRow({
             user_id: user.userid,
@@ -30,8 +36,8 @@ export async function createUser(user, device_type,version,res) {
             email_otp: emailOtp,
             mobile_verified: "0",
             email_verified: "0",
-            password: user.password,
-            refferal: user.referral_code,
+            password: user.passsword,
+            refferal: refe,
             last_login: new Date(),
             created_on: new Date(),
             token: token
@@ -39,15 +45,15 @@ export async function createUser(user, device_type,version,res) {
         return newUsers.userid;
     });
     let body = `Hi ${user.name},<br>Please verify Email with otp, and OTP is ${emailOtp}`;
-    let resu = await sendSMS(user.mobile_no,body);
-    // let emailSubject = 'TUKTUK: OTP for email Verification.';
-    //
-    // mailUtil.sendMail(emailSubject, body, user.email);
+    // let resu = await sms.sendSMS(user.mobile_no,body);
+    let emailSubject = 'TUKTUK: OTP for email Verification.';
+
+    mailUtil.sendMail(emailSubject, body, user.email);
     let usersDetails = await UserModel.fetchUserWithEmailMobile(user.email, user.mobile_no);
     res.setHeader('TUKTUK_TOKEN', token);
     return ({
         CustomerDetails: usersDetails[0][0],
-        message: 'OTP is sent to your  mobile no'
+        message: 'OTP is sent to your  Email'
     });
 
 }

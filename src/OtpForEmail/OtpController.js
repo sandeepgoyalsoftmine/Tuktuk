@@ -6,7 +6,7 @@ import {checkTokenCustomer} from "../middlewares/HeaderValidators";
 
 let router = Router();
 
-router.post('/aaa',checkTokenCustomer, (req, res, next)=>
+router.post('/',checkTokenCustomer, (req, res, next)=>
 {
     OTPGeneration.otpVerifyForEmail(req.body, req.get('TUKTUK_TOKEN'),req.get('device_type'), req.get('version'), res)
         .then(result => {
@@ -25,7 +25,7 @@ router.post('/aaa',checkTokenCustomer, (req, res, next)=>
             });
         })
 });
-router.post('/',checkTokenCustomer, (req, res, next)=>
+router.post('/aa',checkTokenCustomer, (req, res, next)=>
 {
     OTPGeneration.otpVerifyForMobile(req.body, req.get('TUKTUK_TOKEN'),req.get('device_type'), req.get('version'), res)
         .then(result => {
