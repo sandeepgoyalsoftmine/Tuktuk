@@ -208,6 +208,5 @@ export async function getInvoice(reqData, token){
         timeCost: timeCost,
         gst: gstCost,
         baseFare: baseFare
-
     }
 }
