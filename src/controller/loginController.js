@@ -488,8 +488,6 @@ router.post('/attendance', checkToken, (req, res, next)=>
                 data : result
             });
         })
-
-
 });
 
 router.post('/driverDuty', checkToken, (req, res, next)=>
