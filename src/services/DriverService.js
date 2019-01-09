@@ -7,6 +7,8 @@ import bookshelf from "../db";
 import Users from '../models/Users';
 import InvoiceModel from "../models/InvoiceModel";
 import Tracking from '../models/Tracking';
+import DriverDailyWiseModel from "../models/DriverDailyWiseModel";
+import * as DriverDailyWiseDao from "../dao/DriverDailyWiseDao";
 
 distanceMatrix.key('AIzaSyC2zwzwJP1SFBRGVt80SroTm-7ga-z1lcA');
 const TIME_COST = 1.5;
@@ -135,8 +137,8 @@ export async function getEstimatedFare(reqData){
     }
 }
 
-export async function getInvoice(reqData, token){
-    console.log("reqData   "+ JSON.stringify(reqData)+"    token  "+ token);
+export async function getInvoice(reqData){
+    console.log("reqData   "+ JSON.stringify(reqData));
     if(isNaN(reqData.ride_id))
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'Ride id should be integer.'};
@@ -145,8 +147,7 @@ export async function getInvoice(reqData, token){
     if (rideDetails[0].length < 1) {
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid ride id'};
     }
-    let driver = await Users.fetchDriverByToken(token);
-    let locations = await Tracking.fetchLocationAccordingToTimeAndUserId(driver[0][0].userid,rideDetails[0][0].ride_start_time, rideDetails[0][0].ride_completed_time);
+    let locations = await Tracking.fetchLocationAccordingToTimeAndUserId(rideDetails[0][0].driver_id,rideDetails[0][0].ride_start_time, rideDetails[0][0].ride_completed_time);
     let destination= [];
     let origin = [];
     for(let i=0;i< locations[0].length;i++){
@@ -170,10 +171,11 @@ export async function getInvoice(reqData, token){
     let costPerKM = (distanceCost/(distance.distance-MINI_DISTANCE)).toFixed(2);
     let gstCost = (finalCost*(GST_PERCENTAGE/100)).toFixed(2);
     let totalCost = finalCost;
+    let todayDate = new Date();
     finalCost = parseFloat(finalCost)+ parseFloat(gstCost);
     let newInvoiceID = await bookshelf.transaction(async(t) => {
         let newInvoice = await InvoiceDao.createRow({
-            driver_id: driver[0][0].userid,
+            driver_id: rideDetails[0][0].driver_id,
             customer_id: rideDetails[0][0].customer_id,
             source_lat : rideDetails[0][0].source_lat,
             source_lng: rideDetails[0][0].source_long,
@@ -194,9 +196,20 @@ export async function getInvoice(reqData, token){
             gst_percentage:GST_PERCENTAGE,
             gst:gstCost,
             final_cost:finalCost,
-            created_on: new Date()
+            created_on: todayDate
         }, t);
         return newInvoice.id;
+    });
+    let driverDaily = await DriverDailyWiseModel.fetchDailyWiseID(rideDetails[0][0].driver_id);
+    await bookshelf.transaction(async (t) => {
+        let updateBankDetails = await DriverDailyWiseDao.updateRow(driverDaily[0][0].daily_wise_id,
+            {
+                distance : driverDaily[0][0].distance + distance.distance,
+                number_of_rides : driverDaily[0][0].number_of_rides + 1,
+                cash_amount: driverDaily[0][0].cash_amount + finalCost,
+                number_mins_on_ride :driverDaily[0][0].number_mins_on_ride + timediff,
+                updated_on: new Date()
+            }, t);
     });
     return {
         totalCost : finalCost,

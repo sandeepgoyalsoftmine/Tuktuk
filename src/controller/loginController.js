@@ -544,9 +544,9 @@ router.post('/getEstimate', (req, res, next) =>
             });
         })
 });
-router.post('/getInvoice', checkToken, (req, res, next) =>
+router.post('/getInvoice', (req, res, next) =>
 {
-    DriverService.getInvoice(req.body, req.get('TUKTUK_TOKEN'), res)
+    DriverService.getInvoice(req.body, res)
         .then(result =>
         {
             return res.status(HttpStatus.OK).json({
