@@ -19,17 +19,25 @@ export async function  login(reqData, usertype1, deviceToken, res) {
         typeOfUser = reqData.userType;
     else
         typeOfUser = usertype1;
-    console.log("usertyep for login "+reqData.userType+"     "+ typeOfUser);
     let userData = await Users.checkLogin(reqData.userID, typeOfUser);
-    console.log("userDatsa "+JSON.stringify(userData[0]))
     if (userData[0].length < 1) {
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'User not exists'};
     }
     if (userData[0][0].password != reqData.password) {
         return {errorCode: HttpStatus.UNAUTHORIZED, message: 'Incorrect password'};
     }
+    let valueTOken;
+    if(reqData.userid === undefined){
+        if(reqData.userID=== undefined || reqData.userID===""){
+            return {errorCode: HttpStatus.BAD_REQUEST, message: 'email id can not be blank'};
+        }else{
+            valueTOken = reqData.userID;
+        }
+    }else{
+        valueTOken = reqData.userid;
+    }
     if(userData[0].length == 1 ) {
-        const token = generateToken(reqData.userid);
+        const token = generateToken(userData[0][0].userid);
         await bookshelf.transaction(async (t) => {
             await UsersDao.updateRow(userData[0][0].userid, {device_id:deviceToken,token: token, last_login: new Date()}, t);
         });
