@@ -91,8 +91,26 @@ export async function getEstimatedFare(reqData){
     }
     let origin = ''+reqData.sourceLat+','+reqData.sourceLng;
     let desti = ''+reqData.destinationLat+','+reqData.destinationLng;
+
+    let origins = [];
+    let destinations = [];
+    origins.push(origin);
+    destinations.push(desti);
+    let carEstimation = await estimation(reqData, origins, destinations, 1);
+    let array = [];
+    array.push(carEstimation);
+    let bikeEstimation = await estimation(reqData,origins, destinations, 2);
+    array.push(bikeEstimation);
+    return array;
+}
+export async function estimation(reqData,origin, desti, vehicle_type) {
+    let finalCost;
+    console.log("origins    "+ origin+"    destinationssss    "+ desti);
     let distance = await getDistanceAndDuration(origin, desti);
-    let finalCost = (14.0*distance.distance).toFixed(2);
+    if(vehicle_type==1)
+        finalCost = (14.0*distance.distance).toFixed(2);
+    else
+        finalCost = (7.0*distance.distance).toFixed(2);
     let baseFare = (finalCost*(BASE_FARE_PERCENTAGE/100.0)).toFixed(2);
     if(parseFloat(baseFare)<42.0){
         baseFare = 42.00;
@@ -133,7 +151,8 @@ export async function getEstimatedFare(reqData){
     return {
         totalCost : finalCost,
         distance: distance.distance,
-        estimated_Time: distance.duration
+        estimated_Time: distance.duration,
+        vehicle_type: vehicle_type
     }
 }
 

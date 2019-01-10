@@ -43,6 +43,13 @@ router.get('/getVehicleDetails', (req, res, next) =>
     VehicleService.getVehicleDetailsByUserId(req.get('TUKTUK_TOKEN'))
         .then(result =>
         {
+            if ('errorCode' in result) {
+                return res.status(result.errorCode).json({
+                    status : 'Success',
+                    statusCode : result.errorCode,
+                    message: result.message
+                });
+            }
             console.log("result for driver list "+ JSON.stringify(result));
             return res.status(HttpStatus.OK).json({
                 statusCode : 200,
