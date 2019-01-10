@@ -13,29 +13,8 @@ import session from 'express-session';
 import fs from 'fs';
 const app = express();
 
-let APP_HOST = '0.0.0.0';
-let APP_PORT = '3000';
-let APP_HTTP_PORT = '8080';
-
-if (process.env.NODE_ENV === 'production') {
-    console.log("Application is running in production environment.");
-    APP_HOST = process.env.APP_HOST_PROD;
-    APP_PORT = process.env.APP_PORT_PROD;
-    APP_HTTP_PORT = process.env.APP_HTTP_PORT_PROD;
-}
-else if (process.env.NODE_ENV === 'staging') {
-   console.log("Application is running in staging environment.");
-    APP_HOST = process.env.APP_HOST_STAG;
-    APP_PORT = process.env.APP_PORT_STAG;
-    APP_HTTP_PORT = process.env.APP_HTTP_PORT_STAG;
-}
-else {
-    console.log("Application is running in development environment.");
-    APP_HOST = process.env.APP_HOST_DEV;
-    APP_PORT = process.env.APP_PORT_DEV;
-    APP_HTTP_PORT = process.env.APP_HTTP_PORT_DEV;
-}
-
+const APP_PORT = (process.env.NODE_ENV === 'test' ? process.env.TEST_APP_PORT : process.env.APP_PORT) || '3000';
+const APP_HOST = process.env.APP_HOST || '0.0.0.0';
 
 app.set('port', APP_PORT);
 app.set('host', APP_HOST);
@@ -51,10 +30,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.use(session({
-  secret  : 'MYSUPERSECRET',
-  resave: false,
-  saveUninitialized: true,
-  maxAge:new Date(Date.now() + (60 * 1000 * 2))
+    secret  : 'MYSUPERSECRET',
+    resave: false,
+    saveUninitialized: true,
+    maxAge:new Date(Date.now() + (60 * 1000 * 2))
 }));
 
 // view engine setup
@@ -73,7 +52,7 @@ app.use('/njs/', apiRoutes);
 app.use('/', routes);
 
 app.listen(app.get('port'), app.get('host'), () => {
-  console.log('info', `Server started at https://${app.get('host')}:${app.get('port')}`);
+    console.log('info', `Server started at https://${app.get('host')}:${app.get('port')}`);
 });
 
 export default app;
