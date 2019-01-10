@@ -41,7 +41,6 @@ export async function getAllVehicle(){
         Vehicles :vehicles[0]
     })
 }
-
 export async function getVehicleDetailsByUserId(token){
     let userData = await Users.fetchDriverByToken(token);
     if(userData[0].length < 1){
