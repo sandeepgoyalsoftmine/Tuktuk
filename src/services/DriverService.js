@@ -108,9 +108,9 @@ export async function estimation(reqData,origin, desti, vehicle_type) {
     console.log("origins    "+ origin+"    destinationssss    "+ desti);
     let distance = await getDistanceAndDuration(origin, desti);
     if(vehicle_type==1)
-        finalCost = (14.0*distance.distance).toFixed(0);
+        finalCost = Math.round(14.0*distance.distance);
     else
-        finalCost = (7.0*distance.distance).toFixed(0);
+        finalCost = Math.round(7.0*distance.distance);
     let baseFare = (finalCost*(BASE_FARE_PERCENTAGE/100.0)).toFixed(2);
     if(parseFloat(baseFare)<42.0){
         baseFare = 42.00;
@@ -120,7 +120,7 @@ export async function estimation(reqData,origin, desti, vehicle_type) {
     let costPerKM = (distanceCost/(distance.distance-MINI_DISTANCE)).toFixed(2);
     let gstCost = (finalCost*(GST_PERCENTAGE/100)).toFixed(2);
     let totalCost = finalCost;
-    finalCost = parseFloat(finalCost)+ parseFloat(gstCost);
+    finalCost = Math.round(parseFloat(finalCost)+ parseFloat(gstCost));
     let currentDate = new Date();
     let returnDate =  timeDiffer(currentDate).add(distance.duration, 'minutes').format('YYYY-MM-DD HH:mm:ss');
     let newEstimateID = await bookshelf.transaction(async(t) => {
@@ -151,7 +151,7 @@ export async function estimation(reqData,origin, desti, vehicle_type) {
     return {
         totalCost : finalCost,
         distance: distance.distance,
-        estimated_Time: distance.duration,
+        estimated_Time: Math.round(distance.duration),
         vehicle_type: vehicle_type
     }
 }
