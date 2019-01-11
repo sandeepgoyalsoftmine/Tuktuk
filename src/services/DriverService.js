@@ -112,15 +112,21 @@ export async function estimation(reqData,origin, desti, vehicle_type) {
     else
         finalCost = Math.round(7.0*distance.distance);
     let baseFare = (finalCost*(BASE_FARE_PERCENTAGE/100.0)).toFixed(2);
-    if(parseFloat(baseFare)<42.0){
-        baseFare = 42.00;
-    }
     let timeCost = (TIME_COST*distance.duration).toFixed(2);
     let distanceCost = finalCost-baseFare-timeCost;
     let costPerKM = (distanceCost/(distance.distance-MINI_DISTANCE)).toFixed(2);
-    let gstCost = (finalCost*(GST_PERCENTAGE/100)).toFixed(2);
+    console.log("base fare  "+ baseFare);
+    if(parseFloat(baseFare)<42.0){
+        baseFare = 42.00;
+        finalCost = baseFare;
+        timeCost = 0;
+        distanceCost=0;
+        console.log("in condition "+ finalCost);
+    }
     let totalCost = finalCost;
+    let gstCost = (finalCost*(GST_PERCENTAGE/100)).toFixed(2);
     finalCost = Math.round(parseFloat(finalCost)+ parseFloat(gstCost));
+    console.log("base fare after condition  "+ baseFare);
     let currentDate = new Date();
     let returnDate =  timeDiffer(currentDate).add(distance.duration, 'minutes').format('YYYY-MM-DD HH:mm:ss');
     let newEstimateID = await bookshelf.transaction(async(t) => {
@@ -180,16 +186,22 @@ export async function getInvoice(reqData){
     }
     let timediff = await getTimeDifferenceInMinutes(rideDetails[0][0].ride_start_time, rideDetails[0][0].ride_completed_time);
     let distance = await getDistanceAndDuration(origin, destination);
+
     let finalCost = (14.0*distance.distance).toFixed(0);
     let baseFare = (finalCost*(BASE_FARE_PERCENTAGE/100.0)).toFixed(2);
-    if(parseFloat(baseFare)<42.0){
-        baseFare = 42.00;
-    }
     let timeCost = (TIME_COST*timediff).toFixed(2);
     let distanceCost = finalCost-baseFare-timeCost;
     let costPerKM = (distanceCost/(distance.distance-MINI_DISTANCE)).toFixed(2);
-    let gstCost = (finalCost*(GST_PERCENTAGE/100)).toFixed(2);
+    if(parseFloat(baseFare)<42.0){
+        baseFare = 42.00;
+        finalCost = baseFare;
+        timeCost = 0;
+        distanceCost=0;
+        console.log("in condition "+ finalCost);
+    }
     let totalCost = finalCost;
+    let gstCost = (finalCost*(GST_PERCENTAGE/100)).toFixed(2);
+    finalCost = Math.round(parseFloat(finalCost)+ parseFloat(gstCost));
     let todayDate = new Date();
     finalCost = parseFloat(finalCost)+ parseFloat(gstCost);
     let newInvoiceID = await bookshelf.transaction(async(t) => {
