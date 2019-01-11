@@ -108,9 +108,9 @@ export async function estimation(reqData,origin, desti, vehicle_type) {
     console.log("origins    "+ origin+"    destinationssss    "+ desti);
     let distance = await getDistanceAndDuration(origin, desti);
     if(vehicle_type==1)
-        finalCost = (14.0*distance.distance).toFixed(2);
+        finalCost = (14.0*distance.distance).toFixed(0);
     else
-        finalCost = (7.0*distance.distance).toFixed(2);
+        finalCost = (7.0*distance.distance).toFixed(0);
     let baseFare = (finalCost*(BASE_FARE_PERCENTAGE/100.0)).toFixed(2);
     if(parseFloat(baseFare)<42.0){
         baseFare = 42.00;
@@ -180,7 +180,7 @@ export async function getInvoice(reqData){
     }
     let timediff = await getTimeDifferenceInMinutes(rideDetails[0][0].ride_start_time, rideDetails[0][0].ride_completed_time);
     let distance = await getDistanceAndDuration(origin, destination);
-    let finalCost = (14.0*distance.distance).toFixed(2);
+    let finalCost = (14.0*distance.distance).toFixed(0);
     let baseFare = (finalCost*(BASE_FARE_PERCENTAGE/100.0)).toFixed(2);
     if(parseFloat(baseFare)<42.0){
         baseFare = 42.00;
