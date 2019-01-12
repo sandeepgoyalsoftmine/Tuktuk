@@ -1,6 +1,7 @@
 import Users from "../models/Users";
 import RideModels from "../models/RideModels";
 import CustomerLoginEmailMobModel from "../CustomerLoginEmailMob/CustomerLoginEmailMobModel";
+import {rideStatus} from '../Constants/enum';
 
 import * as HttpStatus from "http-status-codes/index";
 import * as RideDAO from "../dao/RideDAO";
@@ -43,5 +44,35 @@ export async function createDriverRating(token, reqData){
     });
     return {
         message:"Customer rated successfully"
+    }
+}
+
+
+export async function getRides(){
+    let rideDetails = await RideModels.fetchAllTodaysRide();
+    for( let i=0; i< rideDetails[0].length; i++){
+        if(rideDetails[0][i].status==1){
+            rideDetails[0][i].ride_status = rideStatus.RideRequested;
+        }
+        else if(rideDetails[0][i].status==2){
+            rideDetails[0][i].ride_status = rideStatus.RideBooked;
+        }
+        else if(rideDetails[0][i].status==3){
+            rideDetails[0][i].ride_status = rideStatus.RideProcessing;
+        }
+        else if(rideDetails[0][i].status==4){
+            rideDetails[0][i].sos = 0;
+            rideDetails[0][i].ride_status = rideStatus.RideCompleted;
+        }
+        else{
+            rideDetails[0][i].sos = 1;
+            rideDetails[0][i].ride_status = rideStatus.RideFailed;
+        }
+        delete rideDetails[0][i].status;
+
+
+    }
+    return {
+        RideDetails : rideDetails[0]
     }
 }

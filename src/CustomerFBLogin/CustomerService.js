@@ -135,3 +135,7 @@ export function generateToken(userid) {
     let dbhash = microtime.now().toString() + userid;
     return crypto.createHash('md5').update(dbhash).digest('hex');
 }
+
+export async function getCustomers(){
+
+}

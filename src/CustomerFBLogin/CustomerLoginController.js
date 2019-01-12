@@ -3,6 +3,8 @@ import passport from 'passport';
 import HttpStatus from 'http-status-codes';
 import * as CustomerService from './CustomerService';
 import {checkToken, checkTokenCustomer} from "../middlewares/HeaderValidators";
+import * as user from "../services/userService";
+import * as RideService from "../services/RideService";
 
 
 let FacebookTokenStrategy = require('passport-facebook-token');
@@ -80,6 +82,35 @@ router.get('/customerHistory', checkTokenCustomer, (req, res, next)=>
                 data : result
             });
         })
+});
+
+router.get('/', function(req, res, next) {
+    let contextPath = req.protocol + '://' + req.get('host');
+    if(req.session.userID!=undefined) {
+        user.getUserByEmail(req.session.userID).then(result => {
+            console.log("result 0 ",result)
+            if (result.length == 1) {
+                var usertype = parseInt(result[0].user_type);
+                if (parseInt(result[0].user_type) == 1) {
+                    CustomerService.getCustomers()
+                        .then(result1 => {
+                            res.render('Customer', {
+                                path: contextPath, header: 'Customer List', operation: '',
+                                data: result1,
+                                access1: 'true'
+                            });
+                        })
+                }
+                else {
+                    res.render('Customer', {path: contextPath, header: 'Customer List', operation: '', access1: 'false'});
+                }
+            } else {
+                res.render('index', {path: contextPath, header: 'Login', operation: '', access1: 'false'});
+            }
+        })
+    }else{
+        res.render('index', {path: contextPath, header: 'Login', operation: '', access1:'false'});
+    }
 });
 
 export default router;

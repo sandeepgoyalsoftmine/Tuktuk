@@ -18,5 +18,9 @@ class RideModels extends bookshelf.Model {
         });
     }
 
+    static fetchAllTodaysRide(){
+        return bookshelf.knex.raw(queries.FETCH_ALL_TODAYS_RIDE);
+    }
+
 }
 export default RideModels;

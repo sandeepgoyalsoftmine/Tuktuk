@@ -91,30 +91,47 @@ export async function getEstimatedFare(reqData){
     }
     let origin = ''+reqData.sourceLat+','+reqData.sourceLng;
     let desti = ''+reqData.destinationLat+','+reqData.destinationLng;
-
+    let distance=0, time=0;
+    if(reqData.distance===undefined || reqData.distance===0)
+        distance=0
+    else
+        distance = reqData.distance;
+    if(reqData.time===undefined || reqData.time===0)
+        time=0
+    else
+        time = reqData.time;
     let origins = [];
     let destinations = [];
     origins.push(origin);
     destinations.push(desti);
-    let carEstimation = await estimation(reqData, origins, destinations, 1);
+    let carEstimation = await estimation(reqData, origins, destinations, 1, distance, time);
     let array = [];
     array.push(carEstimation);
-    let bikeEstimation = await estimation(reqData,origins, destinations, 2);
+    let bikeEstimation = await estimation(reqData,origins, destinations, 2, distance, time);
     array.push(bikeEstimation);
     return array;
 }
-export async function estimation(reqData,origin, desti, vehicle_type) {
+export async function estimation(reqData,origin, desti, vehicle_type, dist, estimateTime) {
     let finalCost;
+    let distanceApp = 0;
+    let timeApp =0;
     console.log("origins    "+ origin+"    destinationssss    "+ desti);
     let distance = await getDistanceAndDuration(origin, desti);
+    if(distance.distance==0){
+        distanceApp = dist/1000.0;
+        timeApp = estimateTime/60;
+    }else{
+        distanceApp = distance.distance;
+        timeApp = distance.duration;
+    }
     if(vehicle_type==1)
-        finalCost = Math.round(14.0*distance.distance);
+        finalCost = Math.round(14.0*distanceApp);
     else
-        finalCost = Math.round(11.0*distance.distance);
+        finalCost = Math.round(11.0*distanceApp);
     let baseFare = (finalCost*(BASE_FARE_PERCENTAGE/100.0)).toFixed(2);
-    let timeCost = (TIME_COST*distance.duration).toFixed(2);
+    let timeCost = (TIME_COST*timeApp).toFixed(2);
     let distanceCost = finalCost-baseFare-timeCost;
-    let costPerKM = (distanceCost/(distance.distance-MINI_DISTANCE)).toFixed(2);
+    let costPerKM = (distanceCost/(distanceApp-MINI_DISTANCE)).toFixed(2);
     console.log("base fare  "+ baseFare);
     if(parseFloat(baseFare)<42.0 && vehicle_type==1){
         if(finalCost< 42){
@@ -145,7 +162,7 @@ export async function estimation(reqData,origin, desti, vehicle_type) {
     finalCost = Math.round(parseFloat(finalCost)+ parseFloat(gstCost));
     console.log("base fare after condition  "+ baseFare);
     let currentDate = new Date();
-    let returnDate =  timeDiffer(currentDate).add(distance.duration, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+    let returnDate =  timeDiffer(currentDate).add(timeApp, 'minutes').format('YYYY-MM-DD HH:mm:ss');
     let newEstimateID = await bookshelf.transaction(async(t) => {
         let newEstaimate = await EstimationDao.createRow({
             source_lat : reqData.sourceLat,
@@ -154,11 +171,11 @@ export async function estimation(reqData,origin, desti, vehicle_type) {
             destination_lng:reqData.destinationLng,
             source_time:currentDate,
             destination_time:returnDate,
-            total_minutes:distance.duration,
+            total_minutes:timeApp,
             cost_per_minute:TIME_COST,
             time_cost:timeCost,
             total_cost:totalCost,
-            distance:distance.distance,
+            distance:distanceApp,
             cost_per_km:costPerKM,
             distance_cost:distanceCost,
             base_fare: baseFare,
@@ -173,8 +190,8 @@ export async function estimation(reqData,origin, desti, vehicle_type) {
     });
     return {
         totalCost : finalCost,
-        distance: distance.distance,
-        estimated_Time: Math.round(distance.duration),
+        distance: distanceApp,
+        estimated_Time: Math.round(timeApp),
         vehicle_type: vehicle_type
     }
 }
@@ -240,6 +257,7 @@ export async function getInvoice(reqData){
     finalCost = parseFloat(finalCost)+ parseFloat(gstCost);
     let newInvoiceID = await bookshelf.transaction(async(t) => {
         let newInvoice = await InvoiceDao.createRow({
+            ride_id: reqData.ride_id,
             driver_id: rideDetails[0][0].driver_id,
             customer_id: rideDetails[0][0].customer_id,
             source_lat : rideDetails[0][0].source_lat,
@@ -265,17 +283,17 @@ export async function getInvoice(reqData){
         }, t);
         return newInvoice.id;
     });
-    let driverDaily = await DriverDailyWiseModel.fetchDailyWiseID(rideDetails[0][0].driver_id);
-    await bookshelf.transaction(async (t) => {
-        let updateBankDetails = await DriverDailyWiseDao.updateRow(driverDaily[0][0].daily_wise_id,
-            {
-                distance : driverDaily[0][0].distance + distance.distance,
-                number_of_rides : driverDaily[0][0].number_of_rides + 1,
-                cash_amount: driverDaily[0][0].cash_amount + finalCost,
-                number_mins_on_ride :driverDaily[0][0].number_mins_on_ride + timediff,
-                updated_on: new Date()
-            }, t);
-    });
+    // let driverDaily = await DriverDailyWiseModel.fetchDailyWiseID(rideDetails[0][0].driver_id);
+    // await bookshelf.transaction(async (t) => {
+    //     let updateBankDetails = await DriverDailyWiseDao.updateRow(driverDaily[0][0].daily_wise_id,
+    //         {
+    //             distance : driverDaily[0][0].distance + distance.distance,
+    //             number_of_rides : driverDaily[0][0].number_of_rides + 1,
+    //             cash_amount: driverDaily[0][0].cash_amount + finalCost,
+    //             number_mins_on_ride :driverDaily[0][0].number_mins_on_ride + timediff,
+    //             updated_on: new Date()
+    //         }, t);
+    // });
     return {
         totalCost : finalCost,
         distance: distance.distance,

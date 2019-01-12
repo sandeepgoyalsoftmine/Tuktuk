@@ -13,7 +13,7 @@ $(document).ready(function() {
                     }
                     if(data.statusCode==200) {
                         localStorage.setItem("TUKTUK_TOKEN", request.getResponseHeader('TUKTUK_TOKEN'));
-                        window.location.href = "/getDrivers";
+                        window.location.href = "/ride";
                     }
 
                 },
