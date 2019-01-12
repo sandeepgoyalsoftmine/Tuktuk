@@ -18,4 +18,17 @@ router.post('/',checkTokenCustomer, (req, res, next) =>
             });
         })
 });
+router.post('/email',checkTokenCustomer, (req, res, next) =>
+{
+    SMSService.sendotpEmail(req.body,req.get('TUKTUK_TOKEN'), req)
+        .then(result =>
+        {
+            console.log("result for bank list "+ JSON.stringify(result));
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
 export default router;
