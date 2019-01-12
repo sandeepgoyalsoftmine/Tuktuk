@@ -2,9 +2,10 @@ import {Router} from 'express';
 import HttpStatus from 'http-status-codes';
 
 import * as SMSService from './SMSService';
+import {checkTokenCustomer} from "../middlewares/HeaderValidators";
 
 let router = Router();
-router.post('/', (req, res, next) =>
+router.post('/',checkTokenCustomer (req, res, next) =>
 {
     SMSService.sendotp(req.body,req.get('TUKTUK_TOKEN'), req)
         .then(result =>

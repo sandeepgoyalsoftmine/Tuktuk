@@ -44,16 +44,16 @@ export async function createUser(user, device_type,version,res) {
         }, t);
         return newUsers.userid;
     });
-    let body = `Hi ${user.name},<br>Please verify Email with otp, and OTP is ${emailOtp}`;
-    // let resu = await sms.sendSMS(user.mobile_no,body);
-    let emailSubject = 'TUKTUK: OTP for email Verification.';
-
-    mailUtil.sendMail(emailSubject, body, user.email);
+    let msg = `Use ${mobileOtp}  as your login OTP. OTP is confidential. TUKTUK-Ride never calls you asking for OTP. Sharing it with anyone gives them access to your Account.`;
+    let resu = await sms.sendSMS(user.mobile_no,msg);
+    // let emailSubject = 'TUKTUK: OTP for email Verification.';
+    //
+    // mailUtil.sendMail(emailSubject, body, user.email);
     let usersDetails = await UserModel.fetchUserWithEmailMobile(user.email, user.mobile_no);
     res.setHeader('TUKTUK_TOKEN', token);
     return ({
         CustomerDetails: usersDetails[0][0],
-        message: 'OTP is sent to your  Email'
+        message: 'OTP is sent to your  Mobile'
     });
 
 }
