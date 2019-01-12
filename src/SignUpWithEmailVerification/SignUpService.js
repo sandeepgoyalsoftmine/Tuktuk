@@ -24,6 +24,12 @@ export async function createUser(user, device_type,version,res) {
         refe = 0;
     else
         refe = parseInt(user.referral_code);
+    if(user.referral_code===undefined){
+        if(user.refferal_code==="")
+            refe = 0;
+        else
+            refe = parseInt(user.refferal_code);
+    }
     let newUserId = await bookshelf.transaction(async (t) => {
         let newUsers = await UserDao.createRow({
             user_id: user.userid,

@@ -116,18 +116,28 @@ export async function estimation(reqData,origin, desti, vehicle_type) {
     let distanceCost = finalCost-baseFare-timeCost;
     let costPerKM = (distanceCost/(distance.distance-MINI_DISTANCE)).toFixed(2);
     console.log("base fare  "+ baseFare);
-    if(parseFloat(baseFare)<42.0 && vehicle_type==1 && finalCost<42){
-        baseFare = 42.00;
-        finalCost = baseFare;
-        timeCost = 0;
-        distanceCost=0;
+    if(parseFloat(baseFare)<42.0 && vehicle_type==1){
+        if(finalCost< 42){
+            baseFare = 42.00;
+            finalCost = baseFare;
+            timeCost = 0;
+            distanceCost=0;
+        }else{
+            baseFare = 42;
+        }
+
         console.log("in condition "+ finalCost);
     }
-    if(parseFloat(baseFare)<33.0 && vehicle_type==2 && finalCost<33.0){
-        baseFare = 33.00;
-        finalCost = baseFare;
-        timeCost = 0;
-        distanceCost=0;
+    if(parseFloat(baseFare)<33.0 && vehicle_type==2){
+        if(finalCost<33.0){
+            baseFare = 33.00;
+            finalCost = baseFare;
+            timeCost = 0;
+            distanceCost=0;
+        }else{
+            baseFare = 33.00;
+        }
+
         console.log("in condition "+ finalCost);
     }
     let totalCost = finalCost;
@@ -200,10 +210,27 @@ export async function getInvoice(reqData){
     let distanceCost = finalCost-baseFare-timeCost;
     let costPerKM = (distanceCost/(distance.distance-MINI_DISTANCE)).toFixed(2);
     if(parseFloat(baseFare)<42.0){
-        baseFare = 42.00;
-        finalCost = baseFare;
-        timeCost = 0;
-        distanceCost=0;
+        if(finalCost< 42){
+            baseFare = 42.00;
+            finalCost = baseFare;
+            timeCost = 0;
+            distanceCost=0;
+        }else{
+            baseFare = 42;
+        }
+
+        console.log("in condition "+ finalCost);
+    }
+    if(parseFloat(baseFare)<33.0){
+        if(finalCost<33.0){
+            baseFare = 33.00;
+            finalCost = baseFare;
+            timeCost = 0;
+            distanceCost=0;
+        }else{
+            baseFare = 33.00;
+        }
+
         console.log("in condition "+ finalCost);
     }
     let totalCost = finalCost;

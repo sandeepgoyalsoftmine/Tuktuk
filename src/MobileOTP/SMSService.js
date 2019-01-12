@@ -17,9 +17,6 @@ export async function sendotp(reqData, token, req){
     let mobileOtp = await OTPGeneration.otpGenerator();
     let msg = `Use ${mobileOtp}  as your login OTP. OTP is confidential. TUKTUK-Ride never calls you asking for OTP. Sharing it with anyone gives them access to your Account.`;
     console.log("otp   "+ msg);
-    let resu = await sendSMS(reqData.mobile_number,msg);
-    console.log("resulkt     "+ resu);
-    return {
-        message: "Successfully sent"
-    }
+    let resu = await sendSMS(customerData[0][0].mobile_no,msg);
+    return resu;
 }
