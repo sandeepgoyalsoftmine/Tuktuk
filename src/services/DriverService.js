@@ -142,7 +142,6 @@ export async function estimation(reqData,origin, desti, vehicle_type, dist, esti
         }else{
             baseFare = 42;
         }
-
         console.log("in condition "+ finalCost);
     }
     if(parseFloat(baseFare)<33.0 && vehicle_type==2){
