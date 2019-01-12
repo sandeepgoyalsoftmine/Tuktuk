@@ -110,21 +110,21 @@ export async function estimation(reqData,origin, desti, vehicle_type) {
     if(vehicle_type==1)
         finalCost = Math.round(14.0*distance.distance);
     else
-        finalCost = Math.round(7.0*distance.distance);
+        finalCost = Math.round(11.0*distance.distance);
     let baseFare = (finalCost*(BASE_FARE_PERCENTAGE/100.0)).toFixed(2);
     let timeCost = (TIME_COST*distance.duration).toFixed(2);
     let distanceCost = finalCost-baseFare-timeCost;
     let costPerKM = (distanceCost/(distance.distance-MINI_DISTANCE)).toFixed(2);
     console.log("base fare  "+ baseFare);
-    if(parseFloat(baseFare)<42.0 && vehicle_type==1){
+    if(parseFloat(baseFare)<42.0 && vehicle_type==1 && finalCost<42){
         baseFare = 42.00;
         finalCost = baseFare;
         timeCost = 0;
         distanceCost=0;
         console.log("in condition "+ finalCost);
     }
-    if(parseFloat(baseFare)<21.0 && vehicle_type==2){
-        baseFare = 21.00;
+    if(parseFloat(baseFare)<33.0 && vehicle_type==2 && finalCost<33.0){
+        baseFare = 33.00;
         finalCost = baseFare;
         timeCost = 0;
         distanceCost=0;
