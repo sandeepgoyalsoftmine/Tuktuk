@@ -4,11 +4,10 @@ import * as HttpStatus from "http-status-codes/index";
 import * as EstimationDao from "../dao/EstimationDao";
 import * as InvoiceDao from "../dao/InvoiceDao";
 import bookshelf from "../db";
-import Users from '../models/Users';
 import InvoiceModel from "../models/InvoiceModel";
 import Tracking from '../models/Tracking';
-import DriverDailyWiseModel from "../models/DriverDailyWiseModel";
-import * as DriverDailyWiseDao from "../dao/DriverDailyWiseDao";
+import RideModels from "../models/RideModels";
+
 
 distanceMatrix.key('AIzaSyC2zwzwJP1SFBRGVt80SroTm-7ga-z1lcA');
 const TIME_COST = 1.5;
@@ -235,6 +234,8 @@ export async function getInvoice(reqData){
     if (rideDetails[0].length < 1) {
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid ride id'};
     }
+    if(rideDetails[0][0].status !==4)
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'ride is not completed'};
     let locations = await Tracking.fetchLocationAccordingToTimeAndUserId(rideDetails[0][0].driver_id,rideDetails[0][0].ride_start_time, rideDetails[0][0].ride_completed_time);
     let destination= [];
     let origin = [];
@@ -246,24 +247,30 @@ export async function getInvoice(reqData){
         origin.push(p1);
     }
     let timediff = await getTimeDifferenceInMinutes(rideDetails[0][0].ride_start_time, rideDetails[0][0].ride_completed_time);
-    let distance = await getEstimateWithoutGMap(origin);
+    let distanc = await getEstimateWithoutGMap(origin);
+    let distance = parseFloat(distanc);
     console.log("distance     s s s s s s s s"+ distance);
     let finalCost = (14.0*distance).toFixed(0);
     let baseFare = (finalCost*(BASE_FARE_PERCENTAGE/100.0)).toFixed(2);
-    let timeCost = (TIME_COST*timediff).toFixed(2);
-    let distanceCost = finalCost-baseFare-timeCost;
-    let costPerKM = (distanceCost/(distance-MINI_DISTANCE)).toFixed(2);
+    let timeCost ;
+    let distanceCost;
+    let costPerKM ;
     if(parseFloat(baseFare)<42.0){
         if(finalCost< 42){
             baseFare = 42.00;
             finalCost = baseFare;
             timeCost = 0;
             distanceCost=0;
+            costPerKM = 0;
         }else{
             baseFare = 42;
+            timeCost = (TIME_COST*timediff).toFixed(2);
+            distanceCost = finalCost-baseFare-timeCost;
+            costPerKM = (distanceCost/(distance-MINI_DISTANCE)).toFixed(2);
         }
         console.log("in condition "+ finalCost);
     }
+    console.log("final cost "+ finalCost+"  basefare "+ baseFare+" timecost "+ timeCost+" distanceCost "+ distanceCost+" costPerkm "+ costPerKM);
     if(parseFloat(baseFare)<33.0){
         if(finalCost<33.0){
             baseFare = 33.00;
@@ -272,16 +279,30 @@ export async function getInvoice(reqData){
             distanceCost=0;
         }else{
             baseFare = 33.00;
+            timeCost = (TIME_COST*timediff).toFixed(2);
+            distanceCost = finalCost-baseFare-timeCost;
+            costPerKM = (distanceCost/(distance-MINI_DISTANCE)).toFixed(2);
         }
-
         console.log("in condition "+ finalCost);
     }
     let totalCost = finalCost;
     let gstCost = (finalCost*(GST_PERCENTAGE/100)).toFixed(2);
     finalCost = Math.round(parseFloat(finalCost)+ parseFloat(gstCost));
     let todayDate = new Date();
-    finalCost = parseFloat(finalCost)+ parseFloat(gstCost);
-    console.log(" valuesssss   ride_id "+reqData.ride_id +" driver_id "+rideDetails[0][0].driver_id+ " customer_id "+  rideDetails[0][0].customer_id );
+    let ride_id_exist = await InvoiceModel.fetchInvoiceDetailsByRideID(reqData.ride_id);
+    if(ride_id_exist[0].length== 1){
+        return {
+            totalCost : ride_id_exist[0][0].final_cost,
+            distance: ride_id_exist[0][0].distance,
+            timeTaken: ride_id_exist[0][0].total_minutes,
+            distance_cost: ride_id_exist[0][0].distance_cost,
+            costPerKm: ride_id_exist[0][0].cost_per_km,
+            costPerMinute: ride_id_exist[0][0].cost_per_minute,
+            timeCost: ride_id_exist[0][0].time_cost,
+            gst: ride_id_exist[0][0].gst,
+            baseFare: ride_id_exist[0][0].base_fare
+        }
+    }
     let newInvoiceID = await bookshelf.transaction(async(t) => {
         let newInvoice = await InvoiceDao.createRow({
             ride_id: reqData.ride_id,
@@ -323,13 +344,13 @@ export async function getInvoice(reqData){
     // });
     return {
         totalCost : finalCost,
-        distance: distance,
+        distance: parseFloat(distance),
         timeTaken: timediff,
         distance_cost: distanceCost,
-        costPerKm: costPerKM,
+        costPerKm: parseFloat(costPerKM),
         costPerMinute: TIME_COST,
-        timeCost: timeCost,
-        gst: gstCost,
+        timeCost: parseFloat(timeCost),
+        gst: parseFloat(gstCost),
         baseFare: baseFare
     }
 }

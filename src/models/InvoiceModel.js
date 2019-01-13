@@ -17,5 +17,10 @@ class InvoiceModel extends bookshelf.Model {
             'ride_id': ride_id
         })
     }
+    static fetchInvoiceDetailsByRideID(ride_id){
+        return bookshelf.knex.raw(queries.FETCH_INVOICE_BY_RIDE_ID, {
+            'ride_id': ride_id
+        })
+    }
 }
 export default InvoiceModel;
