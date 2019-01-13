@@ -235,6 +235,7 @@ export async function getInvoice(reqData){
     if (rideDetails[0].length < 1) {
         return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid ride id'};
     }
+    console.log("ride Details  "+ JSON.stringify(rideDetails[0]));
     if(rideDetails[0][0].status !==4)
         return {errorCode: HttpStatus.BAD_REQUEST, message : 'ride is not completed'};
     let locations = await Tracking.fetchLocationAccordingToTimeAndUserId(rideDetails[0][0].driver_id,rideDetails[0][0].ride_start_time, rideDetails[0][0].ride_completed_time);
@@ -248,6 +249,7 @@ export async function getInvoice(reqData){
         origin.push(p1);
     }
     let timediff = await getTimeDifferenceInMinutes(rideDetails[0][0].ride_start_time, rideDetails[0][0].ride_completed_time);
+    console.log("array of latlng "+ JSON.stringify(origin));
     let distanc = await getEstimateWithoutGMap(origin);
     let distance = parseFloat(distanc);
     console.log("distance     s s s s s s s s"+ distance);
@@ -267,7 +269,7 @@ export async function getInvoice(reqData){
             baseFare = 42;
             timeCost = (TIME_COST*timediff).toFixed(2);
             distanceCost = finalCost-baseFare-timeCost;
-            costPerKM = (distanceCost/(distance-MINI_DISTANCE)).toFixed(2);
+            costPerKM = (distanceCost/(distance)).toFixed(2);
         }
         console.log("in condition "+ finalCost);
     }
