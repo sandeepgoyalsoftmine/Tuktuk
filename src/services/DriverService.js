@@ -16,6 +16,27 @@ const BASE_FARE_PERCENTAGE = 14;
 const GST_PERCENTAGE = 5;
 const MINI_DISTANCE =3;
 
+export async function getEstimateWithoutGMap(origin){
+    let rad = function(x) {
+        return x * Math.PI / 180;
+    };
+    let R = 6378137; // Earth’s mean radius in meter
+    let dLat, dLong, a, c,d, totalDistance=0.0;
+    console.log("in estimate function");
+    for(let i=0;i < origin.length-1; i++ ){
+        dLat = rad(origin[i+1].lat - origin[i].lat);
+        dLong = rad(origin[i+1].lng - origin[i].lng);
+        a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(rad(origin[i].lat)) * Math.cos(rad(origin[i+1].lat)) *
+            Math.sin(dLong / 2) * Math.sin(dLong / 2);
+        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        d = (R * c)/1000;
+        totalDistance= totalDistance+ d;
+    }
+    return totalDistance.toFixed(2); // returns the distance in meter
+
+}
+
 export async function matrixDistance(origins, destinations) {
     return new Promise((resolve, reject) => {
         distanceMatrix.matrix(origins, destinations, function (err, distances) {
@@ -71,6 +92,10 @@ export async function getTimeDifferenceInMinutes(sourceTime, destinationTime){
     return minutes;
 }
 
+
+
+
+
 export async function getEstimatedFare(reqData){
     console.log("reqData   "+ JSON.stringify(reqData));
     if(isNaN(reqData.sourceLat))
@@ -89,8 +114,6 @@ export async function getEstimatedFare(reqData){
     {
         return {errorCode: HttpStatus.BAD_REQUEST, message: 'destination longitude should be double type value.'};
     }
-    let origin = ''+reqData.sourceLat+','+reqData.sourceLng;
-    let desti = ''+reqData.destinationLat+','+reqData.destinationLng;
     let distance=0, time=0;
     if(reqData.distance===undefined || reqData.distance===0)
         distance=0
@@ -100,6 +123,8 @@ export async function getEstimatedFare(reqData){
         time=0
     else
         time = reqData.time;
+    let origin = ''+reqData.sourceLat+','+reqData.sourceLng;
+    let desti = ''+reqData.destinationLat+','+reqData.destinationLng;
     let origins = [];
     let destinations = [];
     origins.push(origin);
@@ -210,22 +235,20 @@ export async function getInvoice(reqData){
     let destination= [];
     let origin = [];
     for(let i=0;i< locations[0].length;i++){
-        let latlng = ''+locations[0][i].lat+','+locations[0][i].lng;
-        if(i!==locations[0].length-1){
-            origin.push(latlng);
+        let p1 = {
+            lat : locations[0][i].lat,
+            lng :locations[0][i].lng
         }
-        if(i!==0){
-            destination.push(latlng);
-        }
+        origin.push(p1);
     }
     let timediff = await getTimeDifferenceInMinutes(rideDetails[0][0].ride_start_time, rideDetails[0][0].ride_completed_time);
-    let distance = await getDistanceAndDuration(origin, destination);
-
-    let finalCost = (14.0*distance.distance).toFixed(0);
+    let distance = await getEstimateWithoutGMap(origin);
+    console.log("distance     s s s s s s s s"+ distance);
+    let finalCost = (14.0*distance).toFixed(0);
     let baseFare = (finalCost*(BASE_FARE_PERCENTAGE/100.0)).toFixed(2);
     let timeCost = (TIME_COST*timediff).toFixed(2);
     let distanceCost = finalCost-baseFare-timeCost;
-    let costPerKM = (distanceCost/(distance.distance-MINI_DISTANCE)).toFixed(2);
+    let costPerKM = (distanceCost/(distance-MINI_DISTANCE)).toFixed(2);
     if(parseFloat(baseFare)<42.0){
         if(finalCost< 42){
             baseFare = 42.00;
@@ -235,7 +258,6 @@ export async function getInvoice(reqData){
         }else{
             baseFare = 42;
         }
-
         console.log("in condition "+ finalCost);
     }
     if(parseFloat(baseFare)<33.0){
@@ -255,6 +277,7 @@ export async function getInvoice(reqData){
     finalCost = Math.round(parseFloat(finalCost)+ parseFloat(gstCost));
     let todayDate = new Date();
     finalCost = parseFloat(finalCost)+ parseFloat(gstCost);
+    console.log(" valuesssss   ride_id "+reqData.ride_id +" driver_id "+rideDetails[0][0].driver_id+ " customer_id "+  rideDetails[0][0].customer_id );
     let newInvoiceID = await bookshelf.transaction(async(t) => {
         let newInvoice = await InvoiceDao.createRow({
             ride_id: reqData.ride_id,
@@ -270,7 +293,7 @@ export async function getInvoice(reqData){
             cost_per_minute:TIME_COST,
             time_cost:timeCost,
             total_cost:totalCost,
-            distance:distance.distance,
+            distance:distance,
             cost_per_km:costPerKM,
             distance_cost:distanceCost,
             base_fare: baseFare,
@@ -296,7 +319,7 @@ export async function getInvoice(reqData){
     // });
     return {
         totalCost : finalCost,
-        distance: distance.distance,
+        distance: distance,
         timeTaken: timediff,
         distance_cost: distanceCost,
         costPerKm: costPerKM,
