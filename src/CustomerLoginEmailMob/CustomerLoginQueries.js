@@ -5,7 +5,7 @@ WHERE email_id =:id OR mobile_no =:id
 `;
 
 export const FETCH_CUSTOMER_BY_TOKEN = `
-SELECT customer_id, user_id, email_id, name, mobile_no, photo_url, gender, mobile_verified, email_verified, referral_code
+SELECT customer_id, user_id, email_id, name, mobile_no, photo_url, gender, mobile_verified, email_verified, refferal as referral_code
 FROM tbcustomers
 WHERE token =:token
 `;
