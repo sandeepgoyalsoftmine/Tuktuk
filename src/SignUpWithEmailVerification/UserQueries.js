@@ -21,3 +21,9 @@ Select customer_id, email_id, user_id, name, mobile_no, photo_url, gender
 FROM tbcustomers
 WHERE token =:token
 `;
+
+export const FETCH_CUSTOMER_BY_REFERAL_CODE = `
+SELECT customer_id 
+FROM tbcustomers
+WHERE refferal  =:referal_code
+`;

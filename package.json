@@ -52,6 +52,7 @@
     "passport-facebook-token": "^3.3.0",
     "path": "^0.12.7",
     "request": "^2.88.0",
+    "reverse-geocoding": "^3.0.1",
     "rimraf": "^2.6.1",
     "save": "^2.3.1",
     "schema-object": "^4.0.11",

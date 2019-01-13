@@ -5,8 +5,7 @@
 
     <script type="text/javascript" src="../public/javascripts/jquery-1.12.0.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script type="text/javascript" src="../public/javascripts/user.js"></script>
-    <script type="text/javascript" src="../public/javascripts/drivers.js"></script>
+    <script type="text/javascript" src="../public/javascripts/bookingPanel.js"></script>
     <script type="text/javascript" src="../public/javascripts/bootstrap_toggle.js"></script>
     <link href="../public/stylesheets/bootstrap_toggle.css" rel="stylesheet">
 
@@ -101,7 +100,7 @@
                                     <th>SOS</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="test" name="test">
                                 <%
 
                                 for(var i=0; i < data.RideDetails.length; i++) {
@@ -110,8 +109,8 @@
                                     <td><%= i+1 %></td>
                                     <td><%= data.RideDetails[i].customer_name %></td>
                                     <td><%= data.RideDetails[i].driver_name %></td>
-                                    <td><%= data.RideDetails[i].customer_name %></td>
-                                    <td><%= data.RideDetails[i].driver_name %></td>
+                                    <td><%= data.RideDetails[i].source_address %></td>
+                                    <td><%= data.RideDetails[i].destination_address %></td>
                                     <td><%= data.RideDetails[i].ride_status %></td>
                                     <td><%= data.RideDetails[i].date %></td>
                                     <%if(data.RideDetails[i].sos== 1){%>
@@ -126,8 +125,8 @@
                                 <td><%= i+1 %></td>
                                 <td><%= data.RideDetails[i].customer_name %></td>
                                 <td><%= data.RideDetails[i].driver_name %></td>
-                                <td><%= data.RideDetails[i].customer_name %></td>
-                                <td><%= data.RideDetails[i].driver_name %></td>
+                                <td><%= data.RideDetails[i].source_address %></td>
+                                <td><%= data.RideDetails[i].destination_address %></td>
                                 <td><%= data.RideDetails[i].ride_status %></td>
                                 <td><%= data.RideDetails[i].date %></td>
                                 <%if(data.RideDetails[i].sos== 1){%>

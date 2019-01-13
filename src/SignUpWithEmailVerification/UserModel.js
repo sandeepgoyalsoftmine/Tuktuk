@@ -37,6 +37,11 @@ class UserModel extends bookshelf.Model {
             'token': token
         })
     }
+    static fetchCustomerWithRefferalCode(referal_code){
+        return bookshelf.knex.raw(queries.FETCH_CUSTOMER_BY_REFERAL_CODE, {
+            'referal_code': referal_code
+        })
+    }
 
 }
 

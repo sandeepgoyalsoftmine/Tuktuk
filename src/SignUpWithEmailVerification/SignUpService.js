@@ -4,8 +4,9 @@ import bookshelf from "../db";
 import UserModel from "./UserModel";
 import * as HttpStatus from "http-status-codes/index";
 import * as OTPGeneration from '../OtpForEmail/OTPGeneration'
-import * as mailUtil from '../OtpForEmail/mail';
+import RefferalModel from '../models/RefferalModel';
 import * as sms from '../MobileOTP/sms';
+import * as ReferalDao from './ReferalDao'
 
 
 export async function createUser(user, device_type,version,res) {
@@ -43,13 +44,51 @@ export async function createUser(user, device_type,version,res) {
             mobile_verified: "0",
             email_verified: "0",
             password: user.passsword,
-            refferal: refe,
+            refferal: parseInt('91'+user. mobile_no),
             last_login: new Date(),
             created_on: new Date(),
             token: token
         }, t);
-        return newUsers.userid;
+        return newUsers.id;
+
     });
+    console.log("after creation" + newUserId);
+    if(refe!=0){
+        let discount = await RefferalModel.fetchRefferalByActive();
+        let referredBy  =await UserModel.fetchCustomerWithRefferalCode(refe);
+
+        if(referredBy[0].length>0) {
+            console.log("reffered by "+ referredBy[0][0].customer_id);
+            console.log(" found");
+            let refferalID = await bookshelf.transaction(async (t) => {
+                let refferal = await ReferalDao.createRow({
+                    reffered: newUserId,
+                    refferedby: referredBy[0][0].customer_id,
+                    discount_id: discount[0][0].discount_id,
+                    created_on: new Date()
+                })
+            });
+            refferalID = await bookshelf.transaction(async (t) => {
+                let refferal = await ReferalDao.createRow({
+                    refferedby: newUserId ,
+                    discount_id: discount[0][0].discount_id,
+                    created_on: new Date()
+                })
+            });
+
+        }else{
+            console.log("not found");
+            let refferalID = await bookshelf.transaction(async (t) => {
+                let refferal = await ReferalDao.createRow({
+                    refferedby: newUserId ,
+                    discount_id: discount[0][0].discount_id,
+                    created_on: new Date()
+                })
+            });
+        }
+    }
+    console.log("all creation");
+
     let msg = `Use ${mobileOtp}  as your login OTP. OTP is confidential. TUKTUK-Ride never calls you asking for OTP. Sharing it with anyone gives them access to your Account.`;
     let resu = await sms.sendSMS(user.mobile_no,msg);
     // let emailSubject = 'TUKTUK: OTP for email Verification.';

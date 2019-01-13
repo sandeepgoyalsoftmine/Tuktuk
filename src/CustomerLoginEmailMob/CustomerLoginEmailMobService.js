@@ -9,6 +9,7 @@ import Users from "../models/Users";
 
 
 export async function  login(deviceType, version, reqData, deviceToken, res) {
+    console.log("reqData  "+ JSON.stringify(reqData));
     let customerData = await CustomerLoginEmailMobModel.fetchCustomerDetailByEmailOrMobile(reqData.userID);
     console.log(JSON.stringify(reqData)+"    customerData "+JSON.stringify(customerData[0]));
     if (customerData[0].length < 1) {

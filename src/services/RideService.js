@@ -7,6 +7,7 @@ import * as HttpStatus from "http-status-codes/index";
 import * as RideDAO from "../dao/RideDAO";
 import bookshelf from "../db";
 
+
 export async function createCustomerRating(token, reqData){
     let userData = await Users.fetchDriverByToken(token);
     if(userData[0].length < 1){
@@ -65,12 +66,10 @@ export async function getRides(){
             rideDetails[0][i].ride_status = rideStatus.RideCompleted;
         }
         else{
-            rideDetails[0][i].sos = 1;
+            rideDetails[0][i].sos = 0;
             rideDetails[0][i].ride_status = rideStatus.RideFailed;
         }
         delete rideDetails[0][i].status;
-
-
     }
     return {
         RideDetails : rideDetails[0]

@@ -18,4 +18,10 @@ WHERE discount_id =:discount_id
 export const DEACTIVATE_ALL_EXCEPT_DISCOUNT_ID = `
 UPDATE tbdiscount
 set status = 'Deactivate' where discount_id <>:discount_id
+`
+
+export const FETCH_ACTIVE_DISCOUNT = `
+SELECT discount_id
+FROM tbdiscount
+WHERE status = 'Activate'
 `;
