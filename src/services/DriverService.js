@@ -214,13 +214,18 @@ export async function estimation(reqData,origin, desti, vehicle_type, dist, esti
         return newEstaimate.id;
     });
     return {
+        distance_cost: distanceCost,
+        costPerKm: costPerKM,
+        costPerMinute: TIME_COST,
+        timeCost: timeCost,
+        gst: gstCost,
+        baseFare: baseFare,
         totalCost : finalCost,
         distance: distanceApp,
         estimated_Time: Math.round(timeApp),
         vehicle_type: vehicle_type
     }
 }
-
 export async function getInvoice(reqData){
     console.log("reqData   "+ JSON.stringify(reqData));
     if(isNaN(reqData.ride_id))
