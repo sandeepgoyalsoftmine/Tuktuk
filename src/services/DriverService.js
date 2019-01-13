@@ -344,6 +344,7 @@ export async function getInvoice(reqData){
     //             updated_on: new Date()
     //         }, t);
     // });
+
     return {
         totalCost : finalCost,
         distance: parseFloat(distance),
