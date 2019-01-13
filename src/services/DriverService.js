@@ -153,22 +153,26 @@ export async function estimation(reqData,origin, desti, vehicle_type, dist, esti
     else
         finalCost = Math.round(11.0*distanceApp);
     let baseFare = (finalCost*(BASE_FARE_PERCENTAGE/100.0)).toFixed(2);
-    let timeCost = (TIME_COST*timeApp).toFixed(2);
-    let distanceCost = finalCost-baseFare-timeCost;
-    let costPerKM = (distanceCost/(distanceApp-MINI_DISTANCE)).toFixed(2);
+    let timeCost ;
+    let distanceCost ;
+    let costPerKM ;
     console.log("base fare  "+ baseFare);
-    if(parseFloat(baseFare)<42.0 && vehicle_type==1){
+    if(parseFloat(baseFare)<42.0){
         if(finalCost< 42){
             baseFare = 42.00;
             finalCost = baseFare;
             timeCost = 0;
             distanceCost=0;
+            costPerKM = 0;
         }else{
             baseFare = 42;
+            timeCost = (TIME_COST*timeApp).toFixed(2);
+            distanceCost = finalCost-baseFare-timeCost;
+            costPerKM = (distanceCost/(distanceApp)).toFixed(2);
         }
         console.log("in condition "+ finalCost);
     }
-    if(parseFloat(baseFare)<33.0 && vehicle_type==2){
+    if(parseFloat(baseFare)<33.0){
         if(finalCost<33.0){
             baseFare = 33.00;
             finalCost = baseFare;
@@ -176,8 +180,10 @@ export async function estimation(reqData,origin, desti, vehicle_type, dist, esti
             distanceCost=0;
         }else{
             baseFare = 33.00;
+            timeCost = (TIME_COST*timeApp).toFixed(2);
+            distanceCost = finalCost-baseFare-timeCost;
+            costPerKM = (distanceCost/(distanceApp-MINI_DISTANCE)).toFixed(2);
         }
-
         console.log("in condition "+ finalCost);
     }
     let totalCost = finalCost;
@@ -268,11 +274,10 @@ export async function getInvoice(reqData){
             baseFare = 42;
             timeCost = (TIME_COST*timediff).toFixed(2);
             distanceCost = finalCost-baseFare-timeCost;
-            costPerKM = (distanceCost/(distance)).toFixed(2);
+            costPerKM = (distanceCost/(distance-MINI_DISTANCE)).toFixed(2);
         }
         console.log("in condition "+ finalCost);
     }
-    console.log("final cost "+ finalCost+"  basefare "+ baseFare+" timecost "+ timeCost+" distanceCost "+ distanceCost+" costPerkm "+ costPerKM);
     if(parseFloat(baseFare)<33.0){
         if(finalCost<33.0){
             baseFare = 33.00;
