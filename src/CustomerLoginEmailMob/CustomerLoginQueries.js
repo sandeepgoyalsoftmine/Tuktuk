@@ -41,6 +41,7 @@ LEFT OUTER JOIN tbvehicle on tb_ride_details.driver_id = tbvehicle.assigned_driv
 LEFT OUTER JOIN tbinvoice on tb_ride_details.id = tbinvoice.ride_id
 LEFT OUTER JOIN tbusers on tb_ride_details.driver_id = tbusers.userid
 where tb_ride_details.customer_id =:customer_id AND tb_ride_details.status between 2 AND 4
+ORDER BY tb_ride_details.created_at desc
 `;
 
 export const FETCH_CALLER_DETAIL_BY_CALL_ID = `

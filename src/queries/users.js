@@ -121,10 +121,11 @@ export const FETCH_DRIVER_RIDE_HISTORY = `
 SELECT id as ride_id,tbinvoice.source_lat, tbinvoice.source_lng, tbinvoice.destination_lat, tbinvoice.destination_lng, 
 tb_ride_details.status, created_at, tbvehicle.make as Company, tbvehicle.model, tbvehicle.vehicle_number, 
 tbinvoice.source_address, tbinvoice.destination_address,tbinvoice.source_time, tbinvoice.destination_time, 
-tbcustomers.name ,tb_ride_details.customer_rating as Rating
+tbcustomers.name ,tb_ride_details.customer_rating as Rating, extra_charges, gst
 FROM tb_ride_details
 LEFT OUTER JOIN tbvehicle on tb_ride_details.driver_id = tbvehicle.assigned_driver_id
 LEFT OUTER JOIN tbinvoice on tb_ride_details.id = tbinvoice.ride_id
 LEFT OUTER JOIN tbcustomers on tb_ride_details.customer_id = tbcustomers.customer_id
 where tb_ride_details.driver_id =:userid AND tb_ride_details.status between 2 AND 4
+ORDER BY tb_ride_details.created_at desc
 `;

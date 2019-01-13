@@ -273,12 +273,16 @@ export async function getInvoice(reqData){
     let distanc = await getEstimateWithoutGMap(origin);
     let distance = parseFloat(distanc);
     console.log("distance     s s s s s s s s"+ distance);
-    let finalCost = (14.0*distance).toFixed(0);
+    let finalCost;
+    if(rideDetails[0][0].vehicle_type ==1)
+        finalCost = (14.0*distance).toFixed(0);
+    else
+        finalCost = (11.0*distance).toFixed(0);
     let baseFare = (finalCost*(BASE_FARE_PERCENTAGE/100.0)).toFixed(2);
     let timeCost ;
     let distanceCost;
     let costPerKM ;
-    if(parseFloat(baseFare)<42.0){
+    if(parseFloat(baseFare)<42.0 && rideDetails[0][0].vehicle_type ==1){
         if(finalCost< 42){
             baseFare = 42.00;
             finalCost = baseFare;
@@ -293,7 +297,7 @@ export async function getInvoice(reqData){
         }
         console.log("in condition "+ finalCost);
     }
-    if(parseFloat(baseFare)<33.0){
+    if(parseFloat(baseFare)<33.0 && rideDetails[0][0].vehicle_type ==2){
         if(finalCost<33.0){
             baseFare = 33.00;
             finalCost = baseFare;

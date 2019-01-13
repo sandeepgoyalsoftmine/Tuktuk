@@ -117,7 +117,17 @@ export async function driverHistory(token){
             name: driverHistory[0][i].name,
             rating: driverHistory[0][i].Rating,
         }
+
+        let payment_details = {
+            payment_method:"Cash",
+            final_amount: driverHistory[0][i].extra_charges,
+            total_amount: driverHistory[0][i].extra_charges - driverHistory[0][i].gst,
+            gst: driverHistory[0][i].gst
+        }
+        delete driverHistory[0][i].extra_charges;
+        delete driverHistory[0][i].gst;
         driverHistory[0][i].customer_details = customerDetails;
+        driverHistory[0][i].payment_details = payment_details;
         delete driverHistory[0][i].Company;
         delete driverHistory[0][i].model;
         delete driverHistory[0][i].vehicle_number;
