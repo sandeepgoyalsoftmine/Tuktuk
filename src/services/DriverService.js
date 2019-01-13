@@ -298,9 +298,9 @@ export async function getInvoice(reqData){
             timeTaken: ride_id_exist[0][0].total_minutes,
             distance_cost: ride_id_exist[0][0].distance_cost,
             costPerKm: ride_id_exist[0][0].cost_per_km,
-            costPerMinute: ride_id_exist[0][0].cost_per_minute,
-            timeCost: ride_id_exist[0][0].time_cost,
-            gst: ride_id_exist[0][0].gst,
+            costPerMinute: ride_id_exist[0][0].cost_per_minute+"",
+            timeCost: ride_id_exist[0][0].time_cost+"",
+            gst: ride_id_exist[0][0].gst+"",
             baseFare: ride_id_exist[0][0].base_fare
         }
     }
@@ -348,10 +348,10 @@ export async function getInvoice(reqData){
         distance: parseFloat(distance),
         timeTaken: timediff,
         distance_cost: distanceCost,
-        costPerKm: parseFloat(costPerKM),
+        costPerKm: costPerKM+"",
         costPerMinute: TIME_COST,
-        timeCost: parseFloat(timeCost),
-        gst: parseFloat(gstCost),
+        timeCost: timeCost+"",
+        gst: gstCost+"",
         baseFare: baseFare
     }
 }
