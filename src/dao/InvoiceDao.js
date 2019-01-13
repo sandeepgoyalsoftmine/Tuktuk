@@ -6,6 +6,7 @@ import InvoiceModel from '../models/InvoiceModel';
  * @returns {Promise.<*>}
  */
 export async function createRow(newInvoice, transaction) {
+    console.log("invoice   "+ JSON.stringify(newInvoice));
     return await new InvoiceModel(newInvoice).save(null, {transacting: transaction});
 }
 /**
