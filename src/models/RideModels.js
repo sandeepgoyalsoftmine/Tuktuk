@@ -17,7 +17,6 @@ class RideModels extends bookshelf.Model {
             ride_id: ride_id
         });
     }
-
     static fetchAllTodaysRide(){
         return bookshelf.knex.raw(queries.FETCH_ALL_TODAYS_RIDE);
     }
