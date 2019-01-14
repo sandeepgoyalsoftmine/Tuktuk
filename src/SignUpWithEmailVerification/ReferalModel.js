@@ -19,5 +19,10 @@ class ReferalModel extends bookshelf.Model {
             'refferedby': customer_id
         })
     }
+    static fetchReferalByCustomerId(customer_id){
+        return bookshelf.knex.raw(queries.FETCH_REFERED_BY_CUSTOMER_ID, {
+            'refferedby': customer_id
+        })
+    }
 }
 export default ReferalModel;
