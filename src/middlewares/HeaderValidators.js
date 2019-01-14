@@ -42,7 +42,7 @@ async function checkTokenCustomer(req, res, next)
     if (!token)
     {
         req.session.destroy();
-        res.statusCode = HttpStatus.FORBIDDEN;
+        res.statusCode = HttpStatus.UNAUTHORIZED;
         return res.status(HttpStatus.UNAUTHORIZED).json({
             statusCode : 401,
             message: "Header TUKTUK_TOKEN contains No data"
