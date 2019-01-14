@@ -19,7 +19,6 @@ import RideController from './controller/RideController';
  */
 let router = Router();
 
-
 router.use('/', loginController);
 router.use('/tracking', trackingController);
 router.use('/vehicle', VehicleTypeController);
