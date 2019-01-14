@@ -14,5 +14,5 @@ From tb_ride_details
 LEFT OUTER JOIN tbcustomers on tb_ride_details.customer_id = tbcustomers.customer_id
 LEFT OUTER JOIN tbusers on tb_ride_details.driver_id = tbusers.userid
 WHERE Date(tb_ride_details.created_at) = curdate()
-ORDER By status;
+ORDER By status, created_at desc;
 `;
