@@ -10,6 +10,9 @@ import * as TrackingTempDao from "../dao/TrackingTempDao";
 import * as VehicleDao from "../dao/VehicleDao";
 import * as CustomerBankDao from "../dao/CustomerBankDao";
 import {rideStatus} from '../Constants/enum';
+import DriverDailyWiseModel from '../models/DriverDailyWiseModel';
+import * as DriverDailyWiseDao from '../dao/DriverDailyWiseDao'
+
 
 export async function  login(reqData, usertype1, deviceToken, res) {
     if(deviceToken===undefined)
@@ -335,6 +338,19 @@ export async function createUser(user, created_by, res) {
 
             return newBank.id;
         });
+        let newDriverdailyID = await bookshelf.transaction(async(t)=>{
+            let newdriverdaily = await DriverDailyWiseDao.createRow({
+                driver_id :newUserId,
+                distance : 0.0,
+                cash_amount : 0.0,
+                paytm_amount : 0.0,
+                number_of_rides:0,
+                number_of_ride_cancel: 0,
+                number_of_mins_on: 0.0,
+                created_on: new Date(),
+                created_by: 'schedule'
+            })
+        })
 
     }else{
         newUserId = await bookshelf.transaction(async(t) => {

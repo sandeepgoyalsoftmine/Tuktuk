@@ -9,6 +9,8 @@ import Tracking from '../models/Tracking';
 import RideModels from "../models/RideModels";
 import ReferalModel from "../SignUpWithEmailVerification/ReferalModel"
 import * as ReferalDao from '../SignUpWithEmailVerification/ReferalDao';
+import DriverDailyWiseModel from '../models/DriverDailyWiseModel';
+import * as DriverDailyWiseDao from '../dao/DriverDailyWiseDao'
 
 
 
@@ -385,17 +387,17 @@ export async function getInvoice(reqData){
         }, t);
         return newInvoice.id;
     });
-    // let driverDaily = await DriverDailyWiseModel.fetchDailyWiseID(rideDetails[0][0].driver_id);
-    // await bookshelf.transaction(async (t) => {
-    //     let updateBankDetails = await DriverDailyWiseDao.updateRow(driverDaily[0][0].daily_wise_id,
-    //         {
-    //             distance : driverDaily[0][0].distance + distance.distance,
-    //             number_of_rides : driverDaily[0][0].number_of_rides + 1,
-    //             cash_amount: driverDaily[0][0].cash_amount + finalCost,
-    //             number_mins_on_ride :driverDaily[0][0].number_mins_on_ride + timediff,
-    //             updated_on: new Date()
-    //         }, t);
-    // });
+    let driverDaily = await DriverDailyWiseModel.fetchDailyWiseID(rideDetails[0][0].driver_id);
+    await bookshelf.transaction(async (t) => {
+        let updateBankDetails = await DriverDailyWiseDao.updateRow(driverDaily[0][0].daily_wise_id,
+            {
+                distance : driverDaily[0][0].distance + distance.distance,
+                number_of_rides : driverDaily[0][0].number_of_rides + 1,
+                cash_amount: driverDaily[0][0].cash_amount + finalCost,
+                number_mins_on_ride :driverDaily[0][0].number_mins_on_ride + timediff,
+                updated_on: new Date()
+            }, t);
+    });
 
     return {
         totalCost : finalCost,
