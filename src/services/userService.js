@@ -12,6 +12,7 @@ import * as CustomerBankDao from "../dao/CustomerBankDao";
 import {rideStatus} from '../Constants/enum';
 import DriverDailyWiseModel from '../models/DriverDailyWiseModel';
 import * as DriverDailyWiseDao from '../dao/DriverDailyWiseDao'
+import timeDiffer from "moment/moment";
 
 
 export async function  login(reqData, usertype1, deviceToken, res) {
@@ -159,11 +160,33 @@ export async function driverDuty(reqData, token){
         else
             return {errorCode: HttpStatus.CONFLICT, message : 'Already off out'};
     }
-    await bookshelf.transaction(async (t) => {
-        await UsersDao.updateRow(userData[0][0].userid, {driver_duty_status: reqData.driver_duty_status, updated_on : new Date()}, t);
-    });
+    if((reqData.driver_duty_status).toUpperCase() === "ON"){
+        await bookshelf.transaction(async (t) => {
+            await UsersDao.updateRow(userData[0][0].userid, {driver_duty_status: reqData.driver_duty_status,in_time:new Date(), updated_on : new Date()}, t);
+        });
+    }else{
+        let cureentDate = new Date();
+        await bookshelf.transaction(async (t) => {
+            await UsersDao.updateRow(userData[0][0].userid, {driver_duty_status: reqData.driver_duty_status,out_time:cureentDate, updated_on : new Date()}, t);
+        });
+
+        let timediffer = await getTimeDifferenceInMinutes(userData[0][0].in_time,cureentDate);
+        let driverDaily = await DriverDailyWiseModel.fetchDailyWiseID(userData[0][0].userid);
+        await bookshelf.transaction(async (t) => {
+            let updateBankDetails = await DriverDailyWiseDao.updateRow(driverDaily[0][0].daily_wise_id,
+                {
+                    number_of_mins_on :driverDaily[0][0].number_of_mins_on + timediffer,
+                    updated_on: new Date()
+                }, t);
+        });
+    }
+
     userData = await Users.fetchDriverByToken(token);
     return userData[0][0];
+}
+export async function getTimeDifferenceInMinutes(sourceTime, destinationTime){
+    let minutes  = timeDiffer(destinationTime).diff(sourceTime, 'seconds');
+    return minutes;
 }
 
 export async function markAttendance(reqData, token){

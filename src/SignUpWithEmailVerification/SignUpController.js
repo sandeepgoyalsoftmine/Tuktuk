@@ -6,7 +6,8 @@ let router = Router();
 
 import multer from 'multer';
 import path from 'path';
-import {checkToken} from "../middlewares/HeaderValidators";
+import {checkToken, checkTokenCustomer} from "../middlewares/HeaderValidators";
+import * as user from "../services/userService";
 var myfileName =[];
 // var imgPath = '../../../../apache8//Tuktuk_images';
 var imgPath = '../../public/assets/upload';
@@ -68,5 +69,7 @@ router.post('/create', (req, res, next)=>
             });
         })
 });
+
+
 
 export default  router;

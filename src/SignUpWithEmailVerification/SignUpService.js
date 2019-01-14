@@ -7,6 +7,7 @@ import * as OTPGeneration from '../OtpForEmail/OTPGeneration'
 import RefferalModel from '../models/RefferalModel';
 import * as sms from '../MobileOTP/sms';
 import * as ReferalDao from './ReferalDao'
+import ReferalModel from './ReferalModel';
 
 
 export async function createUser(user, device_type,version,res) {
@@ -102,3 +103,4 @@ export async function createUser(user, device_type,version,res) {
     });
 
 }
+

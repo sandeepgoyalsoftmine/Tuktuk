@@ -2,9 +2,7 @@ import {Router} from 'express';
 import HttpStatus from 'http-status-codes';
 import * as userService from "../services/userService";
 import * as RefferalService from '../services/RefferalService';
-import * as BankService from "../services/BankService";
-import {checkToken} from "../middlewares/HeaderValidators";
-import * as CustomerBankService from "../services/CustomerBankService";
+
 
 
 // import dateformat from "date-utils";

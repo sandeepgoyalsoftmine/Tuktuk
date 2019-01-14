@@ -4,8 +4,8 @@ import * as HttpStatus from "http-status-codes/index";
 import bookshelf from "../db";
 import crypto from "crypto";
 import microtime from "microtime";
-import * as UsersDao from "../dao/users";
-import Users from "../models/Users";
+import ReferalModel from "../SignUpWithEmailVerification/ReferalModel";
+
 
 
 export async function  login(deviceType, version, reqData, deviceToken, res) {
@@ -48,4 +48,15 @@ export async function updateDeviceToken(token, device_id){
 export function generateToken(userid) {
     let dbhash = microtime.now().toString() + userid;
     return crypto.createHash('md5').update(dbhash).digest('hex');
+}
+
+export async function getReferalCount(token){
+    let customerData = await CustomerLoginEmailMobModel.fetchCustomerByToken(token);
+    if(customerData[0].length<1){
+        return {errorCode: HttpStatus.UNAUTHORIZED, message: 'Invalid Token'};
+    }
+    let referalCount = await ReferalModel.fetchReferalCountByCustomerId(customerData[0][0].customer_id);
+    return {
+        referalCount: referalCount[0][0].count
+    }
 }

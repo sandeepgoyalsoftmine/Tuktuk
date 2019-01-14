@@ -35,7 +35,7 @@ export const FETCH_USER_BY_TOKEN = `
 `;
 
 export const FETCH_DRIVER_BY_TOKEN = `
-Select u.userid, u.emailid, u.driver_duty_status from tbusers As u
+Select u.userid, u.emailid, u.driver_duty_status,DATE_FORMAT(in_time, '%Y-%m-%d %H:%i:%s') AS in_time ,DATE_FORMAT(out_time, '%Y-%m-%d %H:%i:%s') AS out_time  from tbusers As u
     WHERE u.token =:token AND user_type = 2
 `;
 
