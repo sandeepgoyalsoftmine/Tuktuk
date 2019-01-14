@@ -16,7 +16,7 @@ async function checkToken(req, res, next)
     if (!token)
     {
         req.session.destroy();
-        res.statusCode = HttpStatus.FORBIDDEN;
+        res.statusCode = HttpStatus.UNAUTHORIZED;
         return res.json({errors: {auth: ['Header TUKTUK_TOKEN contains no data.']}});
     }
     else
@@ -27,7 +27,7 @@ async function checkToken(req, res, next)
         if(!user[0][0])
         {
             req.session.destroy();
-            res.statusCode = HttpStatus.FORBIDDEN;
+            res.statusCode = HttpStatus.UNAUTHORIZED;
             return res.json({errors: {auth: ['Header TUKTUK_TOKEN contains invalid Token.']}});
         }
     }
