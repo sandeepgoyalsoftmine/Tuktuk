@@ -7,6 +7,9 @@ import bookshelf from "../db";
 import InvoiceModel from "../models/InvoiceModel";
 import Tracking from '../models/Tracking';
 import RideModels from "../models/RideModels";
+import ReferalModel from "../SignUpWithEmailVerification/ReferalModel"
+import * as ReferalDao from '../SignUpWithEmailVerification/ReferalDao';
+
 
 
 distanceMatrix.key('AIzaSyC2zwzwJP1SFBRGVt80SroTm-7ga-z1lcA');
@@ -316,6 +319,31 @@ export async function getInvoice(reqData){
     finalCost = Math.round(parseFloat(finalCost)+ parseFloat(gstCost));
     let todayDate = new Date();
     let ride_id_exist = await InvoiceModel.fetchInvoiceDetailsByRideID(reqData.ride_id);
+    console.log("oksssssss");
+    let getRefferal = await ReferalModel.fetchReferalByCustomerId(rideDetails[0][0].customer_id);
+    console.log("getRefferal  ");
+    let discount = 0;
+    let driverAmount=  0;
+    let referalHistoryId;
+    if(getRefferal[0].length>0 && rideDetails[0][0].vehicle_type ==1){
+        discount = 42;
+        driverAmount = 11*distance;
+        referalHistoryId = getRefferal[0][0].refferal_history_id;
+    }
+    if(getRefferal[0].length>0 && rideDetails[0][0].vehicle_type ==2){
+        discount = 33;
+        driverAmount = 7*distance;
+        referalHistoryId = getRefferal[0][0].refferal_history_id;
+    }
+
+    if(discount>0){
+        await bookshelf.transaction(async (t) => {
+            await ReferalDao.updateRow(referalHistoryId, {refferal_status:'Deactivate'}, t);
+        });
+    }
+    console.log("updated");
+
+    finalCost = finalCost-discount;
     if(ride_id_exist[0].length== 1){
         return {
             totalCost : ride_id_exist[0][0].final_cost,
@@ -348,8 +376,8 @@ export async function getInvoice(reqData){
             cost_per_km:costPerKM,
             distance_cost:distanceCost,
             base_fare: baseFare,
-            extra_charges:0,
-            discount:0,
+            extra_charges:driverAmount,
+            discount:discount,
             gst_percentage:GST_PERCENTAGE,
             gst:gstCost,
             final_cost:finalCost,
