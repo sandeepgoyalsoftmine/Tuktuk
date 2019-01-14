@@ -337,6 +337,11 @@ export async function getInvoice(reqData){
         driverAmount = 7*distance;
         referalHistoryId = getRefferal[0][0].refferal_history_id;
     }
+    let toll=0;
+    if(reqData.ride_id==998){
+        toll=100;
+    }
+    finalCost = finalCost+toll;
 
     if(discount>0){
         await bookshelf.transaction(async (t) => {
@@ -383,7 +388,8 @@ export async function getInvoice(reqData){
             gst_percentage:GST_PERCENTAGE,
             gst:gstCost,
             final_cost:finalCost,
-            created_on: todayDate
+            created_on: todayDate,
+            toll: toll
         }, t);
         return newInvoice.id;
     });
@@ -398,7 +404,7 @@ export async function getInvoice(reqData){
                 updated_on: new Date()
             }, t);
     });
-
+    gstCost = gstCost+toll
     return {
         totalCost : finalCost,
         distance: parseFloat(distance),
@@ -407,7 +413,7 @@ export async function getInvoice(reqData){
         costPerKm: costPerKM+"",
         costPerMinute: TIME_COST,
         timeCost: timeCost+"",
-        gst: gstCost+"",
+        gst: gstCost+"" ,
         baseFare: baseFare
     }
 }
