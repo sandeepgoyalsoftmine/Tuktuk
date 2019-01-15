@@ -142,7 +142,7 @@
                                 <%if(data.UserDetails[i].status==="Deactivate"){%>
                                 <td><div class="led-red"></div></td>
                                 <%}else{
-                                    console.log("value in activate "+data.UserDetails[i].status);%>
+                                    %>
                                 <td><div class="led-green"></div></td>
                                 <%}%>
                                 <td><%= data.UserDetails[i].created_on %></td>
@@ -343,6 +343,17 @@
 
                                                             </select>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+
+
+                                                <div class="col-lg-6 show_hide">
+                                                    <div class="form-group">
+                                                        <label>Password</label>
+                                                        <input id="pwd" name="pwd" readonly class="form-control">
+                                                        </input>
                                                     </div>
                                                 </div>
                                             </div>

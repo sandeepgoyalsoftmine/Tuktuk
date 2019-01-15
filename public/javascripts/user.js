@@ -184,6 +184,8 @@ function setEditDrivers(userid){
                     document.getElementById('user_type').value = response.data.UserDetails[0].user_type;
                     document.getElementById('city').value = response.data.UserDetails[0].city;
                     document.getElementById('email').value = response.data.UserDetails[0].emailid;
+                    document.getElementById('pwd').value = response.data.UserDetails[0].password;
+
                 }
             }
         });

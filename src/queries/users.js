@@ -10,7 +10,7 @@ SELECT userid from tbusers where user_type = 2
 export const FETCH_USER_BY_USERID = ` Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.gender,driving_licence_number, pan_card_number,
 certificate_of_registration_number, motor_insurence_number, police_verification_number, aadhar_card_number,  
  tbusers.dob, tbusers.mobile_no, user_type, city, DATE_FORMAT(tbusers.created_on, '%Y-%m-%d %H:%i:%s') AS created_on,
- tbusers.vehicle_type, tbusers.status, tbusers.driver_assigned
+ tbusers.vehicle_type, tbusers.status, tbusers.driver_assigned, password
 FROM tbusers
 WHERE tbusers.userid =:userID
 `;
