@@ -59,7 +59,7 @@ LEFT OUTER JOIN tbuser_type on tbusers.user_type = tbuser_type.type_id
  order by tbusers.created_on desc
 `;
 
-export const FETCH_DRIVERS = `Select tbusers.userid, tbusers.name, tbusers.emailid, tbusers.gender, tbusers.status, driver_assigned,
+export const FETCH_DRIVERS = `Select tbusers.userid,concat(tbusers.name ,' (',tbusers.mobile_no,')') as details, tbusers.name, tbusers.emailid, tbusers.gender, tbusers.status, driver_assigned,
  tbusers.dob, tbusers.mobile_no, tbuser_type.user_type, tbvehicletypes.vehicle_type, DATE_FORMAT(tbusers.created_on, '%Y-%m-%d') AS created_on
 FROM tbusers
 LEFT OUTER JOIN tbuser_type on tbusers.user_type = tbuser_type.type_id
@@ -92,7 +92,7 @@ where token =:token
 `;
 
 export const FETCH_UNASSIGNED_DRIVERS = `
-SELECT userid, name, emailid from tbusers where user_type = 2 AND driver_assigned = 0
+SELECT tbusers.userid, concat(tbusers.name ,' (',tbusers.mobile_no,')') as name, emailid from tbusers where user_type = 2 AND driver_assigned = 0
 `;
 
 export const FETCH_ATTENDANCE_DETAILS_BY_TOKEN = `
