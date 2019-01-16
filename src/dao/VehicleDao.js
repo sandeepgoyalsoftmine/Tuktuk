@@ -14,6 +14,9 @@ export async function createRow(newVehicle, transaction) {
 export async function updateRow(id, data, transaction) {
     return await VehicleModel.where({'assigned_driver_id': id}).save(data, {method: 'update', transacting: transaction});
 }
+export async function updateVehicleRow(id, data, transaction) {
+    return await VehicleModel.where({'vehicle_id': id}).save(data, {method: 'update', transacting: transaction});
+}
 
 
 

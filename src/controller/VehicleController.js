@@ -161,6 +161,21 @@ router.get('/getVehicle', function(req, res, next) {
     }
 });
 
+router.get('/view/:id',  (req, res, next) =>
+{
+
+    VehicleService.getVehicleDetailsByVehicleId(req.params.id)
+        .then(result =>
+        {
+            console.log("vehicle detrails "+JSON.stringify(result));
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
+
 
 router.put('/edit', checkToken, (req, res, next)=>
 {
@@ -183,7 +198,27 @@ router.put('/edit', checkToken, (req, res, next)=>
             });
         })
 });
-
+router.put('/editVehicle/:id', (req, res, next)=>
+{
+    console.log("request "+ JSON.stringify(req.body));
+    VehicleService.updateVehicleDetails(req.body, req.params.id,req.session.userID)
+        .then(result => {
+            console.log("Reponse "+ JSON.stringify(result));
+            if ('errorCode' in result) {
+                return res.status(result.errorCode).json({
+                    status : 'Success',
+                    statusCode : result.errorCode,
+                    message: result.message
+                });
+            }
+            let contextPath = req.protocol + '://' + req.get('host');
+            return res.status(HttpStatus.OK).json({
+                statusCode : '200',
+                message : '',
+                data : result
+            });
+        })
+});
 
 
 

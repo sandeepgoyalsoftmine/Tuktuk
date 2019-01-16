@@ -36,10 +36,21 @@ export async function getVehicleTypeByVehicleTypeID(vehicleTypeID){
 
 export async function getAllVehicle(){
     let vehicles = await  VehicleModel.fetchAllVehicles();
+    let vehicleTypes = await VehicleTypesModel.fetchVehicleTypes();
+    let unasignedDrivers = await Users.fetchUnassignedDrivers();
     return ({
         message:'',
-        Vehicles :vehicles[0]
+        Vehicles :vehicles[0],
+        VehicleTypes : vehicleTypes[0]
     })
+}
+
+export async function getVehicleDetailsByVehicleId(vehicleId){
+    let vehicleDetails = await VehicleModel.fetchVehicleDetailsWithvehicleId(vehicleId);
+    return {
+        message:"",
+        VehicleDetails: vehicleDetails[0]
+    }
 }
 export async function getVehicleDetailsByUserId(token){
     let userData = await Users.fetchDriverByToken(token);
@@ -240,6 +251,39 @@ export async function updateVehicle(reqData, token){
     let VehicleDetails = await VehicleModel.fetchVehicleDetailsWithUserID(userData[0][0].userid);
     return ({
         VehicleDetails : VehicleDetails[0][0],
+        message : 'Vehicle Updated Successfully'
+    });
+
+}
+export async function updateVehicleDetails(reqData,vehicleId, userID){
+    let vehicleDetails = await VehicleModel.fetchVehicleDetailsWithvehicleId(vehicleId);
+    if(vehicleDetails[0].length < 1){
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Vehicle not exist'};
+    }
+    if(reqData.vehicle_Type === undefined || reqData.vehicle_Type===""  || reqData.vehicle_Type==='Select'){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid Vehicle type Please Select from given selection.'}
+    }if(reqData.make === undefined || reqData.make===""){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid company.'}
+    }if(reqData.model === undefined || reqData.model===""){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid Model.'}
+    }if(reqData.vehicle_number === undefined || reqData.vehicle_number===""){
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'Invalid vehicle number.'}
+    }
+    await bookshelf.transaction(async (t) => {
+        await VehicleDao.updateVehicleRow(vehicleId,
+            {
+                vehicle_type: reqData.vehicle_Type,
+                make: reqData.make,
+                model: reqData.model,
+                vehicle_number: reqData.vehicle_number,
+                rc_no: reqData.rc_no,
+                permit_no: reqData.permit_no,
+                insurance_no: reqData.insurance_no,
+                updated_by: userID,
+                updated_on: new Date()
+            }, t);
+    });
+    return ({
         message : 'Vehicle Updated Successfully'
     });
 

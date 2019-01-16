@@ -18,6 +18,11 @@ class VehicleModel extends bookshelf.Model {
             userid: userid
         });
     }
+    static fetchVehicleDetailsWithvehicleId(vehiceleId){
+        return bookshelf.knex.raw(queries.FETCH_VEHICLE_DETAILS_BY_VEHICLE_ID,{
+            vehiceleId: vehiceleId
+        });
+    }
 
 
 }

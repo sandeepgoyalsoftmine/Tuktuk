@@ -5,7 +5,7 @@
 
     <script type="text/javascript" src="../public/javascripts/jquery-1.12.0.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script type="text/javascript" src="../public/javascripts/user.js"></script>
+    <script type="text/javascript" src="../public/javascripts/vehcile.js"></script>
     <script type="text/javascript" src="../public/javascripts/bootstrap_toggle.js"></script>
     <link href="../public/stylesheets/bootstrap_toggle.css" rel="stylesheet">
 
@@ -97,6 +97,7 @@
                                     <th>Driver</th>
                                     <th>Mobile no.</th>
                                     <th>Status</th>
+                                    <th>Edit</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -118,11 +119,17 @@
                                     <%}else{%>
                                     <td><div class="led-green"></div></td>
                                     <%}%>
+                                    <td>
+                                        <button onclick="setVehicleDetails(<%= data.Vehicles[i].vehicle_id %>)"
+                                                class="btn btn-warning btn-circle" data-toggle="modal"
+                                                data-target=".bs-example-modal-md"><i class="fa fa-pencil"></i></button></td>
+
 
 
 
                                 </tr>
                                 <%}else{%>
+                                <tr>
                                 <td><%= i+1 %></td>
                                 <td><%= data.Vehicles[i].vehicle_type %></td>
 
@@ -137,9 +144,14 @@
                                 <%}else{%>
                                 <td><div class="led-green"></div></td>
                                 <%}%>
+                                <td>
+                                    <button   onclick="setVehicleDetails(<%= data.Vehicles[i].vehicle_id %>)"    class="btn btn-warning btn-circle" data-toggle="modal"
+                                            data-target=".bs-example-modal-md"><i class="fa fa-pencil"></i></button></td>
+                                </tr>
 
-                                    <% }
+                                <% }
                                     }%>
+
 
 
                                 </tbody>
@@ -154,7 +166,7 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
-        <div id="userEditModal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
+        <div id="vehcileEditModal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
 
@@ -169,44 +181,24 @@
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <form id="form2" role="form">
+                                        <form id="form2" enctype="multipart/form-data" role="form">
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>User Id</label>
-                                                        <input id="user_id" name="user_id"  readonly class="form-control">
-                                                    </div>
-                                                </div>
-
-
-
-
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Name</label>
-                                                        <input id="name" name="name" class="form-control">
-
-                                                        </input>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Sex</label>
-                                                        <select id="sex" name="sex" class="form-control">
+                                                        <label>Vehicle Type</label>
+                                                        <select id="vehicle_Type" name="vehicle_Type" class="form-control">
                                                             <option>Select</option>
-                                                            <option>Male</option>
-                                                            <option>Female</option>
+                                                            <%for(var i=0;i<data.VehicleTypes.length;i++){%>
+                                                            <option value='<%=data.VehicleTypes[i].vehicle_id%>'><%=data.VehicleTypes[i].vehicle_type%></option>
+                                                            <%}%>
                                                         </select>
                                                     </div>
                                                 </div>
-
-
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Age</label>
-                                                        <input id="age" name="age" class="form-control">
+                                                        <label>Company</label>
+                                                        <input id="make" name="make" class="form-control" placeholder="Maruti, Toyoto, hyundai">
+
                                                         </input>
                                                     </div>
                                                 </div>
@@ -214,129 +206,89 @@
                                             <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>User Type</label>
-                                                        <select id="user_type" name="user_type" class="form-control" onchange="setFieldsEdit()">
-                                                            <option>Select</option>
-                                                            <option value ="2">Driver</option>
-                                                            <option value ="3">User</option>
+                                                        <label>Model</label>
+                                                        <input id="model" name="model" class="form-control" placeholder="Swift, Innova, Verna">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Vehicle Number</label>
+                                                        <input id="vehicle_number" name="vehicle_number" class="form-control">
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>RC No.</label>
+                                                        <input id="rc_no" type="text" name="rc_no" class="form-control">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Upload RC</label>
+                                                        <input id="rcImage" name="rcImage"  class="form-control" type="file">
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Permit No.</label>
+                                                        <input id="permitNo" name="permitNo"  class="form-control" type="text">
+
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Upload Permit</label>
+                                                        <input id="permitImage" name="permitImage"  class="form-control" type="file"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Insurance No.</label>
+                                                        <input id="insuranceNo" name="insuranceNo"  class="form-control" type="text">
+
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Upload Insurance</label>
+                                                        <input id="insuranceImage" name="insuranceImage"  class="form-control" type="file"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Driver</label>
+                                                        <input readonly id="driverName" name="driverName" class="form-control">
+
                                                         </select>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label>Mobile Number</label>
-                                                        <input id="mobile_number" name="mobile_number" class="form-control" type="tel" maxlength="10">
+                                                        <input type="hidden" id="vehicle_id" name="vehicle_id" class="form-control">
 
-                                                        </input>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Address</label>
-                                                        <input id="city" name="city" class="form-control">
-
-                                                        </input>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Email</label>
-                                                        <input id="email" name="emailid" type="emailid" class="form-control">
-                                                        </input>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id = "driverValues">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Vehicle Type</label>
-                                                            <select id="vehicle_type" name="vehicle_type" class="form-control">
-                                                                <option>Select</option>
-                                                                <option value ="1">Car</option>
-                                                                <option value ="2">Bike</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Driving License Number</label>
-                                                            <input id="driving_licence_number" name="driving_licence_number" class="form-control">
-
-                                                            </input>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Pan Card Number</label>
-                                                            <input id="pan_card_number" name="pan_card_number" type="emailid" class="form-control">
-                                                            </input>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Registration Certificate Number</label>
-                                                            <input id="certificate_of_registration_number" name="certificate_of_registration_number" class="form-control">
-
-                                                            </input>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Motor Insurence Number</label>
-                                                            <input id="motor_insurence_number" name="motor_insurence_number" type="emailid" class="form-control">
-                                                            </input>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group show_hide">
-                                                            <label>Police Verification Number</label>
-                                                            <input id="police_verification_number" name="police_verification_number" class="form-control">
-
-                                                            </input>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-
-
-                                                    <div class="col-lg-6 show_hide">
-                                                        <div class="form-group">
-                                                            <label>Adhar Card Number</label>
-                                                            <input id="aadhar_card_number" name="aadhar_card_number" type="emailid" class="form-control">
-                                                            </input>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Status</label>
-                                                            <select id="status" name="status" class="form-control">
-                                                                <option value ="Deactivate">Deactivate</option>
-                                                                <option value ="Activate">Activate</option>
-
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
                                         </form>
+
+
                                     </div>
                                 </div>
                                 <!-- /.row (nested) -->
@@ -346,151 +298,9 @@
                         <!-- /.row -->
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="update" onclick="UpdateDrivers()" class="btn btn-success btn-default btn-lg">
+                        <button type="button" id="update" onclick="UpdateVehicle()" class="btn btn-success btn-default btn-lg">
                             Update
                         </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="documentEditModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <button type="button" class="close btn btn-danger btn-circle" data-dismiss="modal">
-                            <i class="fa fa-times"></i>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">View Documents</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div id="form2" role="form">
-                                            <div class = "row">
-                                                <div class = "col-sm-6 col-md-3">
-                                                    <h4><b>Profile Pic</b></h4>
-                                                    <div class="container">
-                                                        <div class = "thumbnail">
-                                                            <img id="profilePic" name="profilePic">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class = "caption">
-
-
-                                                    </div>
-                                                </div>
-                                                <div id="driverDetails2">
-
-                                                    <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Driving License</b></h4>
-                                                        <div class="container">
-                                                            <div class = "thumbnail">
-                                                                <img id="drivingLicense" name="drivingLicense">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class = "caption">
-
-
-                                                        </div>
-                                                    </div>
-                                                    <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Pan Card</b></h4>
-                                                        <div class="container">
-                                                            <div class = "thumbnail">
-                                                                <img id="pancard" name="pancard">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class = "caption">
-
-
-                                                        </div>
-                                                    </div>
-                                                    <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Registration Certificate</b></h4>
-                                                        <div class="container">
-                                                            <div class = "thumbnail">
-                                                                <img id="registrationCertificate" name="registrationCertificate">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class = "caption">
-
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div id="driverDetails">
-                                                <div class = "row">
-
-                                                    <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Motor Insurence</b></h4>
-                                                        <div class="container">
-                                                            <div class = "thumbnail">
-                                                                <img id="mototInsurence" name="mototInsurence">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class = "caption">
-
-
-                                                        </div>
-                                                    </div>
-                                                    <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Police Verification</b></h4>
-                                                        <div class="container">
-                                                            <div class = "thumbnail">
-                                                                <img id="policeVerification" name="policeVerification">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class = "caption">
-
-
-                                                        </div>
-                                                    </div>
-                                                    <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Adhar Card</b></h4>
-                                                        <div class="container">
-                                                            <div class = "thumbnail">
-                                                                <img id="adharCard" name="adharCard">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class = "caption">
-
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <!-- /.row (nested) -->
-                                </div>
-                                <!-- /.col-lg-12 -->
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <div class="modal-footer">
-                            <!--<button type="button" id="update1" onclick="UpdateEmployee()" class="btn btn-success btn-default btn-lg">-->
-                            <!--Update-->
-                            <!--</button>-->
-                        </div>
-                        <script>document.getElementById("driverValues").style.display='none';
-                            document.getElementById("driverDetails").style.display='none'
-                            document.getElementById("driverDetails2").style.display='none'
-
-                        </script>
                     </div>
                 </div>
             </div>
