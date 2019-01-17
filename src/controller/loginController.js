@@ -554,6 +554,18 @@ router.post('/getInvoice', (req, res, next) =>
             });
         })
 });
+router.post('/invoice', (req, res, next) =>
+{
+    DriverService.createInvoice(req.body, res)
+        .then(result =>
+        {
+            return res.status(HttpStatus.OK).json({
+                statusCode : 200,
+                message : '',
+                data : result
+            });
+        })
+});
 
 
 export default router;

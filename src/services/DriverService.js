@@ -263,6 +263,34 @@ export async function getInvoice(reqData){
     console.log("ride Details  "+ JSON.stringify(rideDetails[0]));
     if(rideDetails[0][0].status !==4)
         return {errorCode: HttpStatus.BAD_REQUEST, message : 'ride is not completed'};
+    let ride_id_exist = await InvoiceModel.fetchInvoiceDetailsByRideID(reqData.ride_id);
+    if(ride_id_exist[0].length== 1){
+        return {
+            totalCost : ride_id_exist[0][0].final_cost,
+            distance: ride_id_exist[0][0].distance,
+            timeTaken: ride_id_exist[0][0].total_minutes,
+            distance_cost: ride_id_exist[0][0].distance_cost,
+            costPerKm: ride_id_exist[0][0].cost_per_km,
+            costPerMinute: ride_id_exist[0][0].cost_per_minute+"",
+            timeCost: ride_id_exist[0][0].time_cost+"",
+            gst: ride_id_exist[0][0].gst+"",
+            baseFare: ride_id_exist[0][0].base_fare
+        }
+    }
+}
+export async function createInvoice(reqData){
+    console.log("reqData   "+ JSON.stringify(reqData));
+    if(isNaN(reqData.ride_id))
+    {
+        return {errorCode: HttpStatus.BAD_REQUEST, message: 'Ride id should be integer.'};
+    }
+    let rideDetails = await InvoiceModel.fetchRideDetails(reqData.ride_id);
+    if (rideDetails[0].length < 1) {
+        return {errorCode: HttpStatus.UNAUTHORIZED, message : 'Invalid ride id'};
+    }
+    console.log("ride Details  "+ JSON.stringify(rideDetails[0]));
+    if(rideDetails[0][0].status !==4)
+        return {errorCode: HttpStatus.BAD_REQUEST, message : 'ride is not completed'};
     let locations = await Tracking.fetchLocationAccordingToTimeAndUserId(rideDetails[0][0].driver_id,rideDetails[0][0].ride_start_time, rideDetails[0][0].ride_completed_time);
     let destination= [];
     let origin = [];
@@ -353,15 +381,7 @@ export async function getInvoice(reqData){
     finalCost = finalCost-discount;
     if(ride_id_exist[0].length== 1){
         return {
-            totalCost : ride_id_exist[0][0].final_cost,
-            distance: ride_id_exist[0][0].distance,
-            timeTaken: ride_id_exist[0][0].total_minutes,
-            distance_cost: ride_id_exist[0][0].distance_cost,
-            costPerKm: ride_id_exist[0][0].cost_per_km,
-            costPerMinute: ride_id_exist[0][0].cost_per_minute+"",
-            timeCost: ride_id_exist[0][0].time_cost+"",
-            gst: ride_id_exist[0][0].gst+"",
-            baseFare: ride_id_exist[0][0].base_fare
+            message:"invoice allready created"
         }
     }
     let newInvoiceID = await bookshelf.transaction(async(t) => {
@@ -406,14 +426,6 @@ export async function getInvoice(reqData){
     });
     gstCost = gstCost+toll
     return {
-        totalCost : finalCost,
-        distance: parseFloat(distance),
-        timeTaken: timediff,
-        distance_cost: distanceCost,
-        costPerKm: costPerKM+"",
-        costPerMinute: TIME_COST,
-        timeCost: timeCost+"",
-        gst: gstCost+"" ,
-        baseFare: baseFare
+        message: "Invoice Created successfully"
     }
 }
