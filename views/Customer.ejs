@@ -82,7 +82,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Booking Panel
+                        Customer List
 
                     </div>
                     <!-- /.panel-heading -->
@@ -92,53 +92,37 @@
                                 <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Customer</th>
-                                    <th>Driver</th>
-                                    <th>Source</th>
-                                    <th>Destination</th>
-                                    <th>Ride Status</th>
-                                    <th>Date</th>
-                                    <th>SOS</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile No.</th>
+                                    <th>Sex</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <%
 
-                                for(var i=0; i < data.RideDetails.length; i++) {
+                                for(var i=0; i < data.customers.length; i++) {
                                 if(i%2==0){%>
                                 <tr class="even gradeC">
                                     <td><%= i+1 %></td>
-                                    <td><%= data.RideDetails[i].customer_name %></td>
-                                    <td><%= data.RideDetails[i].driver_name %></td>
-                                    <td><%= data.RideDetails[i].customer_name %></td>
-                                    <td><%= data.RideDetails[i].driver_name %></td>
-                                    <td><%= data.RideDetails[i].ride_status %></td>
-                                    <td><%= data.RideDetails[i].date %></td>
-                                    <%if(data.RideDetails[i].sos== 1){%>
-                                    <td><div class="led-red"></div></td>
-                                    <%}else{
-                                    %>
-                                    <td><div class="led-green"></div></td>
-                                    <%}%>
+                                    <td><%= data.customers[i].name %></td>
+                                    <td><%= data.customers[i].email_id %></td>
+                                    <td><%= data.customers[i].mobile_no %></td>
+                                    <td><%= data.customers[i].gender %></td>
+
 
                                 </tr>
                                 <%}else{%>
-                                <td><%= i+1 %></td>
-                                <td><%= data.RideDetails[i].customer_name %></td>
-                                <td><%= data.RideDetails[i].driver_name %></td>
-                                <td><%= data.RideDetails[i].customer_name %></td>
-                                <td><%= data.RideDetails[i].driver_name %></td>
-                                <td><%= data.RideDetails[i].ride_status %></td>
-                                <td><%= data.RideDetails[i].date %></td>
-                                <%if(data.RideDetails[i].sos== 1){%>
-                                <td><div class="led-red"></div></td>
-                                <%}else{
-                                %>
-                                <td><div class="led-green"></div></td>
-                                <%}%>
 
-                                <% }
-                                }%>
+                                    <td><%= i+1 %></td>
+                                    <td><%= data.customers[i].name %></td>
+                                    <td><%= data.customers[i].email_id %></td>
+                                    <td><%= data.customers[i].mobile_no %></td>
+                                    <td><%= data.customers[i].gender %></td>
+
+                                <%}}%>
+
+
                                 </tbody>
 
                             </table>
@@ -151,456 +135,7 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
-        <div id="userEditModal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <button type="button" class="close btn btn-danger btn-circle" data-dismiss="modal">
-                            <i class="fa fa-times"></i>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">Edit Drivers</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <form id="form2" role="form">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>User Id</label>
-                                                        <input id="user_id" name="user_id"  readonly class="form-control">
-                                                    </div>
-                                                </div>
-
-
-
-
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Name</label>
-                                                        <input id="name" name="name" class="form-control">
-
-                                                        </input>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Sex</label>
-                                                        <select id="sex" name="sex" class="form-control">
-                                                            <option>Select</option>
-                                                            <option>Male</option>
-                                                            <option>Female</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Age</label>
-                                                        <input id="age" name="age" class="form-control">
-                                                        </input>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>User Type</label>
-                                                        <select id="user_type" name="user_type" class="form-control" onchange="setFieldsEdit()">
-                                                            <option>Select</option>
-                                                            <option value ="2">Driver</option>
-                                                            <option value ="3">User</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Mobile Number</label>
-                                                        <input id="mobile_number" name="mobile_number" class="form-control" type="tel" maxlength="10">
-
-                                                        </input>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Address</label>
-                                                        <input id="city" name="city" class="form-control">
-
-                                                        </input>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label>Email</label>
-                                                        <input id="email" name="emailid" type="emailid" class="form-control">
-                                                        </input>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div id = "driverValues">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Vehicle Type</label>
-                                                            <select id="vehicle_type" name="vehicle_type" class="form-control">
-                                                                <option>Select</option>
-                                                                <option value ="1">Car</option>
-                                                                <option value ="2">Bike</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Driving License Number</label>
-                                                            <input id="driving_licence_number" name="driving_licence_number" class="form-control">
-
-                                                            </input>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Pan Card Number</label>
-                                                            <input id="pan_card_number" name="pan_card_number" type="emailid" class="form-control">
-                                                            </input>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Registration Certificate Number</label>
-                                                            <input id="certificate_of_registration_number" name="certificate_of_registration_number" class="form-control">
-
-                                                            </input>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Motor Insurence Number</label>
-                                                            <input id="motor_insurence_number" name="motor_insurence_number" type="emailid" class="form-control">
-                                                            </input>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group show_hide">
-                                                            <label>Police Verification Number</label>
-                                                            <input id="police_verification_number" name="police_verification_number" class="form-control">
-
-                                                            </input>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-
-
-                                                    <div class="col-lg-6 show_hide">
-                                                        <div class="form-group">
-                                                            <label>Adhar Card Number</label>
-                                                            <input id="aadhar_card_number" name="aadhar_card_number" type="emailid" class="form-control">
-                                                            </input>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Status</label>
-                                                            <select id="status" name="status" class="form-control">
-                                                                <option value ="Deactivate">Deactivate</option>
-                                                                <option value ="Activate">Activate</option>
-
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-                                        </form>
-                                    </div>
-                                </div>
-                                <!-- /.row (nested) -->
-                            </div>
-                            <!-- /.col-lg-12 -->
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="update" onclick="UpdateDrivers()" class="btn btn-success btn-default btn-lg">
-                            Update
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
-        <div id="documentEditModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <button type="button" class="close btn btn-danger btn-circle" data-dismiss="modal">
-                            <i class="fa fa-times"></i>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">View Documents</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div id="form2" role="form">
-                                            <div class = "row">
-                                                <input type="hidden" id="driver_id" name="driver_id">
-                                                <div class = "col-sm-6 col-md-3">
-                                                    <h4><b>Profile Pic</b>
-                                                        <button onclick="showPicBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
-                                                        <button onclick="savePicBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
-                                                    </h4>
-
-                                                    <div class="container">
-                                                        <div class = "thumbnail">
-                                                            <img id="profilePic" name="profilePic">
-                                                        </div>
-
-                                                    </div>
-                                                    <div id="profileDiv">
-                                                        <form id="editDriverPic">
-                                                            <div class="form-group">
-                                                                <label>Upload Profile Pic</label>
-                                                                <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'profilePic')" />
-                                                            </div>
-                                                            <input type="hidden" id="type" name="type" value="driver_pic">
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                <div id="driverDetails2">
-
-                                                    <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Driving License</b>
-                                                            <button onclick="showDrivingLicenseBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
-                                                            <button onclick="saveDrivingLicenseBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
-                                                        </h4>
-                                                        <div class="container">
-                                                            <div class = "thumbnail">
-                                                                <img id="drivingLicense" name="drivingLicense">
-                                                            </div>
-                                                        </div>
-
-                                                        <div id="drivingLicenseDiv">
-                                                            <form id="editDLPic">
-                                                                <div class="form-group">
-                                                                    <label>Upload Driving License</label>
-                                                                    <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'drivingLicense')"/>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>DLNumber</label>
-                                                                    <input id="fieldNumber" name="fieldNumber" type="text" class="form-control">
-                                                                    </input>
-                                                                    <input type="hidden" id="field" name="field" value="driving_licence_number">
-                                                                    <input type="hidden" id="type" name="type" value="driving_licence_front">
-
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                    <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Pan Card</b>
-                                                            <button onclick="showPancardBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
-                                                            <button onclick="savePancardBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
-                                                        </h4>
-                                                        <div class="container">
-                                                            <div class = "thumbnail">
-                                                                <img id="pancard" name="pancard">
-                                                            </div>
-                                                        </div>
-
-                                                        <div id="pancardDiv">
-                                                            <form id="editPancarPic">
-                                                                <div class="form-group">
-                                                                    <label>Upload Pancard</label>
-                                                                    <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'pancard')"/>
-                                                                    <input type="hidden" id="type" name="type" value="pancard">
-                                                                </div>
-
-
-
-                                                                <div class="form-group">
-                                                                    <label>Pancard Number</label>
-                                                                    <input id="fieldNumber" name="fieldNumber" type="text" class="form-control">
-                                                                    </input>
-                                                                    <input type="hidden" id="field" name="field" value="pan_card_number">
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>RC</b>
-                                                            <button onclick="showRCBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
-                                                            <button onclick="saveRCBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
-                                                        </h4>
-                                                        <div class="container">
-                                                            <div class = "thumbnail">
-                                                                <img id="registrationCertificate" name="registrationCertificate">
-                                                            </div>
-                                                        </div>
-
-                                                        <div id="registrationCertificateDiv">
-                                                            <form id="editRcPic">
-                                                                <div class="form-group">
-                                                                    <label>Upload RC</label>
-                                                                    <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'registrationCertificate')"/>
-                                                                    <input type="hidden" id="type" name="type" value="registration_certificate">
-
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <label>RC Number</label>
-                                                                    <input id="fieldNumber" name="fieldNumber" type="text" class="form-control">
-                                                                    </input>
-                                                                    <input type="hidden" id="field" name="field" value="certificate_of_registration_number">
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div id="driverDetails">
-                                                <div class = "row">
-
-                                                    <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Motor Insurence</b>
-                                                            <button onclick="showMotorBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
-                                                            <button onclick="saveMotorBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
-                                                        </h4>
-                                                        <div class="container">
-                                                            <div class = "thumbnail">
-                                                                <img id="mototInsurence" name="mototInsurence">
-                                                            </div>
-                                                        </div>
-
-                                                        <div id="motorInsurenceDiv">
-                                                            <form id="editMotorPic">
-                                                                <div class="form-group">
-
-                                                                    <label>Upload Motor Insurance</label>
-                                                                    <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'mototInsurence')"/>
-                                                                    <input type="hidden" id="type" name="type" value="motor_insurence"/>
-
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <label>Moto Insurance Number</label>
-                                                                    <input id="fieldNumber" name="fieldNumber" type="text" class="form-control">
-                                                                    </input>
-                                                                    <input type="hidden" id="field" name="field" value="motor_insurence_number">
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                    <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Police Verification</b>
-                                                            <button onclick="showPoliceVerificationBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
-                                                            <button onclick="savePoliceVerificationBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
-                                                        </h4>
-                                                        <div class="container">
-
-                                                            <div class = "thumbnail">
-                                                                <img id="policeVerification" name="policeVerification">
-                                                            </div>
-                                                        </div>
-
-                                                        <div id="policeVerificationDiv">
-                                                            <form id="editPVPic">
-                                                                <div class="form-group">
-                                                                    <label>Upload Police Verification</label>
-                                                                    <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'policeVerification')"/>
-                                                                    <input type="hidden" id="type" name="type" value="police_verification"/>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <label>Police Verification Number</label>
-                                                                    <input id="fieldNumber" name="fieldNumber" type="text" class="form-control">
-                                                                    </input>
-                                                                    <input type="hidden" id="field" name="field" value="police_verification_number">
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                    <div class = "col-sm-6 col-md-3">
-                                                        <h4><b>Adhar Card</b>
-                                                            <button onclick="showAdharBlog()" class="btn btn-warning btn-circle" ><i class="fa fa-pencil"></i></button>
-                                                            <button onclick="saveAdharBlog()" class="btn btn-success btn-circle" ><i class="fa fa-check"></i></button>
-                                                        </h4>
-                                                        <div class="container">
-                                                            <div class = "thumbnail">
-                                                                <img id="adharCard" name="adharCard">
-                                                            </div>
-                                                        </div>
-
-                                                        <div id="adharCardDiv">
-                                                            <form id="editAdharPic">
-                                                                <div class="form-group">
-                                                                    <label>Upload Adhar Card</label>
-                                                                    <input id="image" name="image"  class="form-control" type="file" onchange="updatePic(this, 'adharCard')"/>
-                                                                    <input type="hidden" id="type" name="type" value="adhar_card"/>
-
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <label>Adhar Card Number</label>
-                                                                    <input id="fieldNumber" name="fieldNumber" type="text" class="form-control">
-                                                                    </input>
-                                                                    <input type="hidden" id="field" name="field" value="aadhar_card_number">
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <!-- /.row (nested) -->
-                                </div>
-                                <!-- /.col-lg-12 -->
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <div class="modal-footer">
-                            <!--<button type="button" id="update1" onclick="UpdateEmployee()" class="btn btn-success btn-default btn-lg">-->
-                            <!--Update-->
-                            <!--</button>-->
-                        </div>
-                        <script>document.getElementById("driverValues").style.display='none';
-                            document.getElementById("driverDetails").style.display='none'
-                            document.getElementById("driverDetails2").style.display='none'
-
-                        </script>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <script>
     $(document).ready(function() {

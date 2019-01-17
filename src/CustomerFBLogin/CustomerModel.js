@@ -26,6 +26,9 @@ class CustomerModel extends bookshelf.Model {
             'customer_id': customer_id
         })
     };
+    static fetchAllCustomer(){
+        return bookshelf.knex.raw(queries.FETCH_ALL_CUSTOMERS);
+    }
 
 }
 

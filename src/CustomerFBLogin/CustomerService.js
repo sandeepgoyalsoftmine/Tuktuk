@@ -137,5 +137,9 @@ export function generateToken(userid) {
 }
 
 export async function getCustomers(){
+    let customerList = await CustomerModel.fetchAllCustomer();
+    return {
+        customers : customerList[0]
+    }
 
 }

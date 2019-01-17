@@ -94,6 +94,7 @@ router.get('/', function(req, res, next) {
                 if (parseInt(result[0].user_type) == 1) {
                     CustomerService.getCustomers()
                         .then(result1 => {
+                            console.log("customerlist "+ JSON.stringify(result1));
                             res.render('Customer', {
                                 path: contextPath, header: 'Customer List', operation: '',
                                 data: result1,
