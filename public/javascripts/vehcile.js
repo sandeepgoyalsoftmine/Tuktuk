@@ -27,7 +27,7 @@ $(document).ready(function() {
     });
 });
 function setVehicleDetails(vehicleId){
-    alert(vehicleId);
+
     $.ajax(
         {
             type: "GET",

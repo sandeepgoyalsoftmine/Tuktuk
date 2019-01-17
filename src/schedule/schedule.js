@@ -3,9 +3,9 @@ import Users from "../models/Users";
 import * as DriverDailyWiseDao from "../dao/DriverDailyWiseDao";
 import bookshelf from "../db";
 var rule = new schedule.RecurrenceRule();
-rule.hour=2;
-rule.minute = 8;
-rule.second=20;
+rule.hour=0;
+rule.minute = 22
+rule.second=0;
 export async function a() {
     console.log("chal payi");
     var j = schedule.scheduleJob(rule, function () {
